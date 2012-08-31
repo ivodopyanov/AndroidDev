@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">Hello core!</string>
     <string name="app_name">core</string>
+    <string name="singlePlayer">Одиночная игра</string>
+    <string name="startSinglePlayer">Начать одиночную игру</string>
 </resources>
