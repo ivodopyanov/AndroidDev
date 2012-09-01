@@ -4,4 +4,7 @@
     <string name="app_name">core</string>
     <string name="singlePlayer">Одиночная игра</string>
     <string name="startSinglePlayer">Начать одиночную игру</string>
+    <string name="rotateCounterClockwise">Повернуть против часовой</string>
+    <string name="rotateClockwise">Повернуть по часовой</string>
+    <string name="endOfGame">Игра закончена!</string>
 </resources>

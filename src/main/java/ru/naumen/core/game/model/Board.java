@@ -15,11 +15,22 @@ public class Board implements Serializable
 
     public Board()
     {
-        for (int i = 0; i < BoardActivity.COL_NUM; i++)
+        for (int y = 0; y < BoardActivity.BOARD_SIZE; y++)
         {
-            for (int j = 0; j < BoardActivity.ROW_NUM; j++)
+            for (int x = 0; x < BoardActivity.BOARD_SIZE; x++)
             {
-                balls.add(new Ball(i, j, -1));
+                balls.add(new Ball(x, y, -1));
+            }
+        }
+    }
+
+    public void fromArray(SquareArea area, int[][] data)
+    {
+        for (Ball ball : balls)
+        {
+            if (ball.inside(area))
+            {
+                ball.setPlayer(data[ball.getX() - area.getX()][ball.getY() - area.getY()]);
             }
         }
     }
@@ -32,6 +43,31 @@ public class Board implements Serializable
     public void setBalls(List<Ball> balls)
     {
         this.balls = balls;
+    }
+
+    public int[][] toArray()
+    {
+        int[][] result = new int[BoardActivity.BOARD_SIZE][];
+        for (int i = 0; i < BoardActivity.BOARD_SIZE; i++)
+            result[i] = new int[BoardActivity.BOARD_SIZE];
+        for (Ball ball : balls)
+        {
+            result[ball.getX()][ball.getY()] = ball.getPlayer();
+        }
+        return result;
+    }
+
+    public int[][] toArray(SquareArea area)
+    {
+        int[][] result = new int[area.getLength()][];
+        for (int i = 0; i < area.getLength(); i++)
+            result[i] = new int[area.getLength()];
+        for (Ball ball : balls)
+        {
+            if (ball.inside(area))
+                result[ball.getX() - area.getX()][ball.getY() - area.getY()] = ball.getPlayer();
+        }
+        return result;
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException

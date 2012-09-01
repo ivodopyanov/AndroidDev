@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Ball implements Serializable
 {
+    public static final int NO_PLAYER = -1;
     private static final long serialVersionUID = 2193369284913944667L;
     private int x;
     private int y;
@@ -32,6 +33,12 @@ public class Ball implements Serializable
         return y;
     }
 
+    public boolean inside(SquareArea area)
+    {
+        return area.getX() <= x && x < area.getX() + area.getLength() && area.getY() <= y
+                && y < area.getY() + area.getLength();
+    }
+
     public void setPlayer(int player)
     {
         this.player = player;
@@ -45,6 +52,12 @@ public class Ball implements Serializable
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Ball [x=" + x + ", y=" + y + ", player=" + player + "]";
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
