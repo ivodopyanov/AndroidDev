@@ -2,7 +2,7 @@ package ru.naumen.core.game.controller;
 
 import java.util.List;
 
-import ru.naumen.core.game.BoardActivity;
+import ru.naumen.core.game.Constants;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Board;
 
@@ -44,15 +44,15 @@ public class BoardPositionChecker
     private void checkDiagonal(int[][] board) throws PlayerWonException
     {
         List<Integer> line = Lists.newArrayList();
-        for (int x = 0; x < BoardActivity.BOARD_SIZE; x++)
+        for (int x = 0; x < Constants.BOARD_SIZE; x++)
         {
             checkDiagonalLine(x, 0, 1, 1, line, board);
-            checkDiagonalLine(x, BoardActivity.BOARD_SIZE - 1, -1, -1, line, board);
+            checkDiagonalLine(x, Constants.BOARD_SIZE - 1, -1, -1, line, board);
         }
-        for (int y = 0; y < BoardActivity.BOARD_SIZE; y++)
+        for (int y = 0; y < Constants.BOARD_SIZE; y++)
         {
             checkDiagonalLine(0, y, 1, -1, line, board);
-            checkDiagonalLine(BoardActivity.BOARD_SIZE - 1, y, -1, 1, line, board);
+            checkDiagonalLine(Constants.BOARD_SIZE - 1, y, -1, 1, line, board);
         }
     }
 
@@ -61,7 +61,7 @@ public class BoardPositionChecker
     {
         line.clear();
         int xx = startx, yy = starty;
-        while (0 <= xx && xx < BoardActivity.BOARD_SIZE && 0 <= yy && yy < BoardActivity.BOARD_SIZE)
+        while (0 <= xx && xx < Constants.BOARD_SIZE && 0 <= yy && yy < Constants.BOARD_SIZE)
         {
             line.add(board[xx][yy]);
             xx += xmodifier;
@@ -74,10 +74,10 @@ public class BoardPositionChecker
     private void checkHorizontal(int[][] board) throws PlayerWonException
     {
         List<Integer> line = Lists.newArrayList();
-        for (int y = 0; y < BoardActivity.BOARD_SIZE; y++)
+        for (int y = 0; y < Constants.BOARD_SIZE; y++)
         {
             line.clear();
-            for (int x = 0; x < BoardActivity.BOARD_SIZE; x++)
+            for (int x = 0; x < Constants.BOARD_SIZE; x++)
                 line.add(board[x][y]);
             checkLine(line);
         }
@@ -104,10 +104,10 @@ public class BoardPositionChecker
     private void checkVertical(int[][] board) throws PlayerWonException
     {
         List<Integer> line = Lists.newArrayList();
-        for (int x = 0; x < BoardActivity.BOARD_SIZE; x++)
+        for (int x = 0; x < Constants.BOARD_SIZE; x++)
         {
             line.clear();
-            for (int y = 0; y < BoardActivity.BOARD_SIZE; y++)
+            for (int y = 0; y < Constants.BOARD_SIZE; y++)
                 line.add(board[x][y]);
             checkLine(line);
         }

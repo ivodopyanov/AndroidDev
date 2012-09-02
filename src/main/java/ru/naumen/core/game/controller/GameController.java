@@ -1,8 +1,12 @@
 package ru.naumen.core.game.controller;
 
+import java.util.Set;
+
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.SquareArea;
+
+import com.google.common.collect.Sets;
 
 public class GameController
 {
@@ -19,14 +23,24 @@ public class GameController
     private final Game game;
     private int activePlayer = 0;
     private GamePhase phase;
-    private OnBoardStateChangedListener onBoardStateChangedListener;
-    private OnGameOverListener onGameOverListener;
+    private final Set<OnBoardStateChangedListener> onBoardStateChangedListeners = Sets.newHashSet();
+    private final Set<OnGameOverListener> onGameOverListeners = Sets.newHashSet();
     private final BoardPositionChecker positionChecker = new BoardPositionChecker();
 
     public GameController(Game game)
     {
         this.game = game;
         this.phase = GamePhase.PutBall;
+    }
+
+    public void addOnBoardStateChangedListener(OnBoardStateChangedListener onBoardStateChangedListener)
+    {
+        this.onBoardStateChangedListeners.add(onBoardStateChangedListener);
+    }
+
+    public void addOnGameOverListener(OnGameOverListener onGameOverListener)
+    {
+        this.onGameOverListeners.add(onGameOverListener);
     }
 
     public int getActivePlayer()
@@ -44,17 +58,16 @@ public class GameController
         return phase;
     }
 
-    public void makeMove(int position)
+    public void makeMove(Ball ball)
     {
-        Ball ball = game.getBoard().getBalls().get(position);
         if (ball.getPlayer() == Ball.NO_PLAYER)
         {
             ball.setPlayer(activePlayer);
             activePlayer = getNextPlayer(activePlayer);
             phase = GamePhase.RotateBoard;
-            if (onBoardStateChangedListener != null)
+            for (OnBoardStateChangedListener listener : onBoardStateChangedListeners)
             {
-                onBoardStateChangedListener.onBoardStateChanged();
+                listener.onBoardStateChanged();
             }
         }
     }
@@ -65,25 +78,19 @@ public class GameController
         int[][] rotated = doRotate(area, input, direction);
         game.getBoard().fromArray(input, rotated);
         phase = GamePhase.PutBall;
-        if (onBoardStateChangedListener != null)
-            onBoardStateChangedListener.onBoardStateChanged();
+        for (OnBoardStateChangedListener listener : onBoardStateChangedListeners)
+        {
+            listener.onBoardStateChanged();
+        }
         int winner = positionChecker.hasAnyPlayerWon(game.getBoard());
         if (winner != Ball.NO_PLAYER)
         {
             phase = GamePhase.Ended;
-            if (onGameOverListener != null)
-                onGameOverListener.onGameOver(winner);
+            for (OnGameOverListener listener : onGameOverListeners)
+            {
+                listener.onGameOver(winner);
+            }
         }
-    }
-
-    public void setOnBoardStateChangedListener(OnBoardStateChangedListener onBoardStateChangedListener)
-    {
-        this.onBoardStateChangedListener = onBoardStateChangedListener;
-    }
-
-    public void setOnGameOverListener(OnGameOverListener onGameOverListener)
-    {
-        this.onGameOverListener = onGameOverListener;
     }
 
     private int[][] doRotate(int[][] area, SquareArea input, RotateDirection direction)

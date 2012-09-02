@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import ru.naumen.core.game.BoardActivity;
+import ru.naumen.core.game.Constants;
 
 import com.google.common.collect.Lists;
 
@@ -15,9 +15,9 @@ public class Board implements Serializable
 
     public Board()
     {
-        for (int y = 0; y < BoardActivity.BOARD_SIZE; y++)
+        for (int y = 0; y < Constants.BOARD_SIZE; y++)
         {
-            for (int x = 0; x < BoardActivity.BOARD_SIZE; x++)
+            for (int x = 0; x < Constants.BOARD_SIZE; x++)
             {
                 balls.add(new Ball(x, y, -1));
             }
@@ -47,9 +47,9 @@ public class Board implements Serializable
 
     public int[][] toArray()
     {
-        int[][] result = new int[BoardActivity.BOARD_SIZE][];
-        for (int i = 0; i < BoardActivity.BOARD_SIZE; i++)
-            result[i] = new int[BoardActivity.BOARD_SIZE];
+        int[][] result = new int[Constants.BOARD_SIZE][];
+        for (int i = 0; i < Constants.BOARD_SIZE; i++)
+            result[i] = new int[Constants.BOARD_SIZE];
         for (Ball ball : balls)
         {
             result[ball.getX()][ball.getY()] = ball.getPlayer();
