@@ -10,19 +10,16 @@ import ru.naumen.core.game.model.SquareArea;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.ListAdapter;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 
 public class CornerController extends TableLayout
 {
-
     private class RotateQuaterListener implements OnClickListener
     {
         private final SquareArea area;
@@ -42,18 +39,13 @@ public class CornerController extends TableLayout
         }
     }
 
-    private TableRow topRow;
-    private TableRow bottomRow;
-    private ImageView rotateClockwise;
-    private ImageView rotateCounterClockwise;
     private GridView table;
     private ListAdapter adapter;
-    private final LayoutParams paramsFW = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-    private final LayoutParams paramsFF = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-    private final LayoutParams paramsWW = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     private float rotationAngle = 0;
     private SquareArea area = new SquareArea(0, 0, Constants.BOARD_SIZE / 2);
     private GameController gameController;
+
+    private View layout;
 
     public CornerController(Context context)
     {
@@ -76,16 +68,6 @@ public class CornerController extends TableLayout
         initLayout(context);
     }
 
-    public ImageView getRotateClockwiseImage()
-    {
-        return rotateClockwise;
-    }
-
-    public ImageView getRotateCounterClockwiseIamge()
-    {
-        return rotateCounterClockwise;
-    }
-
     public GridView getTable()
     {
         return table;
@@ -105,27 +87,18 @@ public class CornerController extends TableLayout
         canvas.restore();
     }
 
-    private ListAdapter initAdapter(Context context)
+    private void initLayout(Context context)
     {
-        return new BoardListAdapter(context, gameController.getGame().getBoard(),
-                gameController.getGame().getPlayers(), getResources(), area);
-    }
-
-    private TableRow initBottomRow(Context context)
-    {
-        TableRow result = new TableRow(context);
-        result.setLayoutParams(paramsFW);
-        result.addView(rotateCounterClockwise);
-        result.addView(table);
-        return result;
-    }
-
-    private GridView initGridView(Context context)
-    {
-        GridView result = new GridView(context);
-        result.setAdapter(adapter);
-        result.setNumColumns(area.getLength());
-        result.setOnItemClickListener(new OnItemClickListener()
+        layout = LayoutInflater.from(context).inflate(R.layout.corner, null);
+        layout.findViewById(R.id.imageView2).setOnClickListener(
+                new RotateQuaterListener(area, RotateDirection.Clockwise));
+        layout.findViewById(R.id.imageView1).setOnClickListener(
+                new RotateQuaterListener(area, RotateDirection.CounterClockwise));
+        adapter = new BoardListAdapter(context, gameController.getGame().getBoard(), gameController.getGame()
+                .getPlayers(), getResources(), area);
+        table = (GridView)layout.findViewById(R.id.gridView1);
+        table.setAdapter(adapter);
+        table.setOnItemClickListener(new OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
@@ -134,29 +107,7 @@ public class CornerController extends TableLayout
                     gameController.makeMove((Ball)adapter.getItem(arg2));
             }
         });
-        return result;
-    }
 
-    private ImageView initImage(Context context, int imageId, RotateDirection rotateDirection)
-    {
-        ImageView result = new ImageView(context);
-        result.setLayoutParams(paramsFF);
-        result.setImageDrawable(getResources().getDrawable(imageId));
-        result.setScaleType(ScaleType.CENTER_CROP);
-        result.setOnClickListener(new RotateQuaterListener(area, rotateDirection));
-        return result;
-    }
-
-    private void initLayout(Context context)
-    {
-        rotateClockwise = initImage(context, R.drawable.ic_arrowright, RotateDirection.Clockwise);
-        rotateCounterClockwise = initImage(context, R.drawable.ic_arrowdown, RotateDirection.CounterClockwise);
-        adapter = initAdapter(context);
-        table = initGridView(context);
-        topRow = initTopRow(context);
-        bottomRow = initBottomRow(context);
-        addView(topRow, paramsFW);
-        addView(bottomRow, paramsFW);
         gameController.addOnBoardStateChangedListener(new OnBoardStateChangedListener()
         {
             @Override
@@ -172,17 +123,9 @@ public class CornerController extends TableLayout
         setArrowsVisibility(View.INVISIBLE);
     }
 
-    private TableRow initTopRow(Context context)
-    {
-        TableRow result = new TableRow(context);
-        result.setLayoutParams(paramsFW);
-        result.addView(rotateClockwise);
-        return result;
-    }
-
     private void setArrowsVisibility(int visibility)
     {
-        rotateClockwise.setVisibility(visibility);
-        rotateCounterClockwise.setVisibility(visibility);
+        layout.findViewById(R.id.imageView1).setVisibility(visibility);
+        layout.findViewById(R.id.imageView2).setVisibility(visibility);
     }
 }
