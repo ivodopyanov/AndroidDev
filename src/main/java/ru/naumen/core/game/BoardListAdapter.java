@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -70,6 +71,7 @@ public class BoardListAdapter extends BaseAdapter
         Ball ball = balls.get(position);
         ImageView imageView = new ImageView(context);
         imageView.setImageDrawable(resources.getDrawable(getBallResource(ball)));
+        imageView.setScaleType(ScaleType.CENTER_CROP);
         return imageView;
     }
 

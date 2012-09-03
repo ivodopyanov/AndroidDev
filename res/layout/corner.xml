@@ -1,41 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <TableRow
         android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
+            android:id="@+id/imageViewTop"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_weight="1.0"
+            android:contentDescription="@string/rotateClockwise"
             android:src="@drawable/ic_arrowright" />
 
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageViewLeft"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_column="0"
+            android:contentDescription="@string/rotateCounterClockwise"
             android:src="@drawable/ic_arrowdown" />
 
         <GridView
             android:id="@+id/gridView1"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_gravity="center"
+            android:layout_weight="1.0"
             android:numColumns="3" >
+
         </GridView>
+
+        <ImageView
+            android:id="@+id/imageViewRight"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_column="2"
+            android:contentDescription="@string/rotateCounterClockwise"
+            android:src="@drawable/ic_arrowup" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" >
+
+        <ImageView
+            android:id="@+id/imageViewBottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_weight="1.0"
+            android:contentDescription="@string/rotateClockwise"
+            android:src="@drawable/ic_arrowleft" />
 
     </TableRow>
 
