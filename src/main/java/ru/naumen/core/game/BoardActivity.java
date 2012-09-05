@@ -14,15 +14,15 @@ import ru.naumen.core.game.model.SquareArea;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
 import com.google.common.collect.Sets;
 
 public class BoardActivity extends Activity
 {
-    private static int HALF = Constants.BOARD_SIZE / 2;
-
+    private static final int HALF = Constants.BOARD_SIZE / 2;
+    private static final float[] ANGLES = new float[] { 0.0f, -90.0f, 90.0f, 180.0f };
     private GameController gameController;
 
     @Override
@@ -75,20 +75,21 @@ public class BoardActivity extends Activity
             //@formatter:off
             images.add(new RotateImageDescription(
                     top ? R.id.imageViewTop : R.id.imageViewBottom, 
-                    left ? R.drawable.ic_arrowright : R.drawable.ic_arrowleft, 
+                    left ? R.drawable.ic_arrowleft: R.drawable.ic_arrowright, 
                     top ^ left ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
                     top ^ left ? RotateDirection.CounterClockwise : RotateDirection.Clockwise));
             
             images.add(new RotateImageDescription(
                     left ? R.id.imageViewLeft : R.id.imageViewRight, 
                     top ? R.drawable.ic_arrowdown : R.drawable.ic_arrowup, 
-                    top ^ left ? R.string.rotateClockwise : R.string.rotateCounterClockwise,
-                    top ^ left ? RotateDirection.Clockwise : RotateDirection.CounterClockwise));
+                    top ^ left ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
+                    top ^ left ? RotateDirection.CounterClockwise : RotateDirection.Clockwise));
             //@formatter:on
             SquareArea area = new SquareArea(left ? 0 : HALF, top ? 0 : HALF, HALF);
-            View cornerView = new CornerController(getApplicationContext(), new CornerViewDescription(area,
-                    gameController, images));
-
+            LinearLayout cornerView = new CornerController(getApplicationContext(), new CornerViewDescription(area,
+                    gameController, images, ANGLES[i]));
+            cornerView.setGravity((top ? Gravity.BOTTOM : Gravity.TOP) | (left ? Gravity.RIGHT : Gravity.LEFT));
+            cornerView.setPadding(left ? 0 : 5, top ? 0 : 5, left ? 5 : 0, top ? 5 : 0);
             ((LinearLayout)findViewById(top ? R.id.toprow : R.id.bottomrow)).addView(cornerView);
         }
     }

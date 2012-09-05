@@ -63,6 +63,8 @@ public class CornerController extends LinearLayout
         layout.findViewById(R.id.imageViewLeft).setVisibility(View.GONE);
         layout.findViewById(R.id.imageViewRight).setVisibility(View.GONE);
         layout.findViewById(R.id.imageViewBottom).setVisibility(View.GONE);
+        layout.findViewById(R.id.tableRow1).setVisibility(View.GONE);
+        layout.findViewById(R.id.tableRow3).setVisibility(View.GONE);
         for (RotateImageDescription imageDesc : desc.getImages())
         {
             ImageView imageView = (ImageView)layout.findViewById(imageDesc.getImageId());
@@ -107,7 +109,12 @@ public class CornerController extends LinearLayout
     {
         for (RotateImageDescription imageDesc : desc.getImages())
         {
-            layout.findViewById(imageDesc.getImageId()).setVisibility(visibility);
+            int id = imageDesc.getImageId();
+            layout.findViewById(id).setVisibility(visibility);
+            if (id == R.id.imageViewTop)
+                layout.findViewById(R.id.tableRow1).setVisibility(visibility);
+            if (id == R.id.imageViewBottom)
+                layout.findViewById(R.id.tableRow3).setVisibility(visibility);
         }
     }
 }

@@ -17,8 +17,8 @@ public class Game implements Serializable
     public Game()
     {
         this.board = new Board();
-        players.add(new Player("Player1", R.drawable.ball1));
-        players.add(new Player("Player2", R.drawable.ball2));
+        players.add(new Player("Player1", R.drawable.blackball2));
+        players.add(new Player("Player2", R.drawable.whiteball2));
     }
 
     public Board getBoard()

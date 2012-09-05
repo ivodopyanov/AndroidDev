@@ -12,8 +12,10 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TableLayout.LayoutParams;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -72,6 +74,8 @@ public class BoardListAdapter extends BaseAdapter
         ImageView imageView = new ImageView(context);
         imageView.setImageDrawable(resources.getDrawable(getBallResource(ball)));
         imageView.setScaleType(ScaleType.CENTER_CROP);
+        imageView.setLayoutParams(new GridView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        imageView.setAdjustViewBounds(true);
         return imageView;
     }
 
