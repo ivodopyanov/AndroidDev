@@ -8,30 +8,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <ImageView
+        <ru.naumen.core.game.controller.CustomView
             android:id="@+id/imageViewTop"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_weight="1.0"
-            android:contentDescription="@string/rotateClockwise"
-            android:src="@drawable/ic_arrowright" />
+            android:contentDescription="@string/rotateClockwise" />
 
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0" >
+        android:layout_height="wrap_content" >
 
-        <ImageView
+        <ru.naumen.core.game.controller.CustomView
             android:id="@+id/imageViewLeft"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_column="0"
-            android:contentDescription="@string/rotateCounterClockwise"
-            android:src="@drawable/ic_arrowdown" />
+            android:contentDescription="@string/rotateCounterClockwise" />
 
         <GridView
             android:id="@+id/gridView1"
@@ -41,17 +36,18 @@
             android:layout_gravity="center"
             android:layout_weight="1.0"
             android:background="@drawable/element"
-            android:numColumns="3" >
+            android:horizontalSpacing="@dimen/element_horizontal_spacing"
+            android:numColumns="3"
+            android:verticalSpacing="@dimen/element_vertical_spacing" >
 
         </GridView>
 
-        <ImageView
+        <ru.naumen.core.game.controller.CustomView
             android:id="@+id/imageViewRight"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_column="2"
-            android:contentDescription="@string/rotateCounterClockwise"
-            android:src="@drawable/ic_arrowup" />
+            android:contentDescription="@string/rotateCounterClockwise" />
 
     </TableRow>
 
@@ -61,14 +57,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0" >
 
-        <ImageView
+        <ru.naumen.core.game.controller.CustomView
             android:id="@+id/imageViewBottom"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_weight="1.0"
-            android:contentDescription="@string/rotateClockwise"
-            android:src="@drawable/ic_arrowleft" />
+            android:contentDescription="@string/rotateClockwise" />
 
     </TableRow>
 

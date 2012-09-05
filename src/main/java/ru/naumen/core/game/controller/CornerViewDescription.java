@@ -17,20 +17,12 @@ public class CornerViewDescription
     private final SquareArea area;
     private final GameController controller;
     private final Set<RotateImageDescription> images;
-    private final float angle;
 
-    public CornerViewDescription(SquareArea area, GameController controller, Set<RotateImageDescription> images,
-            float angle)
+    public CornerViewDescription(SquareArea area, GameController controller, Set<RotateImageDescription> images)
     {
         this.area = area;
         this.controller = controller;
         this.images = images;
-        this.angle = angle;
-    }
-
-    public float getAngle()
-    {
-        return angle;
     }
 
     public SquareArea getArea()

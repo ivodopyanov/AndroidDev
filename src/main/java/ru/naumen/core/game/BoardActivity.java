@@ -71,23 +71,23 @@ public class BoardActivity extends Activity
         {
             boolean top = i < 2;
             boolean left = i % 2 == 0;
+            boolean clockwise = top ^ left;
             Set<RotateImageDescription> images = Sets.newHashSet();
             //@formatter:off
             images.add(new RotateImageDescription(
                     top ? R.id.imageViewTop : R.id.imageViewBottom, 
-                    left ? R.drawable.ic_arrowleft: R.drawable.ic_arrowright, 
-                    top ^ left ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
-                    top ^ left ? RotateDirection.CounterClockwise : RotateDirection.Clockwise));
+                    clockwise ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
+                    clockwise ? RotateDirection.CounterClockwise : RotateDirection.Clockwise,
+                            ANGLES[i]+90, !clockwise));
             
             images.add(new RotateImageDescription(
                     left ? R.id.imageViewLeft : R.id.imageViewRight, 
-                    top ? R.drawable.ic_arrowdown : R.drawable.ic_arrowup, 
-                    top ^ left ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
-                    top ^ left ? RotateDirection.CounterClockwise : RotateDirection.Clockwise));
+                    clockwise ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
+                    clockwise ? RotateDirection.CounterClockwise : RotateDirection.Clockwise, ANGLES[i], clockwise));
             //@formatter:on
             SquareArea area = new SquareArea(left ? 0 : HALF, top ? 0 : HALF, HALF);
             LinearLayout cornerView = new CornerController(getApplicationContext(), new CornerViewDescription(area,
-                    gameController, images, ANGLES[i]));
+                    gameController, images));
             cornerView.setGravity((top ? Gravity.BOTTOM : Gravity.TOP) | (left ? Gravity.RIGHT : Gravity.LEFT));
             cornerView.setPadding(left ? 0 : 5, top ? 0 : 5, left ? 5 : 0, top ? 5 : 0);
             ((LinearLayout)findViewById(top ? R.id.toprow : R.id.bottomrow)).addView(cornerView);

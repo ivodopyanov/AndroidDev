@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 
@@ -58,18 +57,21 @@ public class CornerController extends LinearLayout
 
     private void initLayout(Context context)
     {
-        layout = LayoutInflater.from(context).inflate(R.layout.corner, null);
+        layout = LayoutInflater.from(context).inflate(R.layout.corner, this, true);
         layout.findViewById(R.id.imageViewTop).setVisibility(View.GONE);
         layout.findViewById(R.id.imageViewLeft).setVisibility(View.GONE);
         layout.findViewById(R.id.imageViewRight).setVisibility(View.GONE);
         layout.findViewById(R.id.imageViewBottom).setVisibility(View.GONE);
         layout.findViewById(R.id.tableRow1).setVisibility(View.GONE);
         layout.findViewById(R.id.tableRow3).setVisibility(View.GONE);
+
         for (RotateImageDescription imageDesc : desc.getImages())
         {
-            ImageView imageView = (ImageView)layout.findViewById(imageDesc.getImageId());
-            imageView.setImageResource(imageDesc.getImageResourceId());
+            CustomView imageView = (CustomView)layout.findViewById(imageDesc.getImageId());
             imageView.setContentDescription(getResources().getString(imageDesc.getDescId()));
+            imageView.setAngle(imageDesc.getAngle());
+            imageView.setFlip(imageDesc.isFlip());
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate));
             layout.findViewById(imageDesc.getImageId()).setOnClickListener(
                     new RotateQuaterListener(desc.getArea(), imageDesc.getDir()));
         }
@@ -100,9 +102,6 @@ public class CornerController extends LinearLayout
             }
         });
         setArrowsVisibility(View.INVISIBLE);
-        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        this.addView(layout);
-        this.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0.5f));
     }
 
     private void setArrowsVisibility(int visibility)

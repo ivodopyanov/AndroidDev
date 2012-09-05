@@ -7,4 +7,8 @@
     <string name="rotateCounterClockwise">Повернуть против часовой</string>
     <string name="rotateClockwise">Повернуть по часовой</string>
     <string name="endOfGame">Игра закончена!</string>
+    <string name="blackball">Черный шарик</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="hotseat">Hotseat</string>
+    <string name="Start">Start</string>
 </resources>

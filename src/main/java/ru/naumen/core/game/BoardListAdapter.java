@@ -83,7 +83,7 @@ public class BoardListAdapter extends BaseAdapter
     {
         if (ball.getPlayer() == -1)
         {
-            return R.drawable.ball_empty;
+            return R.drawable.glow;
         }
         else
         {

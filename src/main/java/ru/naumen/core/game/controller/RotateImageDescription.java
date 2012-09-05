@@ -13,16 +13,23 @@ import ru.naumen.core.game.controller.GameController.RotateDirection;
 public class RotateImageDescription
 {
     private final int imageId;
-    private final int imageResourceId;
     private final int descId;
     private final RotateDirection dir;
+    private final float angle;
+    private final boolean flip;
 
-    public RotateImageDescription(int imageId, int imageResourceId, int descId, RotateDirection dir)
+    public RotateImageDescription(int imageId, int descId, RotateDirection dir, float angle, boolean flip)
     {
         this.imageId = imageId;
-        this.imageResourceId = imageResourceId;
         this.descId = descId;
         this.dir = dir;
+        this.angle = angle;
+        this.flip = flip;
+    }
+
+    public float getAngle()
+    {
+        return angle;
     }
 
     public int getDescId()
@@ -40,8 +47,8 @@ public class RotateImageDescription
         return imageId;
     }
 
-    public int getImageResourceId()
+    public boolean isFlip()
     {
-        return imageResourceId;
+        return flip;
     }
 }
