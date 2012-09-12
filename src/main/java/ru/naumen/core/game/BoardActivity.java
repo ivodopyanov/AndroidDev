@@ -5,6 +5,7 @@ import java.util.Set;
 import ru.naumen.core.R;
 import ru.naumen.core.game.controller.CornerController;
 import ru.naumen.core.game.controller.CornerViewDescription;
+import ru.naumen.core.game.controller.CustomView;
 import ru.naumen.core.game.controller.GameController;
 import ru.naumen.core.game.controller.GameController.RotateDirection;
 import ru.naumen.core.game.controller.OnGameOverListener;
@@ -15,14 +16,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.widget.LinearLayout;
 
 import com.google.common.collect.Sets;
 
 public class BoardActivity extends Activity
 {
     private static final int HALF = Constants.BOARD_SIZE / 2;
-    private static final float[] ANGLES = new float[] { 0.0f, -90.0f, 90.0f, 180.0f };
+    private static final float[] ANGLES = new float[] { 0.0f, 90.0f, -90.0f, 180.0f };
+    //Список пар изображений (повернуть по часовой, повернуть против часовой), разбитый по квадрантам
+    private static final int[][] IMAGES = new int[][] { new int[] { R.id.ltc, R.id.ltcc },
+            new int[] { R.id.rtc, R.id.rtcc }, new int[] { R.id.lbc, R.id.lbcc }, new int[] { R.id.rbc, R.id.rbcc } };
+    private static final int[] CORNERS = new int[] { R.id.topleft, R.id.topright, R.id.bottomleft, R.id.bottomright };
     private GameController gameController;
 
     @Override
@@ -71,26 +75,24 @@ public class BoardActivity extends Activity
         {
             boolean top = i < 2;
             boolean left = i % 2 == 0;
-            boolean clockwise = top ^ left;
             Set<RotateImageDescription> images = Sets.newHashSet();
             //@formatter:off
             images.add(new RotateImageDescription(
-                    top ? R.id.imageViewTop : R.id.imageViewBottom, 
-                    clockwise ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
-                    clockwise ? RotateDirection.CounterClockwise : RotateDirection.Clockwise,
-                            ANGLES[i]+90, !clockwise));
+                    (CustomView)findViewById(IMAGES[i][0]), 
+                    R.string.rotateClockwise,
+                    RotateDirection.Clockwise));
             
             images.add(new RotateImageDescription(
-                    left ? R.id.imageViewLeft : R.id.imageViewRight, 
-                    clockwise ? R.string.rotateCounterClockwise : R.string.rotateClockwise,
-                    clockwise ? RotateDirection.CounterClockwise : RotateDirection.Clockwise, ANGLES[i], clockwise));
+                    (CustomView)findViewById(IMAGES[i][1]), 
+                    R.string.rotateCounterClockwise,
+                    RotateDirection.CounterClockwise));
             //@formatter:on
             SquareArea area = new SquareArea(left ? 0 : HALF, top ? 0 : HALF, HALF);
-            LinearLayout cornerView = new CornerController(getApplicationContext(), new CornerViewDescription(area,
-                    gameController, images));
+
+            CornerController cornerView = (CornerController)findViewById(CORNERS[i]);
+            cornerView.init(new CornerViewDescription(area, gameController, images, ANGLES[i]));
             cornerView.setGravity((top ? Gravity.BOTTOM : Gravity.TOP) | (left ? Gravity.RIGHT : Gravity.LEFT));
             cornerView.setPadding(left ? 0 : 5, top ? 0 : 5, left ? 5 : 0, top ? 5 : 0);
-            ((LinearLayout)findViewById(top ? R.id.toprow : R.id.bottomrow)).addView(cornerView);
         }
     }
 }

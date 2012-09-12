@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="element_horizontal_spacing">50dp</dimen>
-    <dimen name="element_vertical_spacing">50dp</dimen>
+    <dimen name="element_horizontal_spacing">10dp</dimen>
+    <dimen name="element_vertical_spacing">15dp</dimen>
     <dimen name="menu_padding_left">10dp</dimen>
     <dimen name="menu_padding_right">10dp</dimen>
     <dimen name="menu_padding_top">5dp</dimen>
@@ -9,4 +9,5 @@
     <dimen name="menu_image_padding">20dp</dimen>
     <dimen name="title_text">50dp</dimen>
     <dimen name="title_padding">40dp</dimen>
+    <dimen name="rotateImageWidth">100dp</dimen>
 </resources>

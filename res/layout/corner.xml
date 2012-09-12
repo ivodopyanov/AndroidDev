@@ -1,69 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
-
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <ru.naumen.core.game.controller.CustomView
-            android:id="@+id/imageViewTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:contentDescription="@string/rotateClockwise" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <ru.naumen.core.game.controller.CustomView
-            android:id="@+id/imageViewLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:contentDescription="@string/rotateCounterClockwise" />
+	android:layout_height="wrap_content"
+	android:background="@drawable/element">
 
         <GridView
             android:id="@+id/gridView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
             android:layout_gravity="center"
-            android:layout_weight="1.0"
-            android:background="@drawable/element"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginTop="2dp"
             android:horizontalSpacing="@dimen/element_horizontal_spacing"
             android:numColumns="3"
             android:verticalSpacing="@dimen/element_vertical_spacing" >
 
         </GridView>
-
-        <ru.naumen.core.game.controller.CustomView
-            android:id="@+id/imageViewRight"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_column="2"
-            android:contentDescription="@string/rotateCounterClockwise" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0" >
-
-        <ru.naumen.core.game.controller.CustomView
-            android:id="@+id/imageViewBottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:contentDescription="@string/rotateClockwise" />
-
-    </TableRow>
-
-</TableLayout>
+</LinearLayout>

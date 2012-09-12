@@ -7,6 +7,7 @@ import ru.naumen.core.game.controller.GameController.RotateDirection;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.SquareArea;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,16 +39,19 @@ public class CornerController extends LinearLayout
 
     private GridView table;
     private ListAdapter adapter;
+    private CornerViewDescription desc;
+    private final View layout;
 
-    private final CornerViewDescription desc;
-
-    private View layout;
-
-    public CornerController(Context context, CornerViewDescription desc)
+    public CornerController(Context context)
     {
         super(context);
-        this.desc = desc;
-        initLayout(context);
+        layout = LayoutInflater.from(context).inflate(R.layout.corner, this, true);
+    }
+
+    public CornerController(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+        layout = LayoutInflater.from(context).inflate(R.layout.corner, this, true);
     }
 
     public GridView getTable()
@@ -55,27 +59,19 @@ public class CornerController extends LinearLayout
         return table;
     }
 
-    private void initLayout(Context context)
+    public void init(final CornerViewDescription desc)
     {
-        layout = LayoutInflater.from(context).inflate(R.layout.corner, this, true);
-        layout.findViewById(R.id.imageViewTop).setVisibility(View.GONE);
-        layout.findViewById(R.id.imageViewLeft).setVisibility(View.GONE);
-        layout.findViewById(R.id.imageViewRight).setVisibility(View.GONE);
-        layout.findViewById(R.id.imageViewBottom).setVisibility(View.GONE);
-        layout.findViewById(R.id.tableRow1).setVisibility(View.GONE);
-        layout.findViewById(R.id.tableRow3).setVisibility(View.GONE);
+        this.desc = desc;
 
         for (RotateImageDescription imageDesc : desc.getImages())
         {
-            CustomView imageView = (CustomView)layout.findViewById(imageDesc.getImageId());
+            CustomView imageView = imageDesc.getImage();
             imageView.setContentDescription(getResources().getString(imageDesc.getDescId()));
-            imageView.setAngle(imageDesc.getAngle());
-            imageView.setFlip(imageDesc.isFlip());
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate));
-            layout.findViewById(imageDesc.getImageId()).setOnClickListener(
-                    new RotateQuaterListener(desc.getArea(), imageDesc.getDir()));
+            boolean flip = RotateDirection.CounterClockwise == imageDesc.getDir();
+            imageView.setFlip(flip);
+            imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.getDir()));
         }
-        adapter = new BoardListAdapter(context, desc.getController().getGame().getBoard(), desc.getController()
+        adapter = new BoardListAdapter(getContext(), desc.getController().getGame().getBoard(), desc.getController()
                 .getGame().getPlayers(), getResources(), desc.getArea());
         table = (GridView)layout.findViewById(R.id.gridView1);
         table.setAdapter(adapter);
@@ -108,12 +104,7 @@ public class CornerController extends LinearLayout
     {
         for (RotateImageDescription imageDesc : desc.getImages())
         {
-            int id = imageDesc.getImageId();
-            layout.findViewById(id).setVisibility(visibility);
-            if (id == R.id.imageViewTop)
-                layout.findViewById(R.id.tableRow1).setVisibility(visibility);
-            if (id == R.id.imageViewBottom)
-                layout.findViewById(R.id.tableRow3).setVisibility(visibility);
+            imageDesc.getImage().setVisibility(visibility);
         }
     }
 }
