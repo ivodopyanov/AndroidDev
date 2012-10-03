@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ru.naumen.core.R;
+import ru.naumen.core.game.model.Player.PlayerType;
 
 import com.google.common.collect.Lists;
 
@@ -17,8 +18,14 @@ public class Game implements Serializable
     public Game()
     {
         this.board = new Board();
-        players.add(new Player("Player1", R.drawable.black_ball));
-        players.add(new Player("Player2", R.drawable.white_ball));
+        players.add(new Player("Player1", "Player1", R.drawable.black_ball, PlayerType.human));
+        players.add(new Player("Player2", "Player1", R.drawable.white_ball, PlayerType.human));
+    }
+
+    public Game(List<Player> players)
+    {
+        this.board = new Board();
+        this.players = players;
     }
 
     public Board getBoard()

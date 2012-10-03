@@ -16,7 +16,6 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/title_padding"
                 android:text="PENTAGO"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="@dimen/title_text"
@@ -24,10 +23,48 @@
                 android:typeface="serif" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/title_padding" >
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/blackball"
+                    android:paddingRight="@dimen/menu_image_padding"
+                    android:src="@drawable/black_ball" />
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/menu_element"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/menu_padding_bottom"
+                    android:paddingLeft="@dimen/menu_padding_left"
+                    android:paddingRight="@dimen/menu_padding_right"
+                    android:paddingTop="@dimen/menu_padding_top"
+                    android:text="@string/againstComputer"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <ImageView
+                    android:id="@+id/ImageView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/blackball"
+                    android:paddingLeft="@dimen/menu_image_padding"
+                    android:src="@drawable/black_ball" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/title_padding" >
 
                 <ImageView
                     android:id="@+id/imageView1"
@@ -47,7 +84,7 @@
                     android:paddingLeft="@dimen/menu_padding_left"
                     android:paddingRight="@dimen/menu_padding_right"
                     android:paddingTop="@dimen/menu_padding_top"
-                    android:text="@string/Start"
+                    android:text="@string/againstHuman"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <ImageView

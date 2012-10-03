@@ -11,4 +11,6 @@
     <string name="multiplayer">Multiplayer</string>
     <string name="hotseat">Hotseat</string>
     <string name="Start">Start</string>
+    <string name="againstComputer">VS Компьютер</string>
+    <string name="againstHuman">VS Человек</string>
 </resources>

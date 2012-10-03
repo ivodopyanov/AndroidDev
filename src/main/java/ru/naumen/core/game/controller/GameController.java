@@ -1,12 +1,16 @@
 package ru.naumen.core.game.controller;
 
-import java.util.Set;
+import java.util.List;
 
+import ru.naumen.core.game.controller.events.GameOverEvent;
+import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
+import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
+import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.SquareArea;
 
-import com.google.common.collect.Sets;
+import com.google.common.eventbus.EventBus;
 
 public class GameController
 {
@@ -23,24 +27,16 @@ public class GameController
     private final Game game;
     private int activePlayer = 0;
     private GamePhase phase;
-    private final Set<OnBoardStateChangedListener> onBoardStateChangedListeners = Sets.newHashSet();
-    private final Set<OnGameOverListener> onGameOverListeners = Sets.newHashSet();
     private final BoardPositionChecker positionChecker = new BoardPositionChecker();
+    private final List<Player> players;
+    private final EventBus eventBus;
 
-    public GameController(Game game)
+    public GameController(Game game, List<Player> players, EventBus eventBus)
     {
         this.game = game;
+        this.players = players;
         this.phase = GamePhase.PutBall;
-    }
-
-    public void addOnBoardStateChangedListener(OnBoardStateChangedListener onBoardStateChangedListener)
-    {
-        this.onBoardStateChangedListeners.add(onBoardStateChangedListener);
-    }
-
-    public void addOnGameOverListener(OnGameOverListener onGameOverListener)
-    {
-        this.onGameOverListeners.add(onGameOverListener);
+        this.eventBus = eventBus;
     }
 
     public int getActivePlayer()
@@ -63,12 +59,8 @@ public class GameController
         if (ball.getPlayer() == Ball.NO_PLAYER)
         {
             ball.setPlayer(activePlayer);
-            activePlayer = getNextPlayer(activePlayer);
             phase = GamePhase.RotateBoard;
-            for (OnBoardStateChangedListener listener : onBoardStateChangedListeners)
-            {
-                listener.onBoardStateChanged();
-            }
+            eventBus.post(new RequestBoardRotateEvent(players.get(activePlayer).getCode()));
         }
     }
 
@@ -78,18 +70,16 @@ public class GameController
         int[][] rotated = doRotate(area, input, direction);
         game.getBoard().fromArray(input, rotated);
         phase = GamePhase.PutBall;
-        for (OnBoardStateChangedListener listener : onBoardStateChangedListeners)
-        {
-            listener.onBoardStateChanged();
-        }
+        activePlayer = getNextPlayer(activePlayer);
         int winner = positionChecker.hasAnyPlayerWon(game.getBoard());
         if (winner != Ball.NO_PLAYER)
         {
             phase = GamePhase.Ended;
-            for (OnGameOverListener listener : onGameOverListeners)
-            {
-                listener.onGameOver(winner);
-            }
+            eventBus.post(new GameOverEvent(winner));
+        }
+        else
+        {
+            eventBus.post(new RequestBallMoveEvent(players.get(activePlayer).getCode()));
         }
     }
 

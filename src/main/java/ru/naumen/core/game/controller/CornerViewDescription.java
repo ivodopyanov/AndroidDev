@@ -15,15 +15,12 @@ import ru.naumen.core.game.model.SquareArea;
 public class CornerViewDescription
 {
     private final SquareArea area;
-    private final GameController controller;
     private final Set<RotateImageDescription> images;
     private final float angle;
 
-    public CornerViewDescription(SquareArea area, GameController controller, Set<RotateImageDescription> images,
-            float angle)
+    public CornerViewDescription(SquareArea area, Set<RotateImageDescription> images, float angle)
     {
         this.area = area;
-        this.controller = controller;
         this.images = images;
         this.angle = angle;
     }
@@ -36,11 +33,6 @@ public class CornerViewDescription
     public SquareArea getArea()
     {
         return area;
-    }
-
-    public GameController getController()
-    {
-        return controller;
     }
 
     public Set<RotateImageDescription> getImages()
