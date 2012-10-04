@@ -1,13 +1,16 @@
 package ru.naumen.core.game.controller;
 
 import ru.naumen.core.R;
+import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.BoardListAdapter;
 import ru.naumen.core.game.controller.GameController.GamePhase;
 import ru.naumen.core.game.controller.GameController.RotateDirection;
-import ru.naumen.core.game.controller.events.BallInsertedInCornerEvent;
-import ru.naumen.core.game.controller.events.CornerRotatedEvent;
+import ru.naumen.core.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
+import ru.naumen.core.game.controller.events.RequestBallMoveHandler;
 import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
+import ru.naumen.core.game.controller.events.RequestBoardRotateHandler;
+import ru.naumen.core.game.controller.events.RotateCornerEvent;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.SquareArea;
@@ -21,10 +24,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-
-public class CornerController extends LinearLayout
+public class CornerController extends LinearLayout implements RequestBoardRotateHandler, RequestBallMoveHandler
 {
     private class BallInsertionListener implements OnItemClickListener
     {
@@ -40,7 +40,7 @@ public class CornerController extends LinearLayout
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
-            eventBus.post(new BallInsertedInCornerEvent((Ball)adapter.getItem(position)));
+            eventBus.fireEvent(new InsertBallInCornerEvent((Ball)adapter.getItem(position)));
         }
     }
 
@@ -61,7 +61,7 @@ public class CornerController extends LinearLayout
         public void onClick(View v)
         {
             if (GamePhase.RotateBoard.equals(gamePhase))
-                eventBus.post(new CornerRotatedEvent(area, direction));
+                eventBus.fireEvent(new RotateCornerEvent(area, direction));
         }
     }
 
@@ -90,7 +90,8 @@ public class CornerController extends LinearLayout
     public void init(CornerViewDescription desc, Game game, EventBus eventBus)
     {
         this.desc = desc;
-        eventBus.register(this);
+        eventBus.register(RequestBoardRotateEvent.class, this);
+        eventBus.register(RequestBallMoveEvent.class, this);
 
         for (RotateImageDescription imageDesc : desc.getImages())
         {
@@ -108,16 +109,16 @@ public class CornerController extends LinearLayout
         setArrowsVisibility(View.INVISIBLE);
     }
 
-    @Subscribe
-    public void requestBallMove(RequestBallMoveEvent event)
+    @Override
+    public void onRequestBallMove(RequestBallMoveEvent event)
     {
         table.invalidateViews();
         setArrowsVisibility(View.INVISIBLE);
         gamePhase = GamePhase.PutBall;
     }
 
-    @Subscribe
-    public void requestBoardRotateEvent(RequestBoardRotateEvent event)
+    @Override
+    public void onRequestBoardRotate(RequestBoardRotateEvent event)
     {
         table.invalidateViews();
         setArrowsVisibility(View.VISIBLE);

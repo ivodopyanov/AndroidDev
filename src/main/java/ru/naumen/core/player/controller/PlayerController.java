@@ -3,21 +3,14 @@
  */
 package ru.naumen.core.player.controller;
 
-import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
-import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
-
-import com.google.common.eventbus.Subscribe;
+import ru.naumen.core.game.controller.events.RequestBallMoveHandler;
+import ru.naumen.core.game.controller.events.RequestBoardRotateHandler;
 
 /**
  * @author ivodopyanov
  * @since 21.09.2012
  * 
  */
-public interface PlayerController
+public interface PlayerController extends RequestBoardRotateHandler, RequestBallMoveHandler
 {
-    @Subscribe
-    void requestBoardRotation(RequestBoardRotateEvent event);
-
-    @Subscribe
-    void requestMove(RequestBallMoveEvent event);
 }

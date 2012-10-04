@@ -2,17 +2,20 @@ package ru.naumen.core.game.controller;
 
 import java.util.List;
 
+import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.controller.events.GameOverEvent;
+import ru.naumen.core.game.controller.events.MoveBallEvent;
+import ru.naumen.core.game.controller.events.MoveBallHandler;
 import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
 import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
+import ru.naumen.core.game.controller.events.RotateBoardEvent;
+import ru.naumen.core.game.controller.events.RotateBoardHandler;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.SquareArea;
 
-import com.google.common.eventbus.EventBus;
-
-public class GameController
+public class GameController implements MoveBallHandler, RotateBoardHandler
 {
     public enum GamePhase
     {
@@ -26,7 +29,6 @@ public class GameController
 
     private final Game game;
     private int activePlayer = 0;
-    private GamePhase phase;
     private final BoardPositionChecker positionChecker = new BoardPositionChecker();
     private final List<Player> players;
     private final EventBus eventBus;
@@ -35,51 +37,36 @@ public class GameController
     {
         this.game = game;
         this.players = players;
-        this.phase = GamePhase.PutBall;
         this.eventBus = eventBus;
+        eventBus.register(MoveBallEvent.class, this);
+        eventBus.register(RotateBoardEvent.class, this);
     }
 
-    public int getActivePlayer()
+    @Override
+    public void onMoveBall(MoveBallEvent event)
     {
-        return activePlayer;
-    }
-
-    public Game getGame()
-    {
-        return game;
-    }
-
-    public GamePhase getPhase()
-    {
-        return phase;
-    }
-
-    public void makeMove(Ball ball)
-    {
-        if (ball.getPlayer() == Ball.NO_PLAYER)
+        if (event.getBall().getPlayer() == Ball.NO_PLAYER)
         {
-            ball.setPlayer(activePlayer);
-            phase = GamePhase.RotateBoard;
-            eventBus.post(new RequestBoardRotateEvent(players.get(activePlayer).getCode()));
+            event.getBall().setPlayer(activePlayer);
+            eventBus.fireEvent(new RequestBoardRotateEvent(players.get(activePlayer).getCode()));
         }
     }
 
-    public void rotateBoard(SquareArea input, RotateDirection direction)
+    @Override
+    public void onRotateBoard(RotateBoardEvent event)
     {
-        int[][] area = game.getBoard().toArray(input);
-        int[][] rotated = doRotate(area, input, direction);
-        game.getBoard().fromArray(input, rotated);
-        phase = GamePhase.PutBall;
+        int[][] area = game.getBoard().toArray(event.getArea());
+        int[][] rotated = doRotate(area, event.getArea(), event.getDirection());
+        game.getBoard().fromArray(event.getArea(), rotated);
         activePlayer = getNextPlayer(activePlayer);
         int winner = positionChecker.hasAnyPlayerWon(game.getBoard());
         if (winner != Ball.NO_PLAYER)
         {
-            phase = GamePhase.Ended;
-            eventBus.post(new GameOverEvent(winner));
+            eventBus.fireEvent(new GameOverEvent(winner));
         }
         else
         {
-            eventBus.post(new RequestBallMoveEvent(players.get(activePlayer).getCode()));
+            eventBus.fireEvent(new RequestBallMoveEvent(players.get(activePlayer).getCode()));
         }
     }
 

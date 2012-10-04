@@ -3,10 +3,11 @@
  */
 package ru.naumen.core.player.controller;
 
+import ru.naumen.core.framework.eventbus.EventBus;
+import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
+import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
-
-import com.google.common.eventbus.EventBus;
 
 /**
  * @author ivodopyanov
@@ -24,6 +25,7 @@ public abstract class PlayerControllerImpl implements PlayerController
         this.player = player;
         this.eventBus = eventBus;
         this.board = board;
-        eventBus.register(this);
+        eventBus.register(RequestBoardRotateEvent.class, this);
+        eventBus.register(RequestBallMoveEvent.class, this);
     }
 }

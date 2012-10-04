@@ -2,16 +2,15 @@ package ru.naumen.core.game.model;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.naumen.core.game.Constants;
 
-import com.google.common.collect.Lists;
-
 public class Board implements Serializable
 {
     private static final long serialVersionUID = 2946478645439374161L;
-    private List<Ball> balls = Lists.newArrayList();
+    private List<Ball> balls = new ArrayList<Ball>();
 
     public Board()
     {

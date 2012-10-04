@@ -3,12 +3,11 @@
  */
 package ru.naumen.core.player.controller;
 
+import ru.naumen.core.framework.collections.Function;
+import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.Player.PlayerType;
-
-import com.google.common.base.Function;
-import com.google.common.eventbus.EventBus;
 
 /**
  * @author ivodopyanov

@@ -11,30 +11,23 @@ import ru.naumen.core.game.model.Ball;
  * @since 03.10.2012
  * 
  */
-public class MoveBallEvent implements Event<MoveBallHandler>
+public class InsertBallInCornerEvent implements Event<InsertBallInCornerHandler>
 {
     private final Ball ball;
-    private final String playerCode;
 
-    public MoveBallEvent(Ball ball, String playerCode)
+    public InsertBallInCornerEvent(Ball ball)
     {
         this.ball = ball;
-        this.playerCode = playerCode;
     }
 
     @Override
-    public void dispatch(MoveBallHandler handler)
+    public void dispatch(InsertBallInCornerHandler handler)
     {
-        handler.onMoveBall(this);
+        handler.onInsertBallInCorner(this);
     }
 
     public Ball getBall()
     {
         return ball;
-    }
-
-    public String getPlayerCode()
-    {
-        return playerCode;
     }
 }

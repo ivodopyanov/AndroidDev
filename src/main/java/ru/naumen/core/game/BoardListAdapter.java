@@ -1,8 +1,11 @@
 package ru.naumen.core.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.naumen.core.R;
+import ru.naumen.core.framework.collections.Collections;
+import ru.naumen.core.framework.collections.Predicate;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
@@ -16,10 +19,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TableLayout.LayoutParams;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 public class BoardListAdapter extends BaseAdapter
 {
@@ -46,7 +45,7 @@ public class BoardListAdapter extends BaseAdapter
         this.players = players;
         this.resources = resources;
         this.squareArea = squareArea;
-        this.balls = Lists.newArrayList(Collections2.filter(board.getBalls(), BALL_FILTER));
+        this.balls = new ArrayList<Ball>(Collections.filter(board.getBalls(), BALL_FILTER));
     }
 
     @Override
