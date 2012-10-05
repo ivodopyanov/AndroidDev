@@ -64,7 +64,7 @@ public class BoardActivity extends Activity implements GameOverHandler
         game = initGame(savedInstanceState);
         GameController gameController = new GameController(game, players, eventBus);
         List<PlayerController> playerControllers = Collections.transform(players, new PlayerControllerFactory(eventBus,
-                game.getBoard()));
+                game.getBoard(), players));
     }
 
     private Game initGame(Bundle savedInstanceState)

@@ -3,6 +3,7 @@ package ru.naumen.core.game.controller;
 import java.util.List;
 
 import ru.naumen.core.framework.eventbus.EventBus;
+import ru.naumen.core.game.Constants.LineCheckPatterns;
 import ru.naumen.core.game.controller.events.GameOverEvent;
 import ru.naumen.core.game.controller.events.MoveBallEvent;
 import ru.naumen.core.game.controller.events.MoveBallHandler;
@@ -14,6 +15,7 @@ import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.positionchecker.BoardPositionChecker;
 
 public class GameController implements MoveBallHandler, RotateBoardHandler
 {
@@ -29,7 +31,7 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
 
     private final Game game;
     private int activePlayer = 0;
-    private final BoardPositionChecker positionChecker = new BoardPositionChecker();
+    private final BoardPositionChecker positionChecker = new BoardPositionChecker(LineCheckPatterns.PLAYER_WON);
     private final List<Player> players;
     private final EventBus eventBus;
 

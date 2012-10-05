@@ -34,6 +34,11 @@ public class Board implements Serializable
         }
     }
 
+    public Ball getBall(int x, int y)
+    {
+        return balls.get(y * Constants.BOARD_SIZE + x);
+    }
+
     public List<Ball> getBalls()
     {
         return balls;

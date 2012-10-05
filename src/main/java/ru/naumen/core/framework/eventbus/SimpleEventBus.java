@@ -46,14 +46,10 @@ public class SimpleEventBus implements EventBus
 
     private <H extends Handler> void doProcessEvents(Event<H> event)
     {
-        do
+        for (H handler : this.<H> getHandlers((Class<Event>)event.getClass()))
         {
-            for (H handler : this.<H> getHandlers((Class<Event>)event.getClass()))
-            {
-                event.dispatch(handler);
-            }
+            event.dispatch(handler);
         }
-        while (!eventsStack.isEmpty());
     }
 
     private <H extends Handler> List<H> getHandlers(Class<Event> eventClass)
@@ -76,7 +72,8 @@ public class SimpleEventBus implements EventBus
         eventsStack = buf;
         do
         {
-            doProcessEvents(eventsStack.poll());
+            doProcessEvents(eventsStack.peek());
+            eventsStack.poll();
         }
         while (!eventsStack.isEmpty());
         if (!pendingEventsStack.isEmpty())

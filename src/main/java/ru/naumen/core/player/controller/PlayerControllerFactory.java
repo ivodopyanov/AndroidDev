@@ -3,11 +3,15 @@
  */
 package ru.naumen.core.player.controller;
 
+import java.util.List;
+
 import ru.naumen.core.framework.collections.Function;
 import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.Player.PlayerType;
+import ru.naumen.core.player.controller.ai.RandomRotateCalculator;
+import ru.naumen.core.player.controller.ai.StrategicMoveCalculator;
 
 /**
  * @author ivodopyanov
@@ -18,11 +22,13 @@ public class PlayerControllerFactory implements Function<Player, PlayerControlle
 {
     private final EventBus eventBus;
     private final Board board;
+    private final List<Player> players;
 
-    public PlayerControllerFactory(EventBus eventBus, Board board)
+    public PlayerControllerFactory(EventBus eventBus, Board board, List<Player> players)
     {
         this.eventBus = eventBus;
         this.board = board;
+        this.players = players;
     }
 
     @Override
@@ -31,7 +37,8 @@ public class PlayerControllerFactory implements Function<Player, PlayerControlle
         if (PlayerType.human.equals(input.getType()))
             return new HumanPlayerController(input, eventBus, board);
         else if (PlayerType.computer.equals(input.getType()))
-            return new ComputerPlayer(input, eventBus, board);
+            return new ComputerPlayer(input, eventBus, board, new StrategicMoveCalculator(players),
+                    new RandomRotateCalculator(players));
         return null;
     }
 }
