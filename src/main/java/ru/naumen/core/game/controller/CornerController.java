@@ -13,7 +13,7 @@ import ru.naumen.core.game.controller.events.RequestBoardRotateHandler;
 import ru.naumen.core.game.controller.events.RotateCornerEvent;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.Quarter;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -46,11 +46,11 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
 
     private class RotateQuaterListener implements OnClickListener
     {
-        private final SquareArea area;
+        private final Quarter area;
         private final RotateDirection direction;
         private final EventBus eventBus;
 
-        public RotateQuaterListener(SquareArea area, RotateDirection direction, EventBus eventBus)
+        public RotateQuaterListener(Quarter area, RotateDirection direction, EventBus eventBus)
         {
             this.area = area;
             this.direction = direction;

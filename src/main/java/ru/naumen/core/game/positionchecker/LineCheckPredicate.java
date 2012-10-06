@@ -21,6 +21,20 @@ public class LineCheckPredicate
         this.patterns = patterns;
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder().append("{");
+        for (int i = 0; i < patterns.length; i++)
+        {
+            if (i != 0)
+                sb.append(", ");
+            sb.append(patterns[i].toString());
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+
     void check(String line, List<Ball> balls, char playerSymbol, int player) throws MoveFoundException
     {
         for (CheckPattern pattern : patterns)

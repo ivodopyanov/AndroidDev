@@ -19,7 +19,7 @@ import ru.naumen.core.game.controller.events.GameOverHandler;
 import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.Player;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.Quarter;
 import ru.naumen.core.player.controller.PlayerController;
 import ru.naumen.core.player.controller.PlayerControllerFactory;
 import android.app.Activity;
@@ -102,7 +102,7 @@ public class BoardActivity extends Activity implements GameOverHandler
                     R.string.rotateCounterClockwise,
                     RotateDirection.CounterClockwise));
             //@formatter:on
-            SquareArea area = new SquareArea(left ? 0 : HALF, top ? 0 : HALF, HALF);
+            Quarter area = Quarter.create(left, top);
 
             CornerController cornerView = (CornerController)findViewById(CORNERS[i]);
             cornerView.init(new CornerViewDescription(area, images, ANGLES[i]), game, eventBus);

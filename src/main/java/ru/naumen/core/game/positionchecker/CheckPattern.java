@@ -28,4 +28,10 @@ public class CheckPattern
     {
         return pattern;
     }
+
+    @Override
+    public String toString()
+    {
+        return pattern;
+    }
 }

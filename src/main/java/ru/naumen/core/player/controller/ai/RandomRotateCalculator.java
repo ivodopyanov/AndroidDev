@@ -5,12 +5,10 @@ package ru.naumen.core.player.controller.ai;
 
 import java.util.List;
 
-import ru.naumen.core.game.Constants;
-import ru.naumen.core.game.controller.GameController.RotateDirection;
 import ru.naumen.core.game.controller.events.RotateBoardEvent;
-import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.player.controller.ai.strategies.rotate.AIRotateStrategy;
+import ru.naumen.core.player.controller.ai.strategies.rotate.RandomRotateStrategy;
 
 /**
  * @author ivodopyanov
@@ -19,18 +17,27 @@ import ru.naumen.core.game.model.SquareArea;
  */
 public class RandomRotateCalculator extends AICalculatorImpl<RotateBoardEvent> implements BestRotateCalculator
 {
+    private final AIRotateStrategy strategy;
+
     public RandomRotateCalculator(List<Player> players)
     {
         super(players);
+        strategy = new RandomRotateStrategy();
     }
 
     @Override
-    public RotateBoardEvent calculate(Board board, String playerCode)
+    public RotateBoardEvent calculate(String playerCode)
     {
-        int left = (int)Math.random();
-        int top = (int)Math.random();
-        RotateDirection dir = Math.random() < 0.5 ? RotateDirection.Clockwise : RotateDirection.CounterClockwise;
-        return new RotateBoardEvent(new SquareArea(Constants.BOARD_SIZE * left / 2, Constants.BOARD_SIZE * top / 2,
-                Constants.BOARD_SIZE / 2), dir, playerCode);
+        return new RotateBoardEvent(strategy.apply(getPlayerIndex(playerCode)), playerCode);
+    }
+
+    private int getPlayerIndex(String playerCode)
+    {
+        for (int i = 0; i < players.size(); i++)
+        {
+            if (players.get(i).getCode().equals(playerCode))
+                return i;
+        }
+        return -1;
     }
 }

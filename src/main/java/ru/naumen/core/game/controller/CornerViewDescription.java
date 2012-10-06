@@ -5,7 +5,7 @@ package ru.naumen.core.game.controller;
 
 import java.util.Set;
 
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.Quarter;
 
 /**
  * @author ivodopyanov
@@ -14,11 +14,11 @@ import ru.naumen.core.game.model.SquareArea;
  */
 public class CornerViewDescription
 {
-    private final SquareArea area;
+    private final Quarter area;
     private final Set<RotateImageDescription> images;
     private final float angle;
 
-    public CornerViewDescription(SquareArea area, Set<RotateImageDescription> images, float angle)
+    public CornerViewDescription(Quarter area, Set<RotateImageDescription> images, float angle)
     {
         this.area = area;
         this.images = images;
@@ -30,7 +30,7 @@ public class CornerViewDescription
         return angle;
     }
 
-    public SquareArea getArea()
+    public Quarter getArea()
     {
         return area;
     }

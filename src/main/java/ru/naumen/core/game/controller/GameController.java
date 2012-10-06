@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.Constants.LineCheckPatterns;
+import ru.naumen.core.game.Constants.LineIteratorFactories;
 import ru.naumen.core.game.controller.events.GameOverEvent;
 import ru.naumen.core.game.controller.events.MoveBallEvent;
 import ru.naumen.core.game.controller.events.MoveBallHandler;
@@ -14,8 +15,7 @@ import ru.naumen.core.game.controller.events.RotateBoardHandler;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.Player;
-import ru.naumen.core.game.model.SquareArea;
-import ru.naumen.core.game.positionchecker.BoardPositionChecker;
+import ru.naumen.core.game.positionchecker.WinStateScanner;
 
 public class GameController implements MoveBallHandler, RotateBoardHandler
 {
@@ -31,7 +31,7 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
 
     private final Game game;
     private int activePlayer = 0;
-    private final BoardPositionChecker positionChecker = new BoardPositionChecker(LineCheckPatterns.PLAYER_WON);
+    private final WinStateScanner winStateScanner;
     private final List<Player> players;
     private final EventBus eventBus;
 
@@ -40,6 +40,8 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
         this.game = game;
         this.players = players;
         this.eventBus = eventBus;
+        this.winStateScanner = new WinStateScanner(LineCheckPatterns.PLAYER_WON, LineIteratorFactories.POSITION_CHECK,
+                game.getBoard());
         eventBus.register(MoveBallEvent.class, this);
         eventBus.register(RotateBoardEvent.class, this);
     }
@@ -57,11 +59,9 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
     @Override
     public void onRotateBoard(RotateBoardEvent event)
     {
-        int[][] area = game.getBoard().toArray(event.getArea());
-        int[][] rotated = doRotate(area, event.getArea(), event.getDirection());
-        game.getBoard().fromArray(event.getArea(), rotated);
+        game.getBoard().rotate(event.getRotateInfo());
         activePlayer = getNextPlayer(activePlayer);
-        int winner = positionChecker.hasAnyPlayerWon(game.getBoard());
+        int winner = winStateScanner.hasAnyPlayerWon();
         if (winner != Ball.NO_PLAYER)
         {
             eventBus.fireEvent(new GameOverEvent(winner));
@@ -70,24 +70,6 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
         {
             eventBus.fireEvent(new RequestBallMoveEvent(players.get(activePlayer).getCode()));
         }
-    }
-
-    private int[][] doRotate(int[][] area, SquareArea input, RotateDirection direction)
-    {
-        int[][] rotated = new int[input.getLength()][];
-        for (int i = 0; i < input.getLength(); i++)
-            rotated[i] = new int[input.getLength()];
-        for (int x = 0; x < input.getLength(); x++)
-        {
-            for (int y = 0; y < input.getLength(); y++)
-            {
-                if (RotateDirection.Clockwise.equals(direction))
-                    rotated[-y - 1 + input.getLength()][x] = area[x][y];
-                else if (RotateDirection.CounterClockwise.equals(direction))
-                    rotated[y][-x - 1 + input.getLength()] = area[x][y];
-            }
-        }
-        return rotated;
     }
 
     private int getNextPlayer(int player)

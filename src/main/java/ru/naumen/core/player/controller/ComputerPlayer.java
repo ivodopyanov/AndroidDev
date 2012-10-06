@@ -34,7 +34,7 @@ public class ComputerPlayer extends PlayerControllerImpl
     {
         if (event.getActivePlayerCode().equals(player.getCode()))
         {
-            eventBus.fireEvent(bestMoveCalc.calculate(board, player.getCode()));
+            eventBus.fireEvent(bestMoveCalc.calculate(player.getCode()));
         }
     }
 
@@ -43,7 +43,7 @@ public class ComputerPlayer extends PlayerControllerImpl
     {
         if (event.getActivePlayerCode().equals(player.getCode()))
         {
-            eventBus.fireEvent(bestRotateCalc.calculate(board, player.getCode()));
+            eventBus.fireEvent(bestRotateCalc.calculate(player.getCode()));
         }
     }
 }

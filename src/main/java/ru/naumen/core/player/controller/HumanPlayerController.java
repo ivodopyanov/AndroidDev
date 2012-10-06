@@ -14,6 +14,7 @@ import ru.naumen.core.game.controller.events.RotateCornerEvent;
 import ru.naumen.core.game.controller.events.RotateCornerHandler;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
+import ru.naumen.core.game.model.RotateInfo;
 
 /**
  * @author ivodopyanov
@@ -58,7 +59,8 @@ public class HumanPlayerController extends PlayerControllerImpl implements Inser
     {
         if (active)
         {
-            eventBus.fireEvent(new RotateBoardEvent(event.getArea(), event.getDirection(), player.getCode()));
+            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.getDirection()), player
+                    .getCode()));
         }
     }
 }

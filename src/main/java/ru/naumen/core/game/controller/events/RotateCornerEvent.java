@@ -5,7 +5,7 @@ package ru.naumen.core.game.controller.events;
 
 import ru.naumen.core.framework.eventbus.Event;
 import ru.naumen.core.game.controller.GameController.RotateDirection;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.Quarter;
 
 /**
  * @author ivodopyanov
@@ -14,10 +14,10 @@ import ru.naumen.core.game.model.SquareArea;
  */
 public class RotateCornerEvent implements Event<RotateCornerHandler>
 {
-    private final SquareArea area;
+    private final Quarter area;
     private final RotateDirection direction;
 
-    public RotateCornerEvent(SquareArea area, RotateDirection direction)
+    public RotateCornerEvent(Quarter area, RotateDirection direction)
     {
         this.area = area;
         this.direction = direction;
@@ -29,7 +29,7 @@ public class RotateCornerEvent implements Event<RotateCornerHandler>
         handler.onRotateCorner(this);
     }
 
-    public SquareArea getArea()
+    public Quarter getArea()
     {
         return area;
     }

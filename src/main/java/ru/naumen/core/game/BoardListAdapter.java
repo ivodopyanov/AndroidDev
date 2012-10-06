@@ -9,7 +9,7 @@ import ru.naumen.core.framework.collections.Predicate;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Board;
 import ru.naumen.core.game.model.Player;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.Quarter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
@@ -35,11 +35,11 @@ public class BoardListAdapter extends BaseAdapter
     private final Context context;
     private final List<Player> players;
     private final Resources resources;
-    private final SquareArea squareArea;
+    private final Quarter squareArea;
     private final List<Ball> balls;
 
     public BoardListAdapter(Context context, Board board, List<Player> players, Resources resources,
-            SquareArea squareArea)
+            Quarter squareArea)
     {
         this.context = context;
         this.players = players;

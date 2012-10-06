@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ru.naumen.core.player.controller.ai.strategies;
+package ru.naumen.core.player.controller.ai.strategies.move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import ru.naumen.core.game.model.Board;
  * @since 05.10.2012
  * 
  */
-public class RandomStrategy implements AIMoveStrategy
+public class RandomMoveStrategy implements AIMoveStrategy
 {
     private static final Predicate<Ball> FREE_BALL_FILTER = new Predicate<Ball>()
     {
@@ -27,8 +27,15 @@ public class RandomStrategy implements AIMoveStrategy
         }
     };
 
+    private final Board board;
+
+    public RandomMoveStrategy(Board board)
+    {
+        this.board = board;
+    }
+
     @Override
-    public Ball apply(Board board, int player)
+    public Ball apply(int player)
     {
         List<Ball> freeBalls = new ArrayList<Ball>(Collections.filter(board.getBalls(), FREE_BALL_FILTER));
         int pos = (int)(Math.random() * (freeBalls.size() - 1));

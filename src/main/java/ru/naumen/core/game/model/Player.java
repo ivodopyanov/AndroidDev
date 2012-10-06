@@ -53,4 +53,10 @@ public class Player implements Serializable
     {
         this.title = title;
     }
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder("Player ").append(title).toString();
+    }
 }

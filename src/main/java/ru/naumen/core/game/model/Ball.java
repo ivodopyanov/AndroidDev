@@ -3,6 +3,8 @@ package ru.naumen.core.game.model;
 import java.io.IOException;
 import java.io.Serializable;
 
+import ru.naumen.core.game.Constants;
+
 public class Ball implements Serializable
 {
     public static final int NO_PLAYER = -1;
@@ -33,10 +35,11 @@ public class Ball implements Serializable
         return y;
     }
 
-    public boolean inside(SquareArea area)
+    public boolean inside(Quarter area)
     {
-        return area.getX() <= x && x < area.getX() + area.getLength() && area.getY() <= y
-                && y < area.getY() + area.getLength();
+        boolean left = x < Constants.BOARD_SIZE / 2;
+        boolean top = y < Constants.BOARD_SIZE / 2;
+        return !(area.isLeft() ^ left) && !(area.isTop() ^ top);
     }
 
     public void setPlayer(int player)

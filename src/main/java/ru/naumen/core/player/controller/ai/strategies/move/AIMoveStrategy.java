@@ -1,10 +1,9 @@
 /**
  * 
  */
-package ru.naumen.core.player.controller.ai.strategies;
+package ru.naumen.core.player.controller.ai.strategies.move;
 
 import ru.naumen.core.game.model.Ball;
-import ru.naumen.core.game.model.Board;
 
 /**
  * @author ivodopyanov
@@ -13,5 +12,5 @@ import ru.naumen.core.game.model.Board;
  */
 public interface AIMoveStrategy
 {
-    Ball apply(Board board, int player);
+    Ball apply(int player);
 }

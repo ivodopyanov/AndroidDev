@@ -4,8 +4,7 @@
 package ru.naumen.core.game.controller.events;
 
 import ru.naumen.core.framework.eventbus.Event;
-import ru.naumen.core.game.controller.GameController.RotateDirection;
-import ru.naumen.core.game.model.SquareArea;
+import ru.naumen.core.game.model.RotateInfo;
 
 /**
  * @author ivodopyanov
@@ -14,14 +13,12 @@ import ru.naumen.core.game.model.SquareArea;
  */
 public class RotateBoardEvent implements Event<RotateBoardHandler>
 {
-    private final SquareArea area;
-    private final RotateDirection direction;
+    private final RotateInfo rotateInfo;
     private final String playerCode;
 
-    public RotateBoardEvent(SquareArea area, RotateDirection direction, String playerCode)
+    public RotateBoardEvent(RotateInfo rotateInfo, String playerCode)
     {
-        this.area = area;
-        this.direction = direction;
+        this.rotateInfo = rotateInfo;
         this.playerCode = playerCode;
     }
 
@@ -31,18 +28,13 @@ public class RotateBoardEvent implements Event<RotateBoardHandler>
         handler.onRotateBoard(this);
     }
 
-    public SquareArea getArea()
-    {
-        return area;
-    }
-
-    public RotateDirection getDirection()
-    {
-        return direction;
-    }
-
     public String getPlayerCode()
     {
         return playerCode;
+    }
+
+    public RotateInfo getRotateInfo()
+    {
+        return rotateInfo;
     }
 }
