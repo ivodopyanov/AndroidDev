@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:background="@drawable/element">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:background="@drawable/element">
 
         <GridView
             android:id="@+id/gridView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginLeft="-2dp"
             android:layout_marginTop="2dp"
             android:horizontalSpacing="@dimen/element_horizontal_spacing"
             android:numColumns="3"
             android:verticalSpacing="@dimen/element_vertical_spacing" >
-
         </GridView>
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/animball"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/white_ball"
+            android:visibility="invisible" />
+
+</FrameLayout>

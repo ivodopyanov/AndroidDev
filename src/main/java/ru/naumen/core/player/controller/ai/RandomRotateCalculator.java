@@ -26,18 +26,8 @@ public class RandomRotateCalculator extends AICalculatorImpl<RotateBoardEvent> i
     }
 
     @Override
-    public RotateBoardEvent calculate(String playerCode)
+    public RotateBoardEvent calculate(Player player)
     {
-        return new RotateBoardEvent(strategy.apply(getPlayerIndex(playerCode)), playerCode);
-    }
-
-    private int getPlayerIndex(String playerCode)
-    {
-        for (int i = 0; i < players.size(); i++)
-        {
-            if (players.get(i).getCode().equals(playerCode))
-                return i;
-        }
-        return -1;
+        return new RotateBoardEvent(strategy.apply(players.indexOf(player)), player);
     }
 }

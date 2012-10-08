@@ -4,6 +4,7 @@
 package ru.naumen.core.game.controller.events;
 
 import ru.naumen.core.framework.eventbus.Event;
+import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.RotateInfo;
 
 /**
@@ -14,12 +15,12 @@ import ru.naumen.core.game.model.RotateInfo;
 public class RotateBoardEvent implements Event<RotateBoardHandler>
 {
     private final RotateInfo rotateInfo;
-    private final String playerCode;
+    private final Player player;
 
-    public RotateBoardEvent(RotateInfo rotateInfo, String playerCode)
+    public RotateBoardEvent(RotateInfo rotateInfo, Player player)
     {
         this.rotateInfo = rotateInfo;
-        this.playerCode = playerCode;
+        this.player = player;
     }
 
     @Override
@@ -28,9 +29,9 @@ public class RotateBoardEvent implements Event<RotateBoardHandler>
         handler.onRotateBoard(this);
     }
 
-    public String getPlayerCode()
+    public Player getPlayer()
     {
-        return playerCode;
+        return player;
     }
 
     public RotateInfo getRotateInfo()

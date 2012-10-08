@@ -41,14 +41,14 @@ public class StrategicRotateCalculator extends AICalculatorImpl<RotateBoardEvent
     }
 
     @Override
-    public RotateBoardEvent calculate(String playerCode)
+    public RotateBoardEvent calculate(Player player)
     {
-        int playerPos = getPlayerPos(playerCode);
+        int playerPos = players.indexOf(player);
         for (AIRotateStrategy strategy : strategies)
         {
             RotateInfo rotateInfo = strategy.apply(playerPos);
             if (rotateInfo != null)
-                return new RotateBoardEvent(rotateInfo, playerCode);
+                return new RotateBoardEvent(rotateInfo, player);
         }
         return null;
     }

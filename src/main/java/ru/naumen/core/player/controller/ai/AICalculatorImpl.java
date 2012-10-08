@@ -21,14 +21,4 @@ public abstract class AICalculatorImpl<T extends Event<?>> implements AICalculat
     {
         this.players = players;
     }
-
-    protected int getPlayerPos(String playerCode)
-    {
-        for (int i = 0; i < players.size(); i++)
-        {
-            if (playerCode.equals(players.get(i).getCode()))
-                return i;
-        }
-        return -1;
-    }
 }

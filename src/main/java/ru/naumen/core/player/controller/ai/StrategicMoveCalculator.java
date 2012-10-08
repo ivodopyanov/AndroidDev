@@ -41,14 +41,14 @@ public class StrategicMoveCalculator extends AICalculatorImpl<MoveBallEvent> imp
     }
 
     @Override
-    public MoveBallEvent calculate(String playerCode)
+    public MoveBallEvent calculate(Player player)
     {
-        int playerPos = getPlayerPos(playerCode);
+        int playerPos = players.indexOf(player);
         for (AIMoveStrategy strategy : strategies)
         {
             Ball ball = strategy.apply(playerPos);
             if (ball != null)
-                return new MoveBallEvent(ball, playerCode);
+                return new MoveBallEvent(ball, player);
         }
         return null;
     }

@@ -5,19 +5,19 @@ import java.util.List;
 import ru.naumen.core.framework.eventbus.EventBus;
 import ru.naumen.core.game.Constants.LineCheckPatterns;
 import ru.naumen.core.game.Constants.LineIteratorFactories;
+import ru.naumen.core.game.controller.events.FinishedBallAnimationEvent;
+import ru.naumen.core.game.controller.events.FinishedBallAnimationHandler;
+import ru.naumen.core.game.controller.events.FinishedRotateAnimationEvent;
+import ru.naumen.core.game.controller.events.FinishedRotateAnimationHandler;
 import ru.naumen.core.game.controller.events.GameOverEvent;
-import ru.naumen.core.game.controller.events.MoveBallEvent;
-import ru.naumen.core.game.controller.events.MoveBallHandler;
 import ru.naumen.core.game.controller.events.RequestBallMoveEvent;
 import ru.naumen.core.game.controller.events.RequestBoardRotateEvent;
-import ru.naumen.core.game.controller.events.RotateBoardEvent;
-import ru.naumen.core.game.controller.events.RotateBoardHandler;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Game;
 import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.positionchecker.WinStateScanner;
 
-public class GameController implements MoveBallHandler, RotateBoardHandler
+public class GameController implements FinishedBallAnimationHandler, FinishedRotateAnimationHandler//MoveBallHandler, RotateBoardHandler
 {
     public enum GamePhase
     {
@@ -42,12 +42,12 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
         this.eventBus = eventBus;
         this.winStateScanner = new WinStateScanner(LineCheckPatterns.PLAYER_WON, LineIteratorFactories.POSITION_CHECK,
                 game.getBoard());
-        eventBus.register(MoveBallEvent.class, this);
-        eventBus.register(RotateBoardEvent.class, this);
+        eventBus.register(FinishedBallAnimationEvent.class, this);
+        eventBus.register(FinishedRotateAnimationEvent.class, this);
     }
 
     @Override
-    public void onMoveBall(MoveBallEvent event)
+    public void onFinishedBallAnimation(FinishedBallAnimationEvent event)
     {
         if (event.getBall().getPlayer() == Ball.NO_PLAYER)
         {
@@ -57,7 +57,7 @@ public class GameController implements MoveBallHandler, RotateBoardHandler
     }
 
     @Override
-    public void onRotateBoard(RotateBoardEvent event)
+    public void onFinishedRotateAnimation(FinishedRotateAnimationEvent event)
     {
         game.getBoard().rotate(event.getRotateInfo());
         activePlayer = getNextPlayer(activePlayer);

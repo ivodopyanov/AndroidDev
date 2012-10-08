@@ -3,26 +3,17 @@ package ru.naumen.core.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.naumen.core.R;
 import ru.naumen.core.framework.collections.Collections;
 import ru.naumen.core.framework.collections.Predicate;
 import ru.naumen.core.game.model.Ball;
 import ru.naumen.core.game.model.Board;
-import ru.naumen.core.game.model.Player;
 import ru.naumen.core.game.model.Quarter;
-import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.TableLayout.LayoutParams;
 
 public class BoardListAdapter extends BaseAdapter
 {
-
     private final Predicate<Ball> BALL_FILTER = new Predicate<Ball>()
     {
         @Override
@@ -32,20 +23,15 @@ public class BoardListAdapter extends BaseAdapter
         }
     };
 
-    private final Context context;
-    private final List<Player> players;
-    private final Resources resources;
     private final Quarter squareArea;
     private final List<Ball> balls;
+    private final BallViewFactory ballFactory;
 
-    public BoardListAdapter(Context context, Board board, List<Player> players, Resources resources,
-            Quarter squareArea)
+    public BoardListAdapter(Board board, Quarter squareArea, BallViewFactory ballFactory)
     {
-        this.context = context;
-        this.players = players;
-        this.resources = resources;
         this.squareArea = squareArea;
         this.balls = new ArrayList<Ball>(Collections.filter(board.getBalls(), BALL_FILTER));
+        this.ballFactory = ballFactory;
     }
 
     @Override
@@ -66,28 +52,14 @@ public class BoardListAdapter extends BaseAdapter
         return balls.get(position).getY();
     }
 
+    public int getItemPos(Ball ball)
+    {
+        return balls.indexOf(ball);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        Ball ball = balls.get(position);
-        ImageView imageView = new ImageView(context);
-        imageView.setImageDrawable(resources.getDrawable(getBallResource(ball)));
-        imageView.setScaleType(ScaleType.CENTER_CROP);
-        imageView.setLayoutParams(new GridView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        imageView.setAdjustViewBounds(true);
-        return imageView;
-    }
-
-    private int getBallResource(Ball ball)
-    {
-        if (ball.getPlayer() == -1)
-        {
-            return R.drawable.glow;
-        }
-        else
-        {
-            Player player = players.get(ball.getPlayer());
-            return player.getBallResource();
-        }
+        return ballFactory.create(balls.get(position));
     }
 }

@@ -4,6 +4,7 @@
 package ru.naumen.core.player.controller.ai;
 
 import ru.naumen.core.framework.eventbus.Event;
+import ru.naumen.core.game.model.Player;
 
 /**
  * @author ivodopyanov
@@ -12,5 +13,5 @@ import ru.naumen.core.framework.eventbus.Event;
  */
 public interface AICalculator<T extends Event<?>>
 {
-    T calculate(String playerCode);
+    T calculate(Player player);
 }

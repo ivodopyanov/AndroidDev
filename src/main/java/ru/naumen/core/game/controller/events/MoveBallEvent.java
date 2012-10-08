@@ -5,6 +5,7 @@ package ru.naumen.core.game.controller.events;
 
 import ru.naumen.core.framework.eventbus.Event;
 import ru.naumen.core.game.model.Ball;
+import ru.naumen.core.game.model.Player;
 
 /**
  * @author ivodopyanov
@@ -14,12 +15,12 @@ import ru.naumen.core.game.model.Ball;
 public class MoveBallEvent implements Event<MoveBallHandler>
 {
     private final Ball ball;
-    private final String playerCode;
+    private final Player player;
 
-    public MoveBallEvent(Ball ball, String playerCode)
+    public MoveBallEvent(Ball ball, Player player)
     {
         this.ball = ball;
-        this.playerCode = playerCode;
+        this.player = player;
     }
 
     @Override
@@ -33,8 +34,8 @@ public class MoveBallEvent implements Event<MoveBallHandler>
         return ball;
     }
 
-    public String getPlayerCode()
+    public Player getPlayer()
     {
-        return playerCode;
+        return player;
     }
 }

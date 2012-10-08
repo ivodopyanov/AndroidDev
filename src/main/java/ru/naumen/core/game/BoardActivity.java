@@ -39,6 +39,7 @@ public class BoardActivity extends Activity implements GameOverHandler
     private Game game;
     private List<Player> players;
     private final EventBus eventBus = new SimpleEventBus();
+    private BallViewFactory viewFactory;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -47,6 +48,7 @@ public class BoardActivity extends Activity implements GameOverHandler
         eventBus.register(GameOverEvent.class, this);
         setContentView(R.layout.gameboard);
         initBoard(savedInstanceState);
+        viewFactory = new BallViewFactory(getApplicationContext(), getResources(), players);
         initGrid();
         eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
     }
@@ -105,7 +107,7 @@ public class BoardActivity extends Activity implements GameOverHandler
             Quarter area = Quarter.create(left, top);
 
             CornerController cornerView = (CornerController)findViewById(CORNERS[i]);
-            cornerView.init(new CornerViewDescription(area, images, ANGLES[i]), game, eventBus);
+            cornerView.init(new CornerViewDescription(area, images, ANGLES[i]), game, eventBus, viewFactory);
             cornerView.setGravity((top ? Gravity.BOTTOM : Gravity.TOP) | (left ? Gravity.RIGHT : Gravity.LEFT));
             cornerView.setPadding(left ? 0 : 5, top ? 0 : 5, left ? 5 : 0, top ? 5 : 0);
         }

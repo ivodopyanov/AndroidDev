@@ -27,18 +27,8 @@ public class RandomMoveCalculator extends AICalculatorImpl<MoveBallEvent> implem
     }
 
     @Override
-    public MoveBallEvent calculate(String playerCode)
+    public MoveBallEvent calculate(Player player)
     {
-        return new MoveBallEvent(strategy.apply(getPlayerIndex(playerCode)), playerCode);
-    }
-
-    private int getPlayerIndex(String playerCode)
-    {
-        for (int i = 0; i < players.size(); i++)
-        {
-            if (players.get(i).getCode().equals(playerCode))
-                return i;
-        }
-        return -1;
+        return new MoveBallEvent(strategy.apply(players.indexOf(player)), player);
     }
 }

@@ -38,7 +38,7 @@ public class HumanPlayerController extends PlayerControllerImpl implements Inser
     {
         if (active)
         {
-            eventBus.fireEvent(new MoveBallEvent(event.getBall(), player.getCode()));
+            eventBus.fireEvent(new MoveBallEvent(event.getBall(), player));
         }
     }
 
@@ -59,8 +59,7 @@ public class HumanPlayerController extends PlayerControllerImpl implements Inser
     {
         if (active)
         {
-            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.getDirection()), player
-                    .getCode()));
+            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.getDirection()), player));
         }
     }
 }
