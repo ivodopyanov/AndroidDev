@@ -12,7 +12,8 @@
             android:layout_marginTop="2dp"
             android:horizontalSpacing="@dimen/element_horizontal_spacing"
             android:numColumns="3"
-            android:verticalSpacing="@dimen/element_vertical_spacing" >
+            android:verticalSpacing="@dimen/element_vertical_spacing" 
+            android:listSelector="@android:color/transparent">
         </GridView>
 
         <ImageView
