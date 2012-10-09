@@ -180,8 +180,10 @@
         <com.google.ads.AdView
     		android:id="@+id/adView"
     		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:minHeight="75dp"
+    		android:layout_height="75dp"
     		ads:adSize="BANNER"
-    		ads:adUnitId="@string/admob_publisher_id"/>
+    		ads:adUnitId="@string/admob_publisher_id"
+    		ads:testDevices="TEST_EMULATOR"
+    		ads:refreshInterval="30"
+    		ads:loadAdOnCreate="true"/>
 </LinearLayout>
