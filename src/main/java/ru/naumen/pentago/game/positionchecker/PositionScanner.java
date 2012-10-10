@@ -18,13 +18,11 @@ import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
  */
 public class PositionScanner
 {
-    protected final LineCheckPredicate predicate;
     protected final List<LineIterator> lineIterators;
     protected final Board board;
 
-    public PositionScanner(CheckPattern[] patterns, LineIteratorFactory[] lineIteratorFactories, Board board)
+    public PositionScanner(LineIteratorFactory[] lineIteratorFactories, Board board)
     {
-        this.predicate = new LineCheckPredicate(patterns);
         this.board = board;
         lineIterators = new LinkedList<LineIterator>();
         for (LineIteratorFactory lineIteratorFactory : lineIteratorFactories)

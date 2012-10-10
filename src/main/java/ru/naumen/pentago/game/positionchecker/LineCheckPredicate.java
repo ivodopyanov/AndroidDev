@@ -14,34 +14,34 @@ import ru.naumen.pentago.game.model.Ball;
  */
 public class LineCheckPredicate
 {
-    private final CheckPattern[] patterns;
+    private final CheckPatternSet patternSet;
 
-    public LineCheckPredicate(CheckPattern... patterns)
+    public LineCheckPredicate(CheckPatternSet patternSet)
     {
-        this.patterns = patterns;
+        this.patternSet = patternSet;
+    }
+
+    public void check(String line, List<Ball> balls, char playerSymbol, int player) throws MoveFoundException
+    {
+        for (CheckPattern pattern : patternSet.getPatterns())
+        {
+            int pos = line.indexOf(pattern.getPattern().replace('?', playerSymbol));
+            if (pos != -1)
+                throw new MoveFoundException(balls.get(pos + pattern.getDisp()), player, patternSet.getWeight());
+        }
     }
 
     @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder().append("{");
-        for (int i = 0; i < patterns.length; i++)
+        for (int i = 0; i < patternSet.getPatterns().length; i++)
         {
             if (i != 0)
                 sb.append(", ");
-            sb.append(patterns[i].toString());
+            sb.append(patternSet.getPatterns()[i].toString());
         }
-        sb.append("}");
+        sb.append("}, weight = ").append(patternSet.getWeight());
         return sb.toString();
-    }
-
-    void check(String line, List<Ball> balls, char playerSymbol, int player) throws MoveFoundException
-    {
-        for (CheckPattern pattern : patterns)
-        {
-            int pos = line.indexOf(pattern.getPattern().replace('?', playerSymbol));
-            if (pos != -1)
-                throw new MoveFoundException(balls.get(pos + pattern.getDisp()), player);
-        }
     }
 }

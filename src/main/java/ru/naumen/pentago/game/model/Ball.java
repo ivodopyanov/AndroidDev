@@ -20,6 +20,15 @@ public class Ball implements Serializable
         this.player = player;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Ball))
+            return false;
+        Ball ball = (Ball)o;
+        return x == ball.x && y == ball.y && player == ball.player;
+    }
+
     public int getPlayer()
     {
         return player;
@@ -33,6 +42,12 @@ public class Ball implements Serializable
     public int getY()
     {
         return y;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return x + y + player;
     }
 
     public boolean inside(Quarter area)

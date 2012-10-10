@@ -3,15 +3,16 @@
  */
 package ru.naumen.pentago.player.controller.ai;
 
-import ru.naumen.pentago.framework.eventbus.Event;
-import ru.naumen.pentago.game.model.Player;
+import android.os.Message;
 
 /**
  * @author ivodopyanov
  * @since 05.10.2012
  * 
  */
-public interface AICalculator<T extends Event<?>>
+public interface AICalculator
 {
-    T calculate(Player player);
+    Message obtainMessage();
+
+    boolean sendMessage(Message message);
 }

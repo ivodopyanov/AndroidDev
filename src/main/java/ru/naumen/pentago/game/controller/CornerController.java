@@ -30,6 +30,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -239,17 +240,26 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
             return;
         int w = layout.getWidth() / 2;
         int h = layout.getHeight() / 2;
-        TranslateAnimation outside = new TranslateAnimation(0, desc.getArea().isLeft() ? -w : w, 0, desc.getArea()
-                .isTop() ? -h : h);
+        float xpivot = w;//desc.getArea().isLeft() ? 0 : w + w / 2;
+        float ypivot = h;//desc.getArea().isTop() ? 0 : h + h / 2;
+        ScaleAnimation outside = new ScaleAnimation(1.5f, 0.6f, 1.5f, 0.6f, xpivot, ypivot);
+        /*
+         * TranslateAnimation outside = new TranslateAnimation(0,
+         * desc.getArea().isLeft() ? -w : w, 0, desc.getArea() .isTop() ? -h :
+         * h);
+         */
         outside.setStartOffset(0);
         outside.setDuration(1000);
         RotateAnimation rotate = new RotateAnimation(0, event.getRotateInfo().getDirection()
-                .equals(RotateDirection.Clockwise) ? 90 : -90, desc.getArea().isLeft() ? 0 : 2 * w, desc.getArea()
-                .isTop() ? 0 : 2 * h);
+                .equals(RotateDirection.Clockwise) ? 90 : -90, xpivot, ypivot);
         rotate.setStartOffset(1000);
         rotate.setDuration(1000);
-        TranslateAnimation inside = new TranslateAnimation(0, desc.getArea().isLeft() ? w : -w, 0, desc.getArea()
-                .isTop() ? h : -h);
+        ScaleAnimation inside = new ScaleAnimation(0.6f, 1.5f, 0.6f, 1.5f, xpivot, ypivot);
+        /*
+         * TranslateAnimation inside = new TranslateAnimation(0,
+         * desc.getArea().isLeft() ? w : -w, 0, desc.getArea() .isTop() ? h :
+         * -h);
+         */
         inside.setStartOffset(2000);
         inside.setDuration(1000);
         AnimationSet set = new AnimationSet(true);

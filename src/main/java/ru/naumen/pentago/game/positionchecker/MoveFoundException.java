@@ -16,11 +16,13 @@ public class MoveFoundException extends Exception
 
     private final Ball ball;
     private final int player;
+    private final double weight;
 
-    public MoveFoundException(Ball ball, int player)
+    public MoveFoundException(Ball ball, int player, double weight)
     {
         this.ball = ball;
         this.player = player;
+        this.weight = weight;
     }
 
     public Ball getBall()
@@ -31,5 +33,10 @@ public class MoveFoundException extends Exception
     public int getPlayer()
     {
         return player;
+    }
+
+    public double getWeight()
+    {
+        return weight;
     }
 }

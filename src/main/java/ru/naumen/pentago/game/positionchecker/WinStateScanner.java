@@ -7,11 +7,11 @@ import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
 
-public class WinStateScanner extends PositionScanner
+public class WinStateScanner extends PositionScannerSinglePredicate
 {
-    public WinStateScanner(CheckPattern[] patterns, LineIteratorFactory[] lineIteratorFactories, Board board)
+    public WinStateScanner(CheckPatternSet patternSet, LineIteratorFactory[] lineIteratorFactories, Board board)
     {
-        super(patterns, lineIteratorFactories, board);
+        super(patternSet, lineIteratorFactories, board);
     }
 
     public int hasAnyPlayerWon()

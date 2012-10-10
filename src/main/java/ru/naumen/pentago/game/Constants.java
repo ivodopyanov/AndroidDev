@@ -7,6 +7,7 @@ import ru.naumen.pentago.R;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Player.PlayerType;
 import ru.naumen.pentago.game.positionchecker.CheckPattern;
+import ru.naumen.pentago.game.positionchecker.CheckPatternSet;
 import ru.naumen.pentago.game.positionchecker.iterators.DiagonalLineIteratorFactory;
 import ru.naumen.pentago.game.positionchecker.iterators.HorizontalLineIteratorFactory;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
@@ -45,28 +46,59 @@ public interface Constants
 
     public interface LineCheckPatterns
     {
-        CheckPattern[] PLAYER_WON = new CheckPattern[] { new CheckPattern("?????", 0) };
-        CheckPattern[] PLAYER_CAN_WIN = new CheckPattern[] { new CheckPattern("O????", 0),
-                new CheckPattern("?O???", 1), new CheckPattern("??O??", 2), new CheckPattern("??O??", 3),
-                new CheckPattern("????O", 4) };
-        CheckPattern[] THREE_IN_A_ROW = new CheckPattern[] { new CheckPattern("O???", 0), new CheckPattern("???O", 3) };
-        CheckPattern[] TWO_IN_A_ROW = new CheckPattern[] { new CheckPattern("O??", 0), new CheckPattern("??O", 2) };
-        CheckPattern[] SINGLE = new CheckPattern[] { new CheckPattern("O?", 0), new CheckPattern("?O", 1) };
+        //@formatter:off
+        CheckPatternSet PLAYER_WON = new CheckPatternSet(new CheckPattern[] { new CheckPattern("?????", 0) }, 1000.0);
+        CheckPatternSet PLAYER_CAN_WIN = new CheckPatternSet(new CheckPattern[] { 
+                new CheckPattern("O????", 0),
+                new CheckPattern("?O???", 1), 
+                new CheckPattern("??O??", 2), 
+                new CheckPattern("??O??", 3),
+                new CheckPattern("????O", 4) }, 160.0);
+        CheckPatternSet THREE_IN_A_ROW = new CheckPatternSet(new CheckPattern[] { 
+                new CheckPattern("O???", 0), 
+                new CheckPattern("???O", 3) }, 80.0);
+        CheckPatternSet TWO_IN_A_ROW = new CheckPatternSet(new CheckPattern[] { 
+                new CheckPattern("O??", 0), 
+                new CheckPattern("??O", 2) }, 40.0);
+        CheckPatternSet SINGLE = new CheckPatternSet(new CheckPattern[] { 
+                new CheckPattern("O?", 0), 
+                new CheckPattern("?O", 1) }, 20.0);
+        //@formatter:on
     }
 
     public interface LineIteratorFactories
     {
-        LineIteratorFactory[] POSITION_CHECK = new LineIteratorFactory[] { new HorizontalLineIteratorFactory(),
-                new VerticalLineIteratorFactory(), new DiagonalLineIteratorFactory() };
+        //@formatter:off
+        LineIteratorFactory[] POSITION_CHECK = new LineIteratorFactory[] { 
+                new HorizontalLineIteratorFactory(),
+                new VerticalLineIteratorFactory(), 
+                new DiagonalLineIteratorFactory() };
+        //@formatter:on
+    }
+
+    public interface PositionEvaluationPatterns
+    {
+        //@formatter:off
+        CheckPatternSet[] ALL=new CheckPatternSet[]{
+                LineCheckPatterns.PLAYER_CAN_WIN,
+                LineCheckPatterns.THREE_IN_A_ROW,
+                LineCheckPatterns.TWO_IN_A_ROW,
+                LineCheckPatterns.SINGLE
+        };
+        //@formatter:on
     }
 
     String BOARD_EXTRA = "board";
     String PLAYERS_EXTRA = "players";
 
     int BOARD_SIZE = 6;
-    List<Player> TWO_HUMAN_PLAYERS = Arrays.asList(new Player("Player1", "Player1", R.drawable.black_ball,
-            PlayerType.human), new Player("Player2", "Player2", R.drawable.white_ball, PlayerType.human));
+    //@formatter:off
+    List<Player> TWO_HUMAN_PLAYERS = Arrays.asList(
+            new Player("Player1", "Player1", R.drawable.black_ball, PlayerType.human), 
+            new Player("Player2", "Player2", R.drawable.white_ball, PlayerType.human));
 
-    List<Player> HUMAN_COMPUTER_PLAYERS = Arrays.asList(new Player("Player", "Player", R.drawable.black_ball,
-            PlayerType.human), new Player("Computer", "Computer", R.drawable.white_ball, PlayerType.computer));
+    List<Player> HUMAN_COMPUTER_PLAYERS = Arrays.asList(
+            new Player("Player",    "Player",   R.drawable.black_ball, PlayerType.human), 
+            new Player("Computer",  "Computer", R.drawable.white_ball, PlayerType.computer));
+    //@formatter:on
 }

@@ -3,7 +3,7 @@
  */
 package ru.naumen.pentago.player.controller.ai;
 
-import ru.naumen.pentago.game.positionchecker.CheckPattern;
+import ru.naumen.pentago.game.positionchecker.CheckPatternSet;
 
 /**
  * @author ivodopyanov
@@ -13,17 +13,17 @@ import ru.naumen.pentago.game.positionchecker.CheckPattern;
 public class AIStrategyDescriptor
 {
     private final String strategyType;
-    private final CheckPattern[] patterns;
+    private final CheckPatternSet patternSet;
 
-    public AIStrategyDescriptor(String strategyType, CheckPattern[] patterns)
+    public AIStrategyDescriptor(String strategyType, CheckPatternSet patternSet)
     {
         this.strategyType = strategyType;
-        this.patterns = patterns;
+        this.patternSet = patternSet;
     }
 
-    public CheckPattern[] getPatterns()
+    public CheckPatternSet getPatternSet()
     {
-        return patterns;
+        return patternSet;
     }
 
     public String getStrategyType()

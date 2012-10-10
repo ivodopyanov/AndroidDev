@@ -14,4 +14,5 @@
     <string name="againstComputer">VS Компьютер</string>
     <string name="againstHuman">VS Человек</string>
     <string name="admob_publisher_id">a15072cb5e81eef</string>
+    <string name="playerTitle">Игрок: </string>
 </resources>

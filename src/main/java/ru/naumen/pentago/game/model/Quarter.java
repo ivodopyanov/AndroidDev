@@ -32,6 +32,21 @@ public class Quarter
         this.top = top;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Quarter))
+            return false;
+        Quarter quarter = (Quarter)o;
+        return left == quarter.left && top == quarter.top;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return (left ? 0 : 1) + (top ? 0 : 2);
+    }
+
     public boolean isLeft()
     {
         return left;

@@ -61,6 +61,7 @@ public class BoardActivity extends Activity implements GameOverHandler
         initBoard(savedInstanceState);
         viewFactory = new BallViewFactory(getApplicationContext(), getResources(), players);
         initGrid();
+        initPlayersInfo();
         eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
     }
 
@@ -123,5 +124,11 @@ public class BoardActivity extends Activity implements GameOverHandler
             cornerView.setGravity((top ? Gravity.BOTTOM : Gravity.TOP) | (left ? Gravity.RIGHT : Gravity.LEFT));
             cornerView.setPadding(left ? 0 : 5, top ? 0 : 5, left ? 5 : 0, top ? 5 : 0);
         }
+    }
+
+    private void initPlayersInfo()
+    {
+        ((PlayerInfo)findViewById(R.id.player1)).init(players.get(0));
+        ((PlayerInfo)findViewById(R.id.player2)).init(players.get(1));
     }
 }
