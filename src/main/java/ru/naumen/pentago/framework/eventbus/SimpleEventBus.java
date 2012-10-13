@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 /**
  * @author ivodopyanov
  * @since 04.10.2012
@@ -46,10 +48,12 @@ public class SimpleEventBus implements EventBus
 
     private <H extends Handler> void doProcessEvents(Event<H> event)
     {
+        Log.d("eventBus", "event " + event.toString() + " started");
         for (H handler : this.<H> getHandlers((Class<Event>)event.getClass()))
         {
             event.dispatch(handler);
         }
+        Log.d("eventBus", "event " + event.toString() + " finished");
     }
 
     private <H extends Handler> List<H> getHandlers(Class<Event> eventClass)

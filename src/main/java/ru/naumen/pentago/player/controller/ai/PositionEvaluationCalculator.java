@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LineIteratorFactories;
 import ru.naumen.pentago.game.Constants.PositionEvaluationPatterns;
 import ru.naumen.pentago.game.controller.GameController.RotateDirection;
@@ -17,8 +18,6 @@ import ru.naumen.pentago.game.model.Quarter;
 import ru.naumen.pentago.game.model.RotateInfo;
 import ru.naumen.pentago.player.controller.ai.poseval.AIPositionEvaluator;
 import ru.naumen.pentago.player.controller.ai.poseval.AIPositionEvaluatorImpl;
-import android.os.Handler;
-import android.os.Looper;
 
 /**
  * @author ivodopyanov
@@ -89,9 +88,9 @@ public class PositionEvaluationCalculator extends AICalculatorImpl
 
     private final Board board;
 
-    public PositionEvaluationCalculator(List<Player> players, Board board, Looper looper, Handler resultHandler)
+    public PositionEvaluationCalculator(List<Player> players, Board board, EventBus eventBus)
     {
-        super(players, looper, resultHandler);
+        super(players, eventBus);
         this.board = board;
         positionEvaluator = new AIPositionEvaluatorImpl(PositionEvaluationPatterns.ALL,
                 LineIteratorFactories.POSITION_CHECK, board);

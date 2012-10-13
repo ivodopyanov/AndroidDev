@@ -1,26 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:background="@drawable/element">
+                <merge xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
-        <GridView
-            android:id="@+id/gridView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginTop="2dp"
-            android:horizontalSpacing="@dimen/element_horizontal_spacing"
-            android:numColumns="3"
-            android:verticalSpacing="@dimen/element_vertical_spacing" 
-            android:listSelector="@android:color/transparent">
-        </GridView>
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/quarter3" />
 
-        <ImageView
-            android:id="@+id/animball"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/white_ball"
-            android:visibility="invisible" />
+            <ImageView
+                android:id="@+id/ball11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/empty3" />
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/ball12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ball11"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ball12"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball11"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball12"
+                android:layout_toRightOf="@id/ball21"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball13"
+                android:layout_toRightOf="@id/ball22"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball21"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball22"
+                android:layout_toRightOf="@id/ball31"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/ball33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ball23"
+                android:layout_toRightOf="@id/ball32"
+                android:src="@drawable/empty3" />
+
+            <ImageView
+                android:id="@+id/animBall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/black_ball"
+                android:visibility="invisible" />
+        </merge>

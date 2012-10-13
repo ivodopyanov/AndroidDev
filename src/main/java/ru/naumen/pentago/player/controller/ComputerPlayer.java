@@ -4,6 +4,7 @@
 package ru.naumen.pentago.player.controller;
 
 import ru.naumen.pentago.framework.eventbus.EventBus;
+import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
 import ru.naumen.pentago.game.controller.events.MoveCalculatedEvent;
 import ru.naumen.pentago.game.controller.events.MoveCalculatedHandler;
@@ -14,7 +15,7 @@ import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.player.controller.ai.AICalculator;
 import ru.naumen.pentago.player.controller.ai.AIMoveInfo;
-import android.os.Message;
+import android.util.Log;
 
 /**
  * @author ivodopyanov
@@ -38,6 +39,7 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
     {
         if (!event.getPlayer().equals(player))
             return;
+        Log.d(LogTag.COMPUTER, "onMoveCalculated");
         aiMoveInfo = event.getMoveInfo();
         eventBus.fireEvent(new MoveBallEvent(aiMoveInfo.getBall(), player));
     }
@@ -47,9 +49,8 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
     {
         if (!event.getActivePlayerCode().equals(player.getCode()))
             return;
-        Message message = aiCalc.obtainMessage();
-        message.obj = player;
-        aiCalc.sendMessage(message);
+        Log.d(LogTag.COMPUTER, "onRequestBallMove");
+        aiCalc.execute(player);
     }
 
     @Override
@@ -57,6 +58,7 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
     {
         if (!event.getActivePlayerCode().equals(player.getCode()))
             return;
+        Log.d(LogTag.COMPUTER, "onRequestBoardRotate");
         eventBus.fireEvent(new RotateBoardEvent(aiMoveInfo.getRotateInfo(), player));
     }
 }

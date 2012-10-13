@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+                                <ImageView
+                                    android:id="@+id/filler"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/filler" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/ltc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@id/filler"
+                                    android:paddingRight="@dimen/arrw_padding_vert"
+                                    android:scaleType="center"
+                                    android:src="@drawable/rotatea" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/ltcc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/filler"
+                                    android:paddingTop="@dimen/arrw_padding_vert"
+                                    android:src="@drawable/rotatea7" />
+
+                                <ru.naumen.pentago.game.controller.FourCornerController
+                                    android:id="@+id/corners"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/ltc"
+                                    android:layout_toRightOf="@id/ltcc"
+                                    android:orientation="vertical" >
+
+                                </ru.naumen.pentago.game.controller.FourCornerController>
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/rtcc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignRight="@id/corners"
+                                    android:paddingLeft="@dimen/arrw_padding_vert"
+                                    android:scaleType="center"
+                                    android:src="@drawable/rotatea8" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/lbcc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignLeft="@id/corners"
+                                    android:layout_below="@id/corners"
+                                    android:paddingRight="@dimen/arrw_padding_vert"
+                                    android:scaleType="center"
+                                    android:src="@drawable/rotatea6" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/rbc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignRight="@id/corners"
+                                    android:layout_below="@id/corners"
+                                    android:paddingLeft="@dimen/arrw_padding_vert"
+                                    android:scaleType="center"
+                                    android:src="@drawable/rotatea3" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/rtc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignTop="@id/corners"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@id/corners"
+                                    android:paddingTop="@dimen/arrw_padding_vert"
+                                    android:src="@drawable/rotatea2" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/rbcc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBottom="@id/corners"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@id/corners"
+                                    android:paddingBottom="@dimen/arrw_padding_vert"
+                                    android:src="@drawable/rotatea5" />
+
+                                <ru.naumen.pentago.game.controller.CustomView
+                                    android:id="@+id/lbc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBottom="@id/corners"
+                                    android:layout_toLeftOf="@id/corners"
+                                    android:paddingBottom="@dimen/arrw_padding_vert"
+                                    android:src="@drawable/rotatea4" />
+                    </merge>

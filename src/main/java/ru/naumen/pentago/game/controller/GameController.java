@@ -5,6 +5,7 @@ import java.util.List;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LineCheckPatterns;
 import ru.naumen.pentago.game.Constants.LineIteratorFactories;
+import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.events.FinishedBallAnimationEvent;
 import ru.naumen.pentago.game.controller.events.FinishedBallAnimationHandler;
 import ru.naumen.pentago.game.controller.events.FinishedRotateAnimationEvent;
@@ -16,6 +17,7 @@ import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Game;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.positionchecker.WinStateScanner;
+import android.util.Log;
 
 public class GameController implements FinishedBallAnimationHandler, FinishedRotateAnimationHandler//MoveBallHandler, RotateBoardHandler
 {
@@ -59,6 +61,7 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     @Override
     public void onFinishedRotateAnimation(FinishedRotateAnimationEvent event)
     {
+        Log.d(LogTag.GAME, "onFinishedRotateAnimation");
         game.getBoard().rotate(event.getRotateInfo());
         activePlayer = getNextPlayer(activePlayer);
         int winner = winStateScanner.hasAnyPlayerWon();

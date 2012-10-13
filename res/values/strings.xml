@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello core!</string>
-    <string name="app_name">core</string>
+    <string name="app_name">Пентаго</string>
     <string name="singlePlayer">Одиночная игра</string>
     <string name="startSinglePlayer">Начать одиночную игру</string>
     <string name="rotateCounterClockwise">Повернуть против часовой</string>
@@ -15,4 +14,9 @@
     <string name="againstHuman">VS Человек</string>
     <string name="admob_publisher_id">a15072cb5e81eef</string>
     <string name="playerTitle">Игрок: </string>
+    <color name="gameboard">#612a2a</color>
+    <color name="main">#843463</color>
+    <string name="exit">Выход</string>
+    <string name="goback">Назад</string>
+    <string name="newgame">Новая игра</string>
 </resources>

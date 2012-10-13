@@ -3,7 +3,7 @@
  */
 package ru.naumen.pentago.player.controller.ai;
 
-import android.os.Message;
+import ru.naumen.pentago.game.model.Player;
 
 /**
  * @author ivodopyanov
@@ -12,7 +12,5 @@ import android.os.Message;
  */
 public interface AICalculator
 {
-    Message obtainMessage();
-
-    boolean sendMessage(Message message);
+    void execute(Player player);
 }

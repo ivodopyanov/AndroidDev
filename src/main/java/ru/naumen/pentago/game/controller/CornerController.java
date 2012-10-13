@@ -1,17 +1,20 @@
 package ru.naumen.pentago.game.controller;
 
+import java.util.List;
+
 import ru.naumen.pentago.R;
+import ru.naumen.pentago.framework.collections.Collections;
+import ru.naumen.pentago.framework.collections.Predicate;
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.game.BallViewFactory;
-import ru.naumen.pentago.game.BoardListAdapter;
+import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.GameController.GamePhase;
 import ru.naumen.pentago.game.controller.GameController.RotateDirection;
-import ru.naumen.pentago.game.controller.events.FinishedBallAnimationEvent;
 import ru.naumen.pentago.game.controller.events.FinishedRotateAnimationEvent;
-import ru.naumen.pentago.game.controller.events.FinishedRotateAnimationHandler;
 import ru.naumen.pentago.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
 import ru.naumen.pentago.game.controller.events.MoveBallHandler;
+import ru.naumen.pentago.game.controller.events.RequestBallMoveEvent;
+import ru.naumen.pentago.game.controller.events.RequestBallMoveHandler;
 import ru.naumen.pentago.game.controller.events.RequestBoardRotateEvent;
 import ru.naumen.pentago.game.controller.events.RequestBoardRotateHandler;
 import ru.naumen.pentago.game.controller.events.RotateBoardEvent;
@@ -24,6 +27,7 @@ import ru.naumen.pentago.game.model.Quarter;
 import ru.naumen.pentago.game.model.RotateInfo;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,54 +36,55 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 
-public class CornerController extends LinearLayout implements RequestBoardRotateHandler, MoveBallHandler,
-        RotateBoardHandler, FinishedRotateAnimationHandler
+public class CornerController extends RelativeLayout implements RequestBoardRotateHandler, MoveBallHandler,
+        RotateBoardHandler, RequestBallMoveHandler
 {
-    private static class BallInsertionListener implements OnItemClickListener
+    private static class BallInsertionListener implements OnClickListener
     {
         private final EventBus eventBus;
-        private final ListAdapter adapter;
+        private final Ball ball;
 
-        public BallInsertionListener(EventBus eventBus, ListAdapter adapter)
+        public BallInsertionListener(EventBus eventBus, Ball ball)
         {
             this.eventBus = eventBus;
-            this.adapter = adapter;
+            this.ball = ball;
         }
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        public void onClick(View arg0)
         {
-            eventBus.fireEvent(new InsertBallInCornerEvent((Ball)adapter.getItem(position)));
+            eventBus.fireEvent(new InsertBallInCornerEvent(ball));
         }
     }
 
-    private static class BallMoveListener implements AnimationListener
+    private class BallMoveListener implements AnimationListener
     {
         private final Ball ball;
-        private final Player player;
-        private final EventBus eventBus;
+        private final ImageView animBallView;
         private final ImageView ballView;
+        private final Player player;
 
-        public BallMoveListener(Ball ball, Player player, EventBus eventBus, ImageView ballView)
+        public BallMoveListener(Ball ball, ImageView animBallView, ImageView ballView, Player player)
         {
             this.ball = ball;
-            this.player = player;
-            this.eventBus = eventBus;
+            this.animBallView = animBallView;
             this.ballView = ballView;
+            this.player = player;
         }
 
         @Override
         public void onAnimationEnd(Animation animation)
         {
-            ballView.setVisibility(INVISIBLE);
-            eventBus.fireEvent(new FinishedBallAnimationEvent(ball));
+            Log.d(LogTag.CORNER, "Ball move animation ended");
+            //animBallView.clearAnimation();
+            animBallView.setVisibility(INVISIBLE);
+            ballView.setImageDrawable(getResources().getDrawable(player.getBallResource()));
+            ball.setPlayer(game.getPlayers().indexOf(player));
+            eventBus.fireEvent(new RequestBoardRotateEvent(player.getCode()));
+            //eventBus.fireEvent(new FinishedBallAnimationEvent(ball));
         }
 
         @Override
@@ -97,7 +102,7 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
     private class RotateAnimationListener implements AnimationListener
     {
         private final RotateInfo rotateInfo;
-        private boolean flag = false;
+        private final boolean flag = false;
 
         public RotateAnimationListener(RotateInfo rotateInfo)
         {
@@ -107,13 +112,15 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
         @Override
         public void onAnimationEnd(Animation animation)
         {
-            clearAnimation();
-            if (!flag)
-                flag = true;
-            else
-            {
-                eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
-            }
+            Log.d(LogTag.CORNER, "onAnimationEnd");
+            eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
+            //clearAnimation();
+            /*
+             * if (!flag) { Log.d(LogTag.CORNER, "onAnimationEnd pass1"); flag =
+             * true; } else { Log.d(LogTag.CORNER, "onAnimationEnd pass2");
+             * eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
+             * }
+             */
         }
 
         @Override
@@ -148,12 +155,23 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
         }
     }
 
-    private GridView table;
+    private final Predicate<Ball> BALL_FILTER = new Predicate<Ball>()
+    {
+        @Override
+        public boolean apply(Ball ball)
+        {
+            return ball.inside(desc.getArea());
+        }
+    };
+
     private CornerViewDescription desc;
     private final View layout;
     private GamePhase gamePhase = GamePhase.PutBall;
     private EventBus eventBus;
-    private BoardListAdapter adapter;
+    private List<Ball> balls;
+    private Game game;
+    private static final int[] BALL_IDS = new int[] { R.id.ball11, R.id.ball12, R.id.ball13, R.id.ball21, R.id.ball22,
+            R.id.ball23, R.id.ball31, R.id.ball32, R.id.ball33 };
 
     public CornerController(Context context)
     {
@@ -167,41 +185,28 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
         layout = LayoutInflater.from(context).inflate(R.layout.corner, this, true);
     }
 
-    public GridView getTable()
-    {
-        return table;
-    }
-
-    public void init(CornerViewDescription desc, Game game, EventBus eventBus, BallViewFactory viewFactory)
+    public void init(CornerViewDescription desc, Game game, EventBus eventBus)
     {
         this.desc = desc;
         this.eventBus = eventBus;
+        this.game = game;
+        balls = Collections.filter(game.getBoard().getBalls(), BALL_FILTER);
+        eventBus.register(RequestBallMoveEvent.class, this);
         eventBus.register(RequestBoardRotateEvent.class, this);
         eventBus.register(MoveBallEvent.class, this);
         eventBus.register(RotateBoardEvent.class, this);
-        eventBus.register(FinishedRotateAnimationEvent.class, this);
 
         for (RotateImageDescription imageDesc : desc.getImages())
         {
             CustomView imageView = imageDesc.getImage();
             imageView.setContentDescription(getResources().getString(imageDesc.getDescId()));
-            boolean flip = RotateDirection.CounterClockwise == imageDesc.getDir();
-            imageView.setFlip(flip);
             imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.getDir(), eventBus));
         }
-        adapter = new BoardListAdapter(game.getBoard(), desc.getArea(), viewFactory);
-        table = (GridView)layout.findViewById(R.id.gridView1);
-        table.setAdapter(adapter);
-        table.setOnItemClickListener(new BallInsertionListener(eventBus, adapter));
+        for (int i = 0; i < BALL_IDS.length; i++)
+        {
+            findViewById(BALL_IDS[i]).setOnClickListener(new BallInsertionListener(eventBus, balls.get(i)));
+        }
         setArrowsVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onFinishedRotateAnimation(FinishedRotateAnimationEvent event)
-    {
-        table.invalidateViews();
-        setArrowsVisibility(View.INVISIBLE);
-        gamePhase = GamePhase.PutBall;
     }
 
     @Override
@@ -209,26 +214,49 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
     {
         if (!event.getBall().inside(desc.getArea()))
             return;
-        ImageView ballView = (ImageView)findViewById(R.id.animball);
-        ballView.setImageDrawable(getResources().getDrawable(event.getPlayer().getBallResource()));
-        int ballPos = adapter.getItemPos(event.getBall());
+        Log.d(LogTag.CORNER, "onMoveBall");
+        ImageView animBall = (ImageView)findViewById(R.id.animBall);
+        animBall.setImageDrawable(getResources().getDrawable(event.getPlayer().getBallResource()));
+        int ballPos = balls.indexOf(event.getBall());
         float deltaleft = getResources().getDimension(R.dimen.move_ball_animation_dx);
         float deltatop = getResources().getDimension(R.dimen.move_ball_animation_dy);
         float w = layout.getWidth();
         float h = layout.getHeight();
-        float left = table.getChildAt(ballPos).getLeft() + deltaleft;
-        float top = table.getChildAt(ballPos).getTop() + deltatop;
-        TranslateAnimation anim = new TranslateAnimation(left, left, top - h / 2, top);
-        anim.setDuration(1000);
-        anim.setAnimationListener(new BallMoveListener(event.getBall(), event.getPlayer(), eventBus, ballView));
-        ballView.setVisibility(VISIBLE);
-        ballView.startAnimation(anim);
+        ImageView ballView = (ImageView)findViewById(BALL_IDS[ballPos]);
+        ImageView startView = (ImageView)findViewById(R.id.ball22);
+
+        float left = ballView.getLeft() + deltaleft;
+        float top = ballView.getTop() + deltatop;
+
+        TranslateAnimation anim = new TranslateAnimation(startView.getLeft(), left, startView.getTop(), top);
+        anim.setDuration(5000);
+        ScaleAnimation scaleAnim = new ScaleAnimation(2.0f, 1.0f, 2.0f, 1.0f, ballView.getWidth() / 2,
+                ballView.getHeight() / 2);
+        scaleAnim.setDuration(5000);
+        AnimationSet animSet = new AnimationSet(true);
+        animSet.addAnimation(anim);
+        animSet.addAnimation(scaleAnim);
+        animSet.setAnimationListener(new BallMoveListener(event.getBall(), animBall, ballView, event.getPlayer()));
+        animBall.setVisibility(VISIBLE);
+        animBall.bringToFront();
+        animBall.startAnimation(animSet);
+        Log.d(LogTag.CORNER, "onMoveBall finished, animation started");
+    }
+
+    @Override
+    public void onRequestBallMove(RequestBallMoveEvent event)
+    {
+        Log.d(LogTag.CORNER, "onRequestBallMove");
+        updateBalls();
+        setArrowsVisibility(View.INVISIBLE);
+        gamePhase = GamePhase.PutBall;
     }
 
     @Override
     public void onRequestBoardRotate(RequestBoardRotateEvent event)
     {
-        table.invalidateViews();
+        Log.d(LogTag.CORNER, "onRequestBoardRotate");
+        updateBalls();
         setArrowsVisibility(View.VISIBLE);
         gamePhase = GamePhase.RotateBoard;
     }
@@ -238,28 +266,19 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
     {
         if (!event.getRotateInfo().getQuarter().equals(desc.getArea()))
             return;
+        Log.d(LogTag.CORNER, "onRotateBoard");
         int w = layout.getWidth() / 2;
         int h = layout.getHeight() / 2;
-        float xpivot = w;//desc.getArea().isLeft() ? 0 : w + w / 2;
-        float ypivot = h;//desc.getArea().isTop() ? 0 : h + h / 2;
-        ScaleAnimation outside = new ScaleAnimation(1.5f, 0.6f, 1.5f, 0.6f, xpivot, ypivot);
-        /*
-         * TranslateAnimation outside = new TranslateAnimation(0,
-         * desc.getArea().isLeft() ? -w : w, 0, desc.getArea() .isTop() ? -h :
-         * h);
-         */
+        float xpivot = w;
+        float ypivot = h;
+        ScaleAnimation outside = new ScaleAnimation(1.2f, 0.8f, 1.2f, 0.8f, xpivot, ypivot);
         outside.setStartOffset(0);
         outside.setDuration(1000);
         RotateAnimation rotate = new RotateAnimation(0, event.getRotateInfo().getDirection()
                 .equals(RotateDirection.Clockwise) ? 90 : -90, xpivot, ypivot);
         rotate.setStartOffset(1000);
         rotate.setDuration(1000);
-        ScaleAnimation inside = new ScaleAnimation(0.6f, 1.5f, 0.6f, 1.5f, xpivot, ypivot);
-        /*
-         * TranslateAnimation inside = new TranslateAnimation(0,
-         * desc.getArea().isLeft() ? w : -w, 0, desc.getArea() .isTop() ? h :
-         * -h);
-         */
+        ScaleAnimation inside = new ScaleAnimation(0.8f, 1.25f, 0.8f, 1.25f, xpivot, ypivot);
         inside.setStartOffset(2000);
         inside.setDuration(1000);
         AnimationSet set = new AnimationSet(true);
@@ -268,6 +287,20 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
         set.addAnimation(inside);
         startAnimation(set);
         set.setAnimationListener(new RotateAnimationListener(event.getRotateInfo()));
+        Log.d(LogTag.CORNER, "onRotateBoard finished, animation started");
+    }
+
+    private int getBallResource(Ball ball)
+    {
+        if (ball.getPlayer() == Ball.NO_PLAYER)
+        {
+            return R.drawable.empty3;
+        }
+        else
+        {
+            Player player = game.getPlayers().get(ball.getPlayer());
+            return player.getBallResource();
+        }
     }
 
     private void setArrowsVisibility(int visibility)
@@ -275,6 +308,15 @@ public class CornerController extends LinearLayout implements RequestBoardRotate
         for (RotateImageDescription imageDesc : desc.getImages())
         {
             imageDesc.getImage().setVisibility(visibility);
+        }
+    }
+
+    private void updateBalls()
+    {
+        for (int i = 0; i < balls.size(); i++)
+        {
+            ImageView view = ((ImageView)findViewById(BALL_IDS[i]));
+            view.setImageDrawable(getResources().getDrawable(getBallResource(balls.get(i))));
         }
     }
 }

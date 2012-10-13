@@ -1,203 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:id="@+id/boardpanel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1.0" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="0.9" >
+    android:background="@color/gameboard"
+    android:orientation="vertical">
 
         <com.google.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             ads:adSize="BANNER"
             ads:adUnitId="@string/admob_publisher_id"
             ads:loadAdOnCreate="true"
             ads:refreshInterval="30"
             ads:testDevices="TEST_EMULATOR" >
+
         </com.google.ads.AdView>
-        
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
+
+        <ru.naumen.pentago.game.controller.BoardController
+            android:id="@+id/board"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/table_surface" >
+            android:layout_centerInParent="true"
+            android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:orientation="vertical" >
-                
-                <ru.naumen.pentago.game.PlayerInfo
-                                android:id="@+id/player1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent">
-				</ru.naumen.pentago.game.PlayerInfo>
+        </ru.naumen.pentago.game.controller.BoardController>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1.0" >
+        <ru.naumen.pentago.game.PlayerInfo
+            android:id="@+id/player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/board"
+            android:layout_alignLeft="@id/board" >
 
-                    <ru.naumen.pentago.game.controller.CustomView
-                        android:id="@+id/ltc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:scaleType="center"
-                        android:src="@drawable/arrow" />
+        </ru.naumen.pentago.game.PlayerInfo>
 
-                    <ru.naumen.pentago.game.controller.CustomView
-                        android:id="@+id/rtcc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/arrow" />
-                </LinearLayout>
+        <ru.naumen.pentago.game.PlayerInfo
+            android:id="@+id/player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/board"
+            android:layout_alignRight="@id/board" >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:weightSum="1.0" >
+        </ru.naumen.pentago.game.PlayerInfo>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/goback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/menu_element"
+            android:gravity="center"
+            android:paddingBottom="@dimen/menu_padding_bottom"
+            android:paddingLeft="@dimen/menu_padding_left"
+            android:paddingRight="@dimen/menu_padding_right"
+            android:paddingTop="@dimen/menu_padding_top"
+            android:text="@string/goback"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <ru.naumen.pentago.game.controller.CustomView
-                            android:id="@+id/ltcc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/arrow_vert" />
+        <TextView
+            android:id="@+id/newgame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/menu_element"
+            android:gravity="center"
+            android:paddingBottom="@dimen/menu_padding_bottom"
+            android:paddingLeft="@dimen/menu_padding_left"
+            android:paddingRight="@dimen/menu_padding_right"
+            android:paddingTop="@dimen/menu_padding_top"
+            android:text="@string/newgame"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <ru.naumen.pentago.game.controller.CustomView
-                            android:id="@+id/lbc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/arrow_vert" />
-                    </LinearLayout>
-
-                    <TableLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.6"
-                        android:background="@drawable/cross"
-                        android:weightSum="1.0" >
-
-                        <TableRow
-                            android:id="@+id/tableRow1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:weightSum="1.0" >
-
-                            <ru.naumen.pentago.game.controller.CornerController
-                                android:id="@+id/topleft"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" >
-                            </ru.naumen.pentago.game.controller.CornerController>
-
-                            <ru.naumen.pentago.game.controller.CornerController
-                                android:id="@+id/topright"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" >
-                            </ru.naumen.pentago.game.controller.CornerController>
-                        </TableRow>
-
-                        <TableRow
-                            android:id="@+id/tableRow2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:weightSum="1.0" >
-
-                            <ru.naumen.pentago.game.controller.CornerController
-                                android:id="@+id/bottomleft"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" >
-                            </ru.naumen.pentago.game.controller.CornerController>
-
-                            <ru.naumen.pentago.game.controller.CornerController
-                                android:id="@+id/bottomright"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" >
-                            </ru.naumen.pentago.game.controller.CornerController>
-                        </TableRow>
-                    </TableLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical"
-                        android:weightSum="1.0" >
-
-                        <ru.naumen.pentago.game.controller.CustomView
-                            android:id="@+id/rtc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/arrow_vert" />
-
-                        <ru.naumen.pentago.game.controller.CustomView
-                            android:id="@+id/rbcc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:src="@drawable/arrow_vert" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1.0" >
-
-                    <ru.naumen.pentago.game.controller.CustomView
-                        android:id="@+id/lbcc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/arrow" />
-
-                    <ru.naumen.pentago.game.controller.CustomView
-                        android:id="@+id/rbc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/arrow" />
-                </LinearLayout>
-                <ru.naumen.pentago.game.PlayerInfo
-                                android:id="@+id/player2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent">
-				</ru.naumen.pentago.game.PlayerInfo>
-            </LinearLayout>
-
-        </RelativeLayout>
-        
-        
-        
-
-    </LinearLayout>
-
-        
-</LinearLayout>
+</RelativeLayout>

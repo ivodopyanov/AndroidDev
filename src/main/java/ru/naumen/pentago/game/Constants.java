@@ -76,6 +76,13 @@ public interface Constants
         //@formatter:on
     }
 
+    public interface LogTag
+    {
+        String CORNER = "corner";
+        String GAME = "game";
+        String COMPUTER = "computer";
+    }
+
     public interface PositionEvaluationPatterns
     {
         //@formatter:off

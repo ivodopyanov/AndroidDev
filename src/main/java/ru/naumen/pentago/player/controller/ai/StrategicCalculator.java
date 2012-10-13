@@ -6,6 +6,7 @@ package ru.naumen.pentago.player.controller.ai;
 import java.util.LinkedList;
 import java.util.List;
 
+import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
@@ -13,8 +14,6 @@ import ru.naumen.pentago.player.controller.ai.strategies.AIStrategy;
 import ru.naumen.pentago.player.controller.ai.strategies.DirectAIStrategyImpl;
 import ru.naumen.pentago.player.controller.ai.strategies.InvertedAIStrategyImpl;
 import ru.naumen.pentago.player.controller.ai.strategies.RandomStrategy;
-import android.os.Handler;
-import android.os.Looper;
 
 /**
  * @author ivodopyanov
@@ -26,9 +25,9 @@ public class StrategicCalculator extends AICalculatorImpl
     private final List<AIStrategy> strategies;
 
     public StrategicCalculator(List<Player> players, Board board, AIStrategyDescriptor[] strategyDescriptors,
-            Looper looper, Handler resultHandler)
+            EventBus eventBus)
     {
-        super(players, looper, resultHandler);
+        super(players, eventBus);
         strategies = new LinkedList<AIStrategy>();
         for (AIStrategyDescriptor strategyDescriptor : strategyDescriptors)
         {

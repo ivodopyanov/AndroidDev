@@ -5,11 +5,10 @@ package ru.naumen.pentago.player.controller.ai;
 
 import java.util.List;
 
+import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.player.controller.ai.strategies.RandomStrategy;
-import android.os.Handler;
-import android.os.Looper;
 
 /**
  * @author ivodopyanov
@@ -20,9 +19,9 @@ public class RandomCalculator extends AICalculatorImpl
 {
     private final RandomStrategy strategy;
 
-    public RandomCalculator(List<Player> players, Board board, Looper looper, Handler resultHandler)
+    public RandomCalculator(List<Player> players, Board board, EventBus eventBus)
     {
-        super(players, looper, resultHandler);
+        super(players, eventBus);
         strategy = new RandomStrategy(board);
     }
 
