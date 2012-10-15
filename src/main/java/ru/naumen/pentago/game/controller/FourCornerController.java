@@ -31,5 +31,6 @@ public class FourCornerController extends RelativeLayout
     private void init()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.foursquare, this, true);
+        this.setBackgroundDrawable(getResources().getDrawable(R.drawable.square_big_1024));
     }
 }

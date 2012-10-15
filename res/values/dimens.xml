@@ -10,8 +10,8 @@
     <dimen name="title_text">50dp</dimen>
     <dimen name="title_padding">40dp</dimen>
     <dimen name="rotateImageWidth">100dp</dimen>
-    <dimen name="move_ball_animation_dx">4dp</dimen>
-    <dimen name="move_ball_animation_dy">4dp</dimen>
+    <dimen name="move_ball_animation_dx">0dp</dimen>
+    <dimen name="move_ball_animation_dy">0dp</dimen>
     <dimen name="arrow_padding">20dp</dimen>
     <dimen name="arrw_padding_vert">5dp</dimen>
     <dimen name="arrow_layout_hor">30dp</dimen>

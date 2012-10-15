@@ -79,12 +79,11 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         public void onAnimationEnd(Animation animation)
         {
             Log.d(LogTag.CORNER, "Ball move animation ended");
-            //animBallView.clearAnimation();
-            animBallView.setVisibility(INVISIBLE);
             ballView.setImageDrawable(getResources().getDrawable(player.getBallResource()));
             ball.setPlayer(game.getPlayers().indexOf(player));
+            animBallView.clearAnimation();
+            animBallView.setVisibility(INVISIBLE);
             eventBus.fireEvent(new RequestBoardRotateEvent(player.getCode()));
-            //eventBus.fireEvent(new FinishedBallAnimationEvent(ball));
         }
 
         @Override
@@ -102,7 +101,6 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
     private class RotateAnimationListener implements AnimationListener
     {
         private final RotateInfo rotateInfo;
-        private final boolean flag = false;
 
         public RotateAnimationListener(RotateInfo rotateInfo)
         {
@@ -114,13 +112,6 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         {
             Log.d(LogTag.CORNER, "onAnimationEnd");
             eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
-            //clearAnimation();
-            /*
-             * if (!flag) { Log.d(LogTag.CORNER, "onAnimationEnd pass1"); flag =
-             * true; } else { Log.d(LogTag.CORNER, "onAnimationEnd pass2");
-             * eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
-             * }
-             */
         }
 
         @Override
@@ -228,11 +219,12 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         float left = ballView.getLeft() + deltaleft;
         float top = ballView.getTop() + deltatop;
 
-        TranslateAnimation anim = new TranslateAnimation(startView.getLeft(), left, startView.getTop(), top);
-        anim.setDuration(5000);
+        TranslateAnimation anim = new TranslateAnimation(startView.getLeft() - startView.getWidth() / 2, left,
+                startView.getTop() - startView.getHeight() / 2, top);
+        anim.setDuration(1000);
         ScaleAnimation scaleAnim = new ScaleAnimation(2.0f, 1.0f, 2.0f, 1.0f, ballView.getWidth() / 2,
                 ballView.getHeight() / 2);
-        scaleAnim.setDuration(5000);
+        scaleAnim.setDuration(1000);
         AnimationSet animSet = new AnimationSet(true);
         animSet.addAnimation(anim);
         animSet.addAnimation(scaleAnim);
@@ -256,7 +248,7 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
     public void onRequestBoardRotate(RequestBoardRotateEvent event)
     {
         Log.d(LogTag.CORNER, "onRequestBoardRotate");
-        updateBalls();
+        //updateBalls();
         setArrowsVisibility(View.VISIBLE);
         gamePhase = GamePhase.RotateBoard;
     }
@@ -285,8 +277,9 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         set.addAnimation(outside);
         set.addAnimation(rotate);
         set.addAnimation(inside);
-        startAnimation(set);
+        set.setFillAfter(true);
         set.setAnimationListener(new RotateAnimationListener(event.getRotateInfo()));
+        startAnimation(set);
         Log.d(LogTag.CORNER, "onRotateBoard finished, animation started");
     }
 
@@ -294,7 +287,7 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
     {
         if (ball.getPlayer() == Ball.NO_PLAYER)
         {
-            return R.drawable.empty3;
+            return R.drawable.circle_100;
         }
         else
         {

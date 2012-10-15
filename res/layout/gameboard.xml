@@ -7,19 +7,17 @@
     android:background="@color/gameboard"
     android:orientation="vertical">
 
-        <com.google.ads.AdView
+    <com.google.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             ads:adSize="BANNER"
             ads:adUnitId="@string/admob_publisher_id"
             ads:loadAdOnCreate="true"
             ads:refreshInterval="30"
             ads:testDevices="TEST_EMULATOR" >
-
         </com.google.ads.AdView>
-
+        
         <ru.naumen.pentago.game.controller.BoardController
             android:id="@+id/board"
             android:layout_width="wrap_content"
@@ -28,6 +26,8 @@
             android:orientation="vertical" >
 
         </ru.naumen.pentago.game.controller.BoardController>
+
+        
 
         <ru.naumen.pentago.game.PlayerInfo
             android:id="@+id/player1"

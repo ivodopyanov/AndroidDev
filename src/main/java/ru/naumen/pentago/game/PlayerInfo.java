@@ -51,14 +51,11 @@ public class PlayerInfo extends RelativeLayout implements RequestBallMoveHandler
     @Override
     public void onRequestBallMove(RequestBallMoveEvent event)
     {
-        ImageView light = (ImageView)findViewById(R.id.light);
-        if (event.getActivePlayerCode().equals(player.getCode()))
-        {
-            light.setVisibility(VISIBLE);
-        }
-        else
-        {
-            light.setVisibility(INVISIBLE);
-        }
+        /*
+         * ImageView light = (ImageView)findViewById(R.id.light); if
+         * (event.getActivePlayerCode().equals(player.getCode())) {
+         * light.setVisibility(VISIBLE); } else {
+         * light.setVisibility(INVISIBLE); }
+         */
     }
 }

@@ -71,10 +71,13 @@ public class GameActivity extends Activity implements GameOverHandler
         super.onCreate(savedInstanceState);
         Log.d("gameActivity", "activity started");
         setContentView(R.layout.gameboard);
+        players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
+        game = initGame(savedInstanceState);
         eventBus.register(GameOverEvent.class, this);
         findViewById(R.id.goback).setOnClickListener(new GoToMainMenuListener());
         findViewById(R.id.newgame).setOnClickListener(new ResetClickListener());
-        initBoard(savedInstanceState);
+
+        initBoard();
         ((BoardController)findViewById(R.id.board)).init(game, players, eventBus);
         initPlayersInfo();
         eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
@@ -88,10 +91,8 @@ public class GameActivity extends Activity implements GameOverHandler
                 .setPositiveButton("OK", new GoToMainMenuListener()).show();
     }
 
-    private void initBoard(Bundle savedInstanceState)
+    private void initBoard()
     {
-        players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
-        game = initGame(savedInstanceState);
         GameController gameController = new GameController(game, players, eventBus);
         List<PlayerController> playerControllers = Collections.transform(players, new PlayerControllerFactory(eventBus,
                 game.getBoard(), players));
@@ -110,7 +111,7 @@ public class GameActivity extends Activity implements GameOverHandler
         }
         else
         {
-            return new Game();
+            return new Game(players);
         }
     }
 
