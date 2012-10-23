@@ -101,11 +101,11 @@ public interface Constants
     int BOARD_SIZE = 6;
     //@formatter:off
     List<Player> TWO_HUMAN_PLAYERS = Arrays.asList(
-            new Player("Player1", "Player1", R.drawable.black_ball, PlayerType.human), 
-            new Player("Player2", "Player2", R.drawable.white_ball, PlayerType.human));
+            new Player("Player1", "Player1", R.drawable.blackball, PlayerType.human), 
+            new Player("Player2", "Player2", R.drawable.whiteball, PlayerType.human));
 
     List<Player> HUMAN_COMPUTER_PLAYERS = Arrays.asList(
-            new Player("Player",    "Player",   R.drawable.black_ball, PlayerType.human), 
-            new Player("Computer",  "Computer", R.drawable.white_ball, PlayerType.computer));
+            new Player("Player",    "Player",   R.drawable.blackball, PlayerType.human), 
+            new Player("Computer",  "Computer", R.drawable.whiteball, PlayerType.computer));
     //@formatter:on
 }

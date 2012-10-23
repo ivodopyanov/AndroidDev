@@ -62,7 +62,6 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     public void onFinishedRotateAnimation(FinishedRotateAnimationEvent event)
     {
         Log.d(LogTag.GAME, "onFinishedRotateAnimation");
-        game.getBoard().rotate(event.getRotateInfo());
         activePlayer = getNextPlayer(activePlayer);
         int winner = winStateScanner.hasAnyPlayerWon();
         if (winner != Ball.NO_PLAYER)

@@ -1,80 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+<RelativeLayout xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/boardpanel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gameboard"
-    android:orientation="vertical">
+    android:background="@color/gameboard">
 
-    <com.google.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/admob_publisher_id"
-            ads:loadAdOnCreate="true"
-            ads:refreshInterval="30"
-            ads:testDevices="TEST_EMULATOR" >
-        </com.google.ads.AdView>
-        
-        <ru.naumen.pentago.game.controller.BoardController
-            android:id="@+id/board"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical" >
+    <include 
+        android:id="@+id/board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        layout="@layout/boardwitharrows" >
+    </include>
 
-        </ru.naumen.pentago.game.controller.BoardController>
+    <include
+        android:id="@+id/player1"
+        layout="@layout/playerinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/board"
+        android:layout_alignLeft="@id/board" >
+    </include>
 
-        
+    <include
+        android:id="@+id/player2"
+        layout="@layout/playerinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/board"
+        android:layout_alignRight="@id/board" >
+    </include>
 
-        <ru.naumen.pentago.game.PlayerInfo
-            android:id="@+id/player1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/board"
-            android:layout_alignLeft="@id/board" >
+    <TextView
+        android:id="@+id/goback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/menu_element"
+        android:gravity="center"
+        android:paddingBottom="@dimen/menu_padding_bottom"
+        android:paddingLeft="@dimen/menu_padding_left"
+        android:paddingRight="@dimen/menu_padding_right"
+        android:paddingTop="@dimen/menu_padding_top"
+        android:text="@string/goback"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        </ru.naumen.pentago.game.PlayerInfo>
-
-        <ru.naumen.pentago.game.PlayerInfo
-            android:id="@+id/player2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/board"
-            android:layout_alignRight="@id/board" >
-
-        </ru.naumen.pentago.game.PlayerInfo>
-
-        <TextView
-            android:id="@+id/goback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/menu_element"
-            android:gravity="center"
-            android:paddingBottom="@dimen/menu_padding_bottom"
-            android:paddingLeft="@dimen/menu_padding_left"
-            android:paddingRight="@dimen/menu_padding_right"
-            android:paddingTop="@dimen/menu_padding_top"
-            android:text="@string/goback"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/newgame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/menu_element"
-            android:gravity="center"
-            android:paddingBottom="@dimen/menu_padding_bottom"
-            android:paddingLeft="@dimen/menu_padding_left"
-            android:paddingRight="@dimen/menu_padding_right"
-            android:paddingTop="@dimen/menu_padding_top"
-            android:text="@string/newgame"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView
+        android:id="@+id/newgame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/menu_element"
+        android:gravity="center"
+        android:paddingBottom="@dimen/menu_padding_bottom"
+        android:paddingLeft="@dimen/menu_padding_left"
+        android:paddingRight="@dimen/menu_padding_right"
+        android:paddingTop="@dimen/menu_padding_top"
+        android:text="@string/newgame"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

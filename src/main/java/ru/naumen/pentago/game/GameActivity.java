@@ -78,7 +78,8 @@ public class GameActivity extends Activity implements GameOverHandler
         findViewById(R.id.newgame).setOnClickListener(new ResetClickListener());
 
         initBoard();
-        ((BoardController)findViewById(R.id.board)).init(game, players, eventBus);
+        BoardController boardController = new BoardController(getApplicationContext(), findViewById(R.id.board));
+        boardController.init(game, players, eventBus);
         initPlayersInfo();
         eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
     }
@@ -117,7 +118,9 @@ public class GameActivity extends Activity implements GameOverHandler
 
     private void initPlayersInfo()
     {
-        ((PlayerInfo)findViewById(R.id.player1)).init(players.get(0), eventBus);
-        ((PlayerInfo)findViewById(R.id.player2)).init(players.get(1), eventBus);
+        PlayerInfo playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player1));
+        playerInfo.init(players.get(0), eventBus);
+        playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player2));
+        playerInfo.init(players.get(1), eventBus);
     }
 }

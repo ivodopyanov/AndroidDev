@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-            <merge xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/ball"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/white_ball" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ball"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:text="Test"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</merge>
+                <ImageView
+                    android:id="@+id/glow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/yellowcircle" />
+
+                <ImageView
+                    android:id="@+id/ball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/whiteball" />
+
+</RelativeLayout>
     

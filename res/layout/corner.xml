@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
                 <merge xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
@@ -7,7 +8,7 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/square_512" />
+                android:src="@drawable/smallsquare" />
 
             <ImageView
                 android:id="@+id/empty"
@@ -15,45 +16,45 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/empty_128" />
+                android:src="@drawable/spacingcornerball" />
             
             <ImageView
                 android:id="@+id/emptyleft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/empty"
-                android:src="@drawable/empty_128" />
+                android:src="@drawable/spacingcornerball" />
             
             <ImageView
                 android:id="@+id/emptytop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/empty"
-                android:src="@drawable/empty_128" />
+                android:src="@drawable/spacingcornerball" />
 
             <ImageView
                 android:id="@+id/ball11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/emptyleft"
                 android:layout_below="@id/emptytop"
-                android:src="@drawable/circle_100" />
+                android:layout_toRightOf="@id/emptyleft"
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/ball11"
                 android:layout_below="@id/emptytop"
-                android:src="@drawable/circle_100" />
+                android:layout_toRightOf="@id/ball11"
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/ball12"
                 android:layout_below="@id/emptytop"
-                android:src="@drawable/circle_100" />
+                android:layout_toRightOf="@id/ball12"
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball21"
@@ -61,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball11"
                 android:layout_toRightOf="@id/emptyleft"
-                android:src="@drawable/circle_100" />
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball22"
@@ -69,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball12"
                 android:layout_toRightOf="@id/ball21"
-                android:src="@drawable/circle_100" />
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball23"
@@ -77,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball13"
                 android:layout_toRightOf="@id/ball22"
-                android:src="@drawable/circle_100" />
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball31"
@@ -85,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball21"
                 android:layout_toRightOf="@id/emptyleft"
-                android:src="@drawable/circle_100" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball32"
@@ -93,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball22"
                 android:layout_toRightOf="@id/ball31"
-                android:src="@drawable/circle_100" />
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/ball33"
@@ -101,19 +103,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ball23"
                 android:layout_toRightOf="@id/ball32"
-                android:src="@drawable/circle_100" />
+                android:src="@drawable/emptyball" />
 
             <ImageView
                 android:id="@+id/animBall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/black_ball"
+                android:src="@drawable/blackball"
                 android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/empty_128" />
-
-        </merge>
+</merge>

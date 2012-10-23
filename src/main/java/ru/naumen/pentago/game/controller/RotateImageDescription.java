@@ -4,6 +4,7 @@
 package ru.naumen.pentago.game.controller;
 
 import ru.naumen.pentago.game.controller.GameController.RotateDirection;
+import android.widget.ImageView;
 
 /**
  * @author ivodopyanov
@@ -14,9 +15,9 @@ public class RotateImageDescription
 {
     private final int descId;
     private final RotateDirection dir;
-    private final CustomView image;
+    private final ImageView image;
 
-    public RotateImageDescription(CustomView image, int descId, RotateDirection dir)
+    public RotateImageDescription(ImageView image, int descId, RotateDirection dir)
     {
         this.image = image;
         this.descId = descId;
@@ -33,7 +34,7 @@ public class RotateImageDescription
         return dir;
     }
 
-    public CustomView getImage()
+    public ImageView getImage()
     {
         return image;
     }
