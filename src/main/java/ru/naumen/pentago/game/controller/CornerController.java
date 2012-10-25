@@ -1,8 +1,12 @@
 package ru.naumen.pentago.game.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ru.naumen.pentago.R;
+import ru.naumen.pentago.framework.ChildLayoutDescriptor;
 import ru.naumen.pentago.framework.collections.Collections;
 import ru.naumen.pentago.framework.collections.Predicate;
 import ru.naumen.pentago.framework.eventbus.EventBus;
@@ -30,6 +34,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -37,9 +42,8 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-public class CornerController extends RelativeLayout implements RequestBoardRotateHandler, MoveBallHandler,
+public class CornerController extends ViewGroup implements RequestBoardRotateHandler, MoveBallHandler,
         RotateBoardHandler, RequestBallMoveHandler
 {
     private static class BallInsertionListener implements View.OnClickListener
@@ -167,6 +171,23 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         }
     };
 
+    private static final Map<Integer, ChildLayoutDescriptor> LAYOUT_DESCS;
+
+    static
+    {
+        LAYOUT_DESCS = new HashMap<Integer, ChildLayoutDescriptor>();
+        LAYOUT_DESCS.put(R.id.animBall, new ChildLayoutDescriptor(0.25f, 0.25f, 0, 0));
+        LAYOUT_DESCS.put(R.id.ball11, new ChildLayoutDescriptor(0.25f, 0.25f, 0.125f, 0.125f));
+        LAYOUT_DESCS.put(R.id.ball12, new ChildLayoutDescriptor(0.25f, 0.25f, 0.375f, 0.125f));
+        LAYOUT_DESCS.put(R.id.ball13, new ChildLayoutDescriptor(0.25f, 0.25f, 0.625f, 0.125f));
+        LAYOUT_DESCS.put(R.id.ball21, new ChildLayoutDescriptor(0.25f, 0.25f, 0.125f, 0.375f));
+        LAYOUT_DESCS.put(R.id.ball22, new ChildLayoutDescriptor(0.25f, 0.25f, 0.375f, 0.375f));
+        LAYOUT_DESCS.put(R.id.ball23, new ChildLayoutDescriptor(0.25f, 0.25f, 0.625f, 0.375f));
+        LAYOUT_DESCS.put(R.id.ball31, new ChildLayoutDescriptor(0.25f, 0.25f, 0.125f, 0.625f));
+        LAYOUT_DESCS.put(R.id.ball32, new ChildLayoutDescriptor(0.25f, 0.25f, 0.375f, 0.625f));
+        LAYOUT_DESCS.put(R.id.ball33, new ChildLayoutDescriptor(0.25f, 0.25f, 0.625f, 0.625f));
+    }
+
     private CornerViewDescription desc;
 
     private GamePhase gamePhase = GamePhase.PutBall;
@@ -180,13 +201,13 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
     public CornerController(Context context)
     {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.corner, this);
+        initLayout();
     }
 
     public CornerController(Context context, AttributeSet attrSet)
     {
         super(context, attrSet);
-        LayoutInflater.from(context).inflate(R.layout.corner, this);
+        initLayout();
     }
 
     public void init(CornerViewDescription desc, Game game, EventBus eventBus)
@@ -222,7 +243,6 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         game.getBoard().rotate(rotateInfoBuf);
         updateBalls();
         eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfoBuf));
-
     }
 
     @Override
@@ -284,7 +304,6 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         if (!event.getRotateInfo().getQuarter().equals(desc.getArea()))
             return;
         Log.d(LogTag.CORNER, "onRotateBoard");
-        ImageView image = (ImageView)findViewById(R.id.imageView1);
         int w = getWidth() / 2;
         int h = getHeight() / 2;
         float xpivot = w;
@@ -307,12 +326,46 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
         set.addAnimation(outside);
         set.addAnimation(rotate);
         set.addAnimation(inside);
-        //set.addAnimation(reverseRotate);
-        //set.setFillEnabled(true);
         rotateInfoBuf = event.getRotateInfo();
-        //set.setAnimationListener(new RotateAnimationListener(event.getRotateInfo()));
         startAnimation(set);
         Log.d(LogTag.CORNER, "onRotateBoard finished, animation started");
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b)
+    {
+        int w = r - l;
+        int h = b - t;
+        int size = w;
+        if (h < size)
+            size = h;
+        for (Entry<Integer, ChildLayoutDescriptor> entry : LAYOUT_DESCS.entrySet())
+        {
+            View view = findViewById(entry.getKey());
+            int childl = (int)(size * entry.getValue().getLeftPercent());
+            int childr = childl + (int)(size * entry.getValue().getWidthPercent());
+            int childt = (int)(size * entry.getValue().getTopPercent());
+            int childb = childt + (int)(size * entry.getValue().getHeightPercent());
+            view.layout(childl, childt, childr, childb);
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        int size = MeasureSpec.getSize(widthMeasureSpec);
+        if (size > MeasureSpec.getSize(heightMeasureSpec))
+            size = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(size, size);
+        for (Entry<Integer, ChildLayoutDescriptor> entry : LAYOUT_DESCS.entrySet())
+        {
+            View view = findViewById(entry.getKey());
+            int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec((int)(size * entry.getValue().getWidthPercent()),
+                    MeasureSpec.EXACTLY);
+            int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec((int)(size * entry.getValue().getHeightPercent()),
+                    MeasureSpec.EXACTLY);
+            view.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+        }
     }
 
     private int getBallResource(Ball ball)
@@ -326,6 +379,12 @@ public class CornerController extends RelativeLayout implements RequestBoardRota
             Player player = game.getPlayers().get(ball.getPlayer());
             return player.getBallResource();
         }
+    }
+
+    private void initLayout()
+    {
+        LayoutInflater.from(getContext()).inflate(R.layout.corner, this);
+        setBackgroundDrawable(getResources().getDrawable(R.drawable.smallsquare));
     }
 
     private void setArrowsVisibility(int visibility)

@@ -1,123 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
-    
-                                <ImageView
-                                    android:id="@+id/fillerlt"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/spacingcornerarrow" />
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-                                <ImageView
-                                    android:id="@+id/ltc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/fillerlt"
-                                    android:src="@drawable/rotatea" />
+        <ImageView
+            android:id="@+id/ltc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/rotatea" />
 
-                                <ImageView
-                                    android:id="@+id/ltcc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/fillerlt"
-                                    android:paddingTop="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea7" />
+    	<ImageView
+    	    android:id="@+id/rtcc"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:src="@drawable/rotatea8" />
+        
+        <ImageView
+        android:id="@+id/lbcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea6" />
 
-                                <include
-                                    android:id="@+id/corners"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/ltc"
-                                    android:layout_toRightOf="@id/ltcc"
-                                    layout="@layout/foursquare" />
+    <ImageView
+        android:id="@+id/rbc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea3" />
+    <ImageView
+        android:id="@+id/ltcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea7" />
 
-                                <ImageView
-                                    android:id="@+id/fillertop"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_above="@id/corners"
-                                    android:layout_toRightOf="@id/ltc"
-                                    android:src="@drawable/spacinghor" />
-                                
-                                <ImageView
-                                    android:id="@+id/fillerleft"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toLeftOf="@id/corners"
-                                    android:layout_below="@id/ltcc"
-                                    android:src="@drawable/spacingvert" />
+    <ImageView
+        android:id="@+id/lbc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea4" />
+    <ImageView
+        android:id="@+id/rtc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea2" />
 
-                                <ImageView
-                                    android:id="@+id/rtcc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_above="@id/corners"
-                                    android:layout_toRightOf="@id/fillertop"
-                                    android:paddingLeft="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea8" />
-                                
-                                <ImageView
-                                    android:id="@+id/lbc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/fillerleft"
-                                    android:layout_toLeftOf="@id/corners"
-                                    android:paddingBottom="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea4" />
-                                
-                                <ImageView
-                                    android:id="@+id/rtc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignTop="@id/ltcc"
-                                    android:layout_toRightOf="@id/corners"
-                                    android:layout_centerVertical="true"
-                                    android:paddingTop="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea2" />
-                                
-                                <ImageView
-                                    android:id="@+id/fillerright"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toLeftOf="@id/corners"
-                                    android:layout_below="@id/ltcc"
-                                    android:src="@drawable/spacingvert" />
-                                
-                                <ImageView
-                                    android:id="@+id/rbcc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/fillerright"
-                                    android:layout_centerVertical="true"
-                                    android:layout_toRightOf="@id/corners"
-                                    android:paddingBottom="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea5" />
-                                
-                                <ImageView
-                                    android:id="@+id/lbcc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/corners"
-                                    android:layout_alignRight="@id/ltc"
-                                    android:paddingRight="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea6" />
-                                
-                                <ImageView
-                                    android:id="@+id/fillerbottom"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/corners"
-                                    android:layout_toRightOf="@id/lbcc"
-                                    android:src="@drawable/spacinghor" />
+    <ImageView
+        android:id="@+id/rbcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotatea5" />
 
-                                <ImageView
-                                    android:id="@+id/rbc"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/corners"
-                                    android:layout_toRightOf="@id/fillerbottom"
-                                    android:paddingLeft="@dimen/arrw_padding_vert"
-                                    android:src="@drawable/rotatea3" />
-                                </RelativeLayout>
-                    
+        <ru.naumen.pentago.game.controller.FourSquareController
+        android:id="@+id/corners"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</merge>                    

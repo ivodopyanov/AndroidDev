@@ -8,39 +8,41 @@
 
     <ru.naumen.pentago.game.controller.BoardController
         android:id="@+id/board"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true" />
 
     <include
         android:id="@+id/player1"
-        layout="@layout/playerinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/board"
-        android:layout_alignLeft="@id/board" >
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/board"
+        layout="@layout/playerinfo" >
+
     </include>
 
     <include
         android:id="@+id/player2"
-        layout="@layout/playerinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/board"
-        android:layout_alignRight="@id/board" >
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/board"
+        layout="@layout/playerinfo" >
+
     </include>
 
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:weightSum="4" >
+        android:weightSum="11" >
 
         <TextView
             android:id="@+id/goback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="@drawable/menu_element"
             android:gravity="center"
             android:paddingBottom="@dimen/menu_padding_bottom"
@@ -53,14 +55,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2" >
+            android:layout_weight="7" >
         </LinearLayout>
         
         <TextView
             android:id="@+id/newgame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:background="@drawable/menu_element"
             android:gravity="center"
             android:paddingBottom="@dimen/menu_padding_bottom"

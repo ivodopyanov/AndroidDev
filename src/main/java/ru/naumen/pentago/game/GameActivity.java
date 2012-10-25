@@ -78,7 +78,7 @@ public class GameActivity extends Activity implements GameOverHandler
         findViewById(R.id.newgame).setOnClickListener(new ResetClickListener());
 
         initBoard();
-        BoardController boardController = new BoardController(getApplicationContext(), findViewById(R.id.board));
+        BoardController boardController = (BoardController)findViewById(R.id.board);
         boardController.init(game, players, eventBus);
         initPlayersInfo();
         eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
