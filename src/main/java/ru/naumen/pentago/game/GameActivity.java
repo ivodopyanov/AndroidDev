@@ -3,7 +3,6 @@ package ru.naumen.pentago.game;
 import java.io.Serializable;
 import java.util.List;
 
-import ru.naumen.pentago.MainMenuActivity;
 import ru.naumen.pentago.R;
 import ru.naumen.pentago.framework.collections.Collections;
 import ru.naumen.pentago.framework.eventbus.EventBus;
@@ -44,8 +43,7 @@ public class GameActivity extends Activity implements GameOverHandler
 
         private void goBack()
         {
-            Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-            startActivity(intent);
+            finish();
         }
     }
 
@@ -71,6 +69,7 @@ public class GameActivity extends Activity implements GameOverHandler
         super.onCreate(savedInstanceState);
         Log.d("gameActivity", "activity started");
         setContentView(R.layout.gameboard);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
         game = initGame(savedInstanceState);
         eventBus.register(GameOverEvent.class, this);
@@ -87,8 +86,11 @@ public class GameActivity extends Activity implements GameOverHandler
     @Override
     public void onGameOver(GameOverEvent event)
     {
-        new AlertDialog.Builder(GameActivity.this).setTitle(R.string.endOfGame)
-                .setMessage(players.get(event.getWinner()).getTitle())
+        new AlertDialog.Builder(GameActivity.this)
+                .setTitle(R.string.endOfGame)
+                .setMessage(
+                        getResources().getString(R.string.winner) + ": "
+                                + getResources().getString(players.get(event.getWinner()).getTitleCode()))
                 .setPositiveButton("OK", new GoToMainMenuListener()).show();
     }
 

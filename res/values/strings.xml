@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Пентаго</string>
-    <string name="singlePlayer">Одиночная игра</string>
-    <string name="startSinglePlayer">Начать одиночную игру</string>
-    <string name="rotateCounterClockwise">Повернуть против часовой</string>
-    <string name="rotateClockwise">Повернуть по часовой</string>
-    <string name="endOfGame">Игра закончена!</string>
-    <string name="blackball">Черный шарик</string>
-    <string name="multiplayer">Multiplayer</string>
-    <string name="hotseat">Hotseat</string>
-    <string name="Start">Start</string>
-    <string name="againstComputer">VS Компьютер</string>
-    <string name="againstHuman">VS Человек</string>
+    <string name="app_name">Twisted balls</string>
+    <string name="rotateCounterClockwise">Rotate counterclockwise</string>
+    <string name="rotateClockwise">Rotate clockwise</string>
+    <string name="endOfGame">Game over!</string>
+    <string name="againstComputer">VS Computer</string>
+    <string name="againstHuman">VS Human</string>
     <string name="admob_publisher_id">a15072cb5e81eef</string>
-    <string name="playerTitle">Игрок: </string>
+    <string name="playerTitle">Player: </string>
     <color name="gameboard">#612a2a</color>
     <color name="main">#843463</color>
-    <string name="exit">Выход</string>
-    <string name="goback">Назад</string>
-    <string name="newgame">Новая игра</string>
+    <string name="exit">Exit</string>
+    <string name="goback">Back</string>
+    <string name="newgame">New game</string>
+    <string name="howto1">Place ball in an empty place</string>
+    <string name="howto2">Rotate one of quarters</string>
+    <string name="howto3">Whoever puts up five balls in a row wins</string>
+    <string name="howto">How to play</string>
+    <string name="You">You</string>
+    <string name="Computer">Computer</string>
+    <string name="Player1">First player</string>
+    <string name="Player2">Second player</string>
+    <string name="winner">Winner</string>
 </resources>

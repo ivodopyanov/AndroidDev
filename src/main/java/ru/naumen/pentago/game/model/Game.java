@@ -5,9 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.naumen.pentago.R;
-import ru.naumen.pentago.game.model.Player.PlayerType;
-
 public class Game implements Serializable
 {
     private static final long serialVersionUID = 7769642206955663086L;
@@ -17,8 +14,6 @@ public class Game implements Serializable
     public Game()
     {
         this.board = new Board();
-        players.add(new Player("Player1", "Player1", R.drawable.blackball, PlayerType.human));
-        players.add(new Player("Player2", "Player1", R.drawable.whiteball, PlayerType.human));
     }
 
     public Game(List<Player> players)

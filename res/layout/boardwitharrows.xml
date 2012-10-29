@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:naumen="http://schemas.android.com/apk/res/ru.naumen.pentago"
     >
 
-        <ImageView
+        <ru.naumen.pentago.framework.widgets.NauImageView
             android:id="@+id/ltc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/rotatea" />
+            naumen:source="@drawable/rotate" />
 
-    	<ImageView
+    	<ru.naumen.pentago.framework.widgets.NauImageView
     	    android:id="@+id/rtcc"
     	    android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
-    	    android:src="@drawable/rotatea8" />
+    	    naumen:source="@drawable/rotate"
+    	    naumen:flip="true" />
         
-        <ImageView
+        <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/lbcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea6" />
+        naumen:source="@drawable/rotate"
+        naumen:angle="180"
+        naumen:flip="true" />
 
-    <ImageView
+    <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/rbc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea3" />
-    <ImageView
+        naumen:source="@drawable/rotate"
+        naumen:angle="180" />
+    <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/ltcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea7" />
+        naumen:source="@drawable/rotate"
+        naumen:angle="90"
+        naumen:flip="true" />
 
-    <ImageView
+    <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/lbc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea4" />
-    <ImageView
+        naumen:angle="-90"
+        naumen:source="@drawable/rotate" />
+    
+    <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/rtc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea2" />
+        naumen:angle="90"
+        naumen:source="@drawable/rotate"/>
 
-    <ImageView
+    <ru.naumen.pentago.framework.widgets.NauImageView
         android:id="@+id/rbcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rotatea5" />
+        naumen:angle="-90"
+        naumen:flip="true"
+        naumen:source="@drawable/rotate" />
 
         <ru.naumen.pentago.game.controller.FourSquareController
         android:id="@+id/corners"

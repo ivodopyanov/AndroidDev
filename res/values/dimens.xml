@@ -7,7 +7,7 @@
     <dimen name="menu_padding_top">5dp</dimen>
     <dimen name="menu_padding_bottom">5dp</dimen>
     <dimen name="menu_image_padding">20dp</dimen>
-    <dimen name="title_text">50dp</dimen>
+    <dimen name="title_text">30dp</dimen>
     <dimen name="title_padding">40dp</dimen>
     <dimen name="rotateImageWidth">100dp</dimen>
     <dimen name="move_ball_animation_dx">0dp</dimen>

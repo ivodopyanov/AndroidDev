@@ -11,14 +11,14 @@ public class Player implements Serializable
 
     private static final long serialVersionUID = -5896810674770613182L;
 
-    private String title;
+    private final int titleCode;
     private int ballResource;
     private final String code;
     private final PlayerType type;
 
-    public Player(String title, String code, int ballResource, PlayerType type)
+    public Player(int titleCode, String code, int ballResource, PlayerType type)
     {
-        this.title = title;
+        this.titleCode = titleCode;
         this.ballResource = ballResource;
         this.code = code;
         this.type = type;
@@ -34,9 +34,9 @@ public class Player implements Serializable
         return code;
     }
 
-    public String getTitle()
+    public int getTitleCode()
     {
-        return title;
+        return titleCode;
     }
 
     public PlayerType getType()
@@ -49,14 +49,9 @@ public class Player implements Serializable
         this.ballResource = ballResource;
     }
 
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
     @Override
     public String toString()
     {
-        return new StringBuilder("Player ").append(title).toString();
+        return new StringBuilder("Player ").append(code).toString();
     }
 }

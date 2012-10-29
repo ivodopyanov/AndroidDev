@@ -35,7 +35,7 @@ public class PlayerInfo implements RequestBallMoveHandler
         this.player = player;
         eventBus.register(RequestBallMoveEvent.class, this);
         TextView title = (TextView)layout.findViewById(R.id.title);
-        title.setText(player.getTitle());
+        title.setText(context.getResources().getString(player.getTitleCode()));
         ImageView ball = (ImageView)layout.findViewById(R.id.ball);
         ball.setImageDrawable(context.getResources().getDrawable(player.getBallResource()));
     }

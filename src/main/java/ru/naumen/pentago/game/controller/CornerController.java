@@ -24,6 +24,10 @@ import ru.naumen.pentago.game.controller.events.RequestBoardRotateHandler;
 import ru.naumen.pentago.game.controller.events.RotateBoardEvent;
 import ru.naumen.pentago.game.controller.events.RotateBoardHandler;
 import ru.naumen.pentago.game.controller.events.RotateCornerEvent;
+import ru.naumen.pentago.game.controller.events.StartedBallAnimationEvent;
+import ru.naumen.pentago.game.controller.events.StartedBallAnimationHandler;
+import ru.naumen.pentago.game.controller.events.StartedRotateAnimationEvent;
+import ru.naumen.pentago.game.controller.events.StartedRotateAnimationHandler;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Game;
 import ru.naumen.pentago.game.model.Player;
@@ -44,22 +48,24 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 public class CornerController extends ViewGroup implements RequestBoardRotateHandler, MoveBallHandler,
-        RotateBoardHandler, RequestBallMoveHandler
+        RotateBoardHandler, RequestBallMoveHandler, StartedRotateAnimationHandler, StartedBallAnimationHandler
 {
-    private static class BallInsertionListener implements View.OnClickListener
+    private class BallInsertionListener implements View.OnClickListener
     {
-        private final EventBus eventBus;
         private final Ball ball;
 
-        public BallInsertionListener(EventBus eventBus, Ball ball)
+        public BallInsertionListener(Ball ball)
         {
-            this.eventBus = eventBus;
             this.ball = ball;
         }
 
         @Override
         public void onClick(View arg0)
         {
+            if (!GamePhase.PutBall.equals(gamePhase))
+                return;
+            if (ballMoveActive)
+                return;
             eventBus.fireEvent(new InsertBallInCornerEvent(ball));
         }
     }
@@ -103,44 +109,6 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
 
     }
 
-    private class RotateAnimationListener implements AnimationListener
-    {
-        private final RotateInfo rotateInfo;
-        private boolean firstTime = true;
-
-        public RotateAnimationListener(RotateInfo rotateInfo)
-        {
-            this.rotateInfo = rotateInfo;
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation)
-        {
-            Log.d(LogTag.CORNER, "onAnimationEnd");
-            if (firstTime)
-            {
-                firstTime = false;
-                clearAnimation();
-            }
-            else
-            {
-                game.getBoard().rotate(rotateInfo);
-                updateBalls();
-                eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfo));
-            }
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation)
-        {
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation)
-        {
-        }
-    }
-
     private class RotateQuaterListener implements View.OnClickListener
     {
         private final Quarter area;
@@ -157,8 +125,10 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         @Override
         public void onClick(View v)
         {
-            if (GamePhase.RotateBoard.equals(gamePhase))
+            if (GamePhase.RotateBoard.equals(gamePhase) && !rotationActive)
+            {
                 eventBus.fireEvent(new RotateCornerEvent(area, direction));
+            }
         }
     }
 
@@ -197,6 +167,8 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     private static final int[] BALL_IDS = new int[] { R.id.ball11, R.id.ball12, R.id.ball13, R.id.ball21, R.id.ball22,
             R.id.ball23, R.id.ball31, R.id.ball32, R.id.ball33 };
     private RotateInfo rotateInfoBuf;
+    private boolean rotationActive = false;
+    private boolean ballMoveActive = false;
 
     public CornerController(Context context)
     {
@@ -220,6 +192,8 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         eventBus.register(RequestBoardRotateEvent.class, this);
         eventBus.register(MoveBallEvent.class, this);
         eventBus.register(RotateBoardEvent.class, this);
+        eventBus.register(StartedRotateAnimationEvent.class, this);
+        eventBus.register(StartedBallAnimationEvent.class, this);
 
         for (RotateImageDescription imageDesc : desc.getImages())
         {
@@ -229,7 +203,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         }
         for (int i = 0; i < BALL_IDS.length; i++)
         {
-            findViewById(BALL_IDS[i]).setOnClickListener(new BallInsertionListener(eventBus, balls.get(i)));
+            findViewById(BALL_IDS[i]).setOnClickListener(new BallInsertionListener(balls.get(i)));
         }
         setArrowsVisibility(View.INVISIBLE);
     }
@@ -237,9 +211,12 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     @Override
     public void onAnimationEnd()
     {
-
         Log.d(LogTag.CORNER, "onAnimationEnd");
         super.onAnimationEnd();
+        for (int ballId : BALL_IDS)
+        {
+            findViewById(ballId).clearAnimation();
+        }
         game.getBoard().rotate(rotateInfoBuf);
         updateBalls();
         eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfoBuf));
@@ -250,7 +227,10 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     {
         if (!event.getBall().inside(desc.getArea()))
             return;
+        if (event.getBall().getPlayer() != Ball.NO_PLAYER)
+            return;
         Log.d(LogTag.CORNER, "onMoveBall");
+        eventBus.fireEvent(new StartedBallAnimationEvent());
         ImageView animBall = (ImageView)findViewById(R.id.animBall);
         animBall.setImageDrawable(getResources().getDrawable(event.getPlayer().getBallResource()));
         int ballPos = balls.indexOf(event.getBall());
@@ -284,7 +264,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     public void onRequestBallMove(RequestBallMoveEvent event)
     {
         Log.d(LogTag.CORNER, "onRequestBallMove");
-        //updateBalls();
+        rotationActive = false;
         setArrowsVisibility(View.INVISIBLE);
         gamePhase = GamePhase.PutBall;
     }
@@ -293,7 +273,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     public void onRequestBoardRotate(RequestBoardRotateEvent event)
     {
         Log.d(LogTag.CORNER, "onRequestBoardRotate");
-        //updateBalls();
+        ballMoveActive = false;
         setArrowsVisibility(View.VISIBLE);
         gamePhase = GamePhase.RotateBoard;
     }
@@ -304,31 +284,28 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         if (!event.getRotateInfo().getQuarter().equals(desc.getArea()))
             return;
         Log.d(LogTag.CORNER, "onRotateBoard");
-        int w = getWidth() / 2;
-        int h = getHeight() / 2;
-        float xpivot = w;
-        float ypivot = h;
-        ScaleAnimation outside = new ScaleAnimation(1.2f, 0.8f, 1.2f, 0.8f, xpivot, ypivot);
-        outside.setStartOffset(0);
-        outside.setDuration(1000);
-        RotateAnimation rotate = new RotateAnimation(0, event.getRotateInfo().getDirection()
-                .equals(RotateDirection.Clockwise) ? 90 : -90, xpivot, ypivot);
-        rotate.setStartOffset(1000);
-        rotate.setDuration(1000);
-        ScaleAnimation inside = new ScaleAnimation(0.8f, 1.25f, 0.8f, 1.25f, xpivot, ypivot);
-        inside.setStartOffset(2000);
-        inside.setDuration(1000);
-        RotateAnimation reverseRotate = new RotateAnimation(0, event.getRotateInfo().getDirection()
-                .equals(RotateDirection.Clockwise) ? -90 : 90, xpivot, ypivot);
-        reverseRotate.setStartOffset(3000);
-        reverseRotate.setDuration(1);
-        AnimationSet set = new AnimationSet(true);
-        set.addAnimation(outside);
-        set.addAnimation(rotate);
-        set.addAnimation(inside);
+        eventBus.fireEvent(new StartedRotateAnimationEvent());
+        Animation ballRotateAnimation = generateBallRotateAnimation(event.getRotateInfo().getDirection());
+        Animation quarterRotateAnimation = generateQuarterRotateAnimation(event.getRotateInfo().getDirection());
         rotateInfoBuf = event.getRotateInfo();
-        startAnimation(set);
+        for (int ballId : BALL_IDS)
+        {
+            findViewById(ballId).startAnimation(ballRotateAnimation);
+        }
+        startAnimation(quarterRotateAnimation);
         Log.d(LogTag.CORNER, "onRotateBoard finished, animation started");
+    }
+
+    @Override
+    public void onStartedBallAnimation(StartedBallAnimationEvent event)
+    {
+        ballMoveActive = true;
+    }
+
+    @Override
+    public void onStartedRotateAnimation(StartedRotateAnimationEvent event)
+    {
+        rotationActive = true;
     }
 
     @Override
@@ -366,6 +343,45 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
                     MeasureSpec.EXACTLY);
             view.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         }
+    }
+
+    private Animation generateBallRotateAnimation(RotateDirection direction)
+    {
+        View ballView = findViewById(R.id.ball11);
+        int w = ballView.getWidth() / 2;
+        int h = ballView.getHeight() / 2;
+        float xpivot = w;
+        float ypivot = h;
+        RotateAnimation ballRotate = new RotateAnimation(0, direction.equals(RotateDirection.Clockwise) ? -90 : 90,
+                xpivot, ypivot);
+        ballRotate.setStartOffset(1000);
+        ballRotate.setDuration(1000);
+        ballRotate.setFillEnabled(true);
+        ballRotate.setFillAfter(true);
+        return ballRotate;
+    }
+
+    private Animation generateQuarterRotateAnimation(RotateDirection direction)
+    {
+        int w = getWidth() / 2;
+        int h = getHeight() / 2;
+        float xpivot = w;
+        float ypivot = h;
+        ScaleAnimation outside = new ScaleAnimation(1.2f, 0.8f, 1.2f, 0.8f, xpivot, ypivot);
+        outside.setStartOffset(0);
+        outside.setDuration(1000);
+        RotateAnimation rotate = new RotateAnimation(0, direction.equals(RotateDirection.Clockwise) ? 90 : -90, xpivot,
+                ypivot);
+        rotate.setStartOffset(1000);
+        rotate.setDuration(1000);
+        ScaleAnimation inside = new ScaleAnimation(0.8f, 1.25f, 0.8f, 1.25f, xpivot, ypivot);
+        inside.setStartOffset(2000);
+        inside.setDuration(1000);
+        AnimationSet set = new AnimationSet(true);
+        set.addAnimation(outside);
+        set.addAnimation(rotate);
+        set.addAnimation(inside);
+        return set;
     }
 
     private int getBallResource(Ball ball)
