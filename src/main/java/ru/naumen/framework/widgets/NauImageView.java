@@ -3,7 +3,7 @@
  */
 package ru.naumen.framework.widgets;
 
-import ru.naumen.core.R;
+import ru.naumen.storybook.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
