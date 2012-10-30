@@ -95,8 +95,10 @@ public interface Constants
         //@formatter:on
     }
 
+    String APPLICATION_TITLE = "Twisting Balls";
     String BOARD_EXTRA = "board";
     String PLAYERS_EXTRA = "players";
+    int REQUEST_BT_ENABLED = 1;
 
     int BOARD_SIZE = 6;
     //@formatter:off

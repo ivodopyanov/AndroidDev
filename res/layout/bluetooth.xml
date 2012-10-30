@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="9" >
+
+    <ListView
+        android:id="@+id/devicesList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7" >
+    </ListView>
+
+    
+        
+        <TextView
+            android:id="@+id/textRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/menu_element"
+            android:gravity="center"
+            android:text="@string/refreshDevices"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <TextView
+            android:id="@+id/textWaitForCall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/menu_element"
+            android:gravity="center"
+            android:text="@string/waitForCall"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+</LinearLayout>

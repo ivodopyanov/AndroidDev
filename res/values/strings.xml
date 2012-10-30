@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Twisted balls</string>
-    <string name="rotateCounterClockwise">Rotate counterclockwise</string>
-    <string name="rotateClockwise">Rotate clockwise</string>
-    <string name="endOfGame">Game over!</string>
-    <string name="againstComputer">VS Computer</string>
-    <string name="againstHuman">VS Human</string>
-    <string name="admob_publisher_id">a15072cb5e81eef</string>
-    <string name="playerTitle">Player: </string>
     <color name="gameboard">#612a2a</color>
     <color name="main">#843463</color>
+    
+    <string name="admob_publisher_id">a15072cb5e81eef</string>
+    <string name="againstComputer">VS Computer</string>
+    <string name="againstHuman">VS Human</string>
+    <string name="app_name">Twisted balls</string>
+    <string name="bluetooth">Via bluetooth</string>
+    <string name="bluetoothConnection">Bluetooth connection</string>
+    <string name="bluetoothConnectionError">An error occured during establishing bluetooth connection</string>
+    <string name="bluetoothEnable">Enable bluetooth</string>
+    <string name="bluetoothEnableError">An error occured during bluetooth enabling</string>
+    <string name="bluetoothIsOff">Bluetooth is not enabled</string>
+    <string name="cancel">Cancel</string>
+    <string name="Computer">Computer</string>
+    <string name="endOfGame">Game over!</string>
     <string name="exit">Exit</string>
     <string name="goback">Back</string>
-    <string name="newgame">New game</string>
+    <string name="howto">How to play</string>
     <string name="howto1">Place ball in an empty place</string>
     <string name="howto2">Rotate one of quarters</string>
     <string name="howto3">Whoever puts up five balls in a row wins</string>
-    <string name="howto">How to play</string>
-    <string name="You">You</string>
-    <string name="Computer">Computer</string>
+    <string name="newgame">New game</string>
+    <string name="noBluetooth">Bluetooth is not available</string>
     <string name="Player1">First player</string>
     <string name="Player2">Second player</string>
+    <string name="playerTitle">Player: </string>
+    <string name="refreshDevices">Refresh devices</string>
+    <string name="rotateCounterClockwise">Rotate counterclockwise</string>
+    <string name="rotateClockwise">Rotate clockwise</string>
+    <string name="searchBluetoothDevice">Search devices</string>
+    <string name="selectBondedBluetoothDevice">Select bonded bluetooth device</string>
+    <string name="waitForCall">Wait for call</string>
     <string name="winner">Winner</string>
+    <string name="You">You</string>
 </resources>
