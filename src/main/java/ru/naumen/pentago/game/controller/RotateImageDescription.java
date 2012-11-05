@@ -3,7 +3,6 @@
  */
 package ru.naumen.pentago.game.controller;
 
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 import android.widget.ImageView;
 
 /**
@@ -14,14 +13,14 @@ import android.widget.ImageView;
 public class RotateImageDescription
 {
     private final int descId;
-    private final RotateDirection dir;
+    private final boolean clockwise;
     private final ImageView image;
 
-    public RotateImageDescription(ImageView image, int descId, RotateDirection dir)
+    public RotateImageDescription(ImageView image, int descId, boolean clockwise)
     {
         this.image = image;
         this.descId = descId;
-        this.dir = dir;
+        this.clockwise = clockwise;
     }
 
     public int getDescId()
@@ -29,13 +28,13 @@ public class RotateImageDescription
         return descId;
     }
 
-    public RotateDirection getDir()
-    {
-        return dir;
-    }
-
     public ImageView getImage()
     {
         return image;
+    }
+
+    public boolean isClockwise()
+    {
+        return clockwise;
     }
 }

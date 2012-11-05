@@ -59,7 +59,7 @@ public class HumanPlayerController extends PlayerControllerImpl implements Inser
     {
         if (active)
         {
-            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.getDirection()), player));
+            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.isClockwise()), player));
         }
     }
 }

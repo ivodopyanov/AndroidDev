@@ -1,11 +1,11 @@
 /**
  * 
  */
-package ru.naumen.pentago.game.controller.events;
+package ru.naumen.pentago.player.controller.ai.events;
 
 import ru.naumen.pentago.framework.eventbus.Event;
+import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Player;
-import ru.naumen.pentago.player.controller.ai.AIMoveInfo;
 
 /**
  * @author ivodopyanov
@@ -14,12 +14,12 @@ import ru.naumen.pentago.player.controller.ai.AIMoveInfo;
  */
 public class MoveCalculatedEvent implements Event<MoveCalculatedHandler>
 {
-    private final AIMoveInfo moveInfo;
+    private final Ball ball;
     private final Player player;
 
-    public MoveCalculatedEvent(AIMoveInfo moveInfo, Player player)
+    public MoveCalculatedEvent(Ball ball, Player player)
     {
-        this.moveInfo = moveInfo;
+        this.ball = ball;
         this.player = player;
     }
 
@@ -29,9 +29,9 @@ public class MoveCalculatedEvent implements Event<MoveCalculatedHandler>
         handler.onMoveCalculated(this);
     }
 
-    public AIMoveInfo getMoveInfo()
+    public Ball getBall()
     {
-        return moveInfo;
+        return ball;
     }
 
     public Player getPlayer()

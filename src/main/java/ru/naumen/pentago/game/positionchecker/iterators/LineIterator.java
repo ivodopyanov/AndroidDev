@@ -11,6 +11,8 @@ import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 
 /**
+ * Итератор, который пробегает по линиям доски в определенном направлении
+ * 
  * @author ivodopyanov
  * @since 06.10.2012
  * 

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ru.naumen.pentago.game.Constants;
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 
 public class Board implements Serializable
 {
@@ -35,7 +34,7 @@ public class Board implements Serializable
         return balls;
     }
 
-    public void rotate(Quarter quarter, RotateDirection direction)
+    public void rotate(Quarter quarter, boolean clockwise)
     {
         int startx = quarter.isLeft() ? 0 : Constants.BOARD_SIZE / 2;
         int starty = quarter.isTop() ? 0 : Constants.BOARD_SIZE / 2;
@@ -57,12 +56,12 @@ public class Board implements Serializable
             {
                 int xx = 0;
                 int yy = 0;
-                if (RotateDirection.Clockwise.equals(direction))
+                if (clockwise)
                 {
                     xx = -y - 1 + Constants.BOARD_SIZE / 2;
                     yy = x;
                 }
-                else if (RotateDirection.CounterClockwise.equals(direction))
+                else
                 {
                     xx = y;
                     yy = -x - 1 + Constants.BOARD_SIZE / 2;
@@ -76,7 +75,7 @@ public class Board implements Serializable
 
     public void rotate(RotateInfo rotateInfo)
     {
-        rotate(rotateInfo.getQuarter(), rotateInfo.getDirection());
+        rotate(rotateInfo.getQuarter(), rotateInfo.isClockwise());
     }
 
     public void setBalls(List<Ball> balls)

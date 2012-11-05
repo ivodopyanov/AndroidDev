@@ -2,16 +2,17 @@ package ru.naumen.pentago.game;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import ru.naumen.pentago.R;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Player.PlayerType;
 import ru.naumen.pentago.game.positionchecker.CheckPattern;
 import ru.naumen.pentago.game.positionchecker.CheckPatternSet;
-import ru.naumen.pentago.game.positionchecker.iterators.DiagonalLineIteratorFactory;
-import ru.naumen.pentago.game.positionchecker.iterators.HorizontalLineIteratorFactory;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
-import ru.naumen.pentago.game.positionchecker.iterators.VerticalLineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.DiagonalLineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.HorizontalLineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.VerticalLineIteratorFactory;
 import ru.naumen.pentago.player.controller.ai.AIStrategyDescriptor;
 
 public interface Constants
@@ -99,6 +100,8 @@ public interface Constants
     String BOARD_EXTRA = "board";
     String PLAYERS_EXTRA = "players";
     int REQUEST_BT_ENABLED = 1;
+    UUID uuid = UUID.nameUUIDFromBytes(APPLICATION_TITLE.getBytes());
+    int MESSAGE_READ = 2;
 
     int BOARD_SIZE = 6;
     //@formatter:off

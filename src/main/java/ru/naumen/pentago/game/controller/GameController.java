@@ -26,11 +26,6 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
         PutBall, RotateBoard, Ended;
     }
 
-    public enum RotateDirection
-    {
-        Clockwise, CounterClockwise;
-    }
-
     private final Game game;
     private int activePlayer = 0;
     private final WinStateScanner winStateScanner;

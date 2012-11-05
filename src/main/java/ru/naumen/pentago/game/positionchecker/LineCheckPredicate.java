@@ -8,6 +8,10 @@ import java.util.List;
 import ru.naumen.pentago.game.model.Ball;
 
 /**
+ * Класс, который проверяет соответствие строки line, описывающей очередную
+ * линию шариков и пустых мест, и набора паттернов patternSet. В случае успеха
+ * выбрасывает MoveFoundExceptionс шариком, который надо поставить
+ * 
  * @author ivodopyanov
  * @since 05.10.2012
  * 

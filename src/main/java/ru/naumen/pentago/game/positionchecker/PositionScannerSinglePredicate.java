@@ -4,7 +4,7 @@
 package ru.naumen.pentago.game.positionchecker;
 
 import ru.naumen.pentago.game.model.Board;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 /**
  * @author ivodopyanov

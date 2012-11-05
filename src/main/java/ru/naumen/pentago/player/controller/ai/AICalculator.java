@@ -12,5 +12,7 @@ import ru.naumen.pentago.game.model.Player;
  */
 public interface AICalculator
 {
-    void execute(Player player);
+    void calculateMove(Player player);
+
+    void calculateRotate(Player player);
 }

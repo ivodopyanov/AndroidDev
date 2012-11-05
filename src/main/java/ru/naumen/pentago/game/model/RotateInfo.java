@@ -3,8 +3,6 @@
  */
 package ru.naumen.pentago.game.model;
 
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
-
 /**
  * @author ivodopyanov
  * @since 06.10.2012
@@ -13,21 +11,38 @@ import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 public class RotateInfo
 {
     private final Quarter quarter;
-    private final RotateDirection direction;
+    private final boolean clockwise;
 
-    public RotateInfo(Quarter quarter, RotateDirection direction)
+    public RotateInfo(Quarter quarter, boolean clockwise)
     {
         this.quarter = quarter;
-        this.direction = direction;
+        this.clockwise = clockwise;
     }
 
-    public RotateDirection getDirection()
+    @Override
+    public boolean equals(Object o)
     {
-        return direction;
+        if (!(o instanceof RotateInfo))
+        {
+            return false;
+        }
+        RotateInfo rotateInfo = (RotateInfo)o;
+        return quarter.equals(rotateInfo.getQuarter()) && (clockwise == rotateInfo.isClockwise());
     }
 
     public Quarter getQuarter()
     {
         return quarter;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return (quarter.isLeft() ? 0 : 1) + (quarter.isTop() ? 0 : 2) + (clockwise ? 0 : 4);
+    }
+
+    public boolean isClockwise()
+    {
+        return clockwise;
     }
 }

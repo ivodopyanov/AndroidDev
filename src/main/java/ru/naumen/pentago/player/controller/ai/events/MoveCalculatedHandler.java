@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ru.naumen.pentago.game.controller.events;
+package ru.naumen.pentago.player.controller.ai.events;
 
 import ru.naumen.pentago.framework.eventbus.Handler;
 

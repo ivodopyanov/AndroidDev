@@ -13,7 +13,6 @@ import java.util.Set;
 import ru.naumen.pentago.R;
 import ru.naumen.pentago.framework.ChildLayoutDescriptor;
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 import ru.naumen.pentago.game.model.Game;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Quarter;
@@ -80,12 +79,12 @@ public class BoardController extends ViewGroup
             images.add(new RotateImageDescription(
                     (ImageView)findViewById(IMAGES[i][0]), 
                     R.string.rotateClockwise,
-                    RotateDirection.Clockwise));
+                    true));
             
             images.add(new RotateImageDescription(
                     (ImageView)findViewById(IMAGES[i][1]), 
                     R.string.rotateCounterClockwise,
-                    RotateDirection.CounterClockwise));
+                    false));
             //@formatter:on
             Quarter area = Quarter.create(left, top);
 

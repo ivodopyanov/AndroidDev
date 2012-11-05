@@ -24,11 +24,9 @@ public class GoToBluetoothGameListener implements OnClickListener
 
     private final Activity activity;
     private final EventBus eventBus;
-    private final BluetoothDialog dialog;
 
     public GoToBluetoothGameListener(Activity activity, EventBus eventBus)
     {
-        this.dialog = new BluetoothDialog(activity, eventBus);
         this.activity = activity;
         this.eventBus = eventBus;
     }
@@ -55,6 +53,6 @@ public class GoToBluetoothGameListener implements OnClickListener
 
     public void showDialog()
     {
-        dialog.show();
+        new BluetoothDialog(activity).show();
     }
 }

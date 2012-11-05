@@ -1,8 +1,6 @@
 package ru.naumen.pentago;
 
 import ru.naumen.pentago.bluetooth.GoToBluetoothGameListener;
-import ru.naumen.pentago.bluetooth.events.BluetoothConnectionEstablishedEvent;
-import ru.naumen.pentago.bluetooth.events.BluetoothConnectionEstablishedHandler;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.framework.eventbus.SimpleEventBus;
 import ru.naumen.pentago.game.Constants;
@@ -12,7 +10,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class MainMenuActivity extends Activity implements BluetoothConnectionEstablishedHandler
+public class MainMenuActivity extends Activity
 {
 
     private static boolean firstTime = true;
@@ -22,25 +20,18 @@ public class MainMenuActivity extends Activity implements BluetoothConnectionEst
     private final EventBus eventBus = new SimpleEventBus();
 
     @Override
-    public void onBluetoothConnectionEstablished(BluetoothConnectionEstablishedEvent event)
-    {
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         initialAnimation = new InitialAnimation(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        findViewById(R.id.textVSHuman).setOnClickListener(
-                new GoToLocalGameListener(getApplicationContext(), Constants.TWO_HUMAN_PLAYERS));
+        findViewById(R.id.textVSHuman).setOnClickListener(new GoToLocalGameListener(this, Constants.TWO_HUMAN_PLAYERS));
         findViewById(R.id.textVSComp).setOnClickListener(
-                new GoToLocalGameListener(getApplicationContext(), Constants.HUMAN_COMPUTER_PLAYERS));
+                new GoToLocalGameListener(this, Constants.HUMAN_COMPUTER_PLAYERS));
         findViewById(R.id.textBluetooth).setOnClickListener(
                 btGameListener = new GoToBluetoothGameListener(this, eventBus));
-        findViewById(R.id.textHowTo).setOnClickListener(new GoToHowToListener(getApplicationContext()));
-        eventBus.register(BluetoothConnectionEstablishedEvent.class, this);
+        findViewById(R.id.textHowTo).setOnClickListener(new GoToHowToListener(this));
     }
 
     @Override

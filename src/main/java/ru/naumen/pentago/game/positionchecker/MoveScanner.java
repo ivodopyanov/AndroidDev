@@ -6,16 +6,18 @@ package ru.naumen.pentago.game.positionchecker;
 import java.util.List;
 
 import ru.naumen.pentago.game.Constants;
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Quarter;
-import ru.naumen.pentago.game.model.RotateInfo;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
-import ru.naumen.pentago.player.controller.ai.AIMoveInfo;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
+import android.util.Pair;
 
 /**
+ * Класс вычисляет лучший ход на текущей доске для игрока player. Для этого он
+ * перебирает линии на доске для всех возможных поворотов четвертей и находит
+ * лучший ход
+ * 
  * @author ivodopyanov
  * @since 06.10.2012
  * 
@@ -27,24 +29,24 @@ public class MoveScanner extends PositionScannerSinglePredicate
         super(patternSet, lineIteratorFactories, board);
     }
 
-    public AIMoveInfo findMove(int player)
+    public Ball findMove(int player)
     {
         for (int i = 0; i < 3; i++)
         {
             Quarter quarter = Quarter.create(i);
-            AIMoveInfo result = checkClockwise(quarter, player);
+            Ball result = checkWithRotation(quarter, player, true);
             if (result != null)
                 return result;
-            result = checkCounterClockwise(quarter, player);
+            result = checkWithRotation(quarter, player, false);
             if (result != null)
                 return result;
         }
         return null;
     }
 
-    private AIMoveInfo checkClockwise(Quarter quarter, int player)
+    private Ball checkWithRotation(Quarter quarter, int player, boolean clockwise)
     {
-        board.rotate(quarter, RotateDirection.Clockwise);
+        board.rotate(quarter, clockwise);
         try
         {
             findMoveInRotated(player);
@@ -53,53 +55,16 @@ public class MoveScanner extends PositionScannerSinglePredicate
         {
             Ball ball = e.getBall();
             if (!ball.inside(quarter))
-                return new AIMoveInfo(ball, new RotateInfo(quarter, RotateDirection.Clockwise));
+                return ball;
             else
             {
-                int startx = quarter.isLeft() ? 0 : Constants.BOARD_SIZE / 2;
-                int starty = quarter.isTop() ? 0 : Constants.BOARD_SIZE / 2;
-                int x = ball.getX() - startx;
-                int y = ball.getY() - starty;
-                int xx = y;
-                int yy = -x - 1 + Constants.BOARD_SIZE / 2;
-                return new AIMoveInfo(board.getBall(xx + startx, yy + starty), new RotateInfo(quarter,
-                        RotateDirection.Clockwise));
+                Pair<Integer, Integer> coors = rotateCoors(ball, quarter, !clockwise);
+                return board.getBall(coors.first, coors.second);
             }
         }
         finally
         {
-            board.rotate(quarter, RotateDirection.CounterClockwise);
-        }
-        return null;
-    }
-
-    private AIMoveInfo checkCounterClockwise(Quarter quarter, int player)
-    {
-        board.rotate(quarter, RotateDirection.CounterClockwise);
-        try
-        {
-            findMoveInRotated(player);
-        }
-        catch (MoveFoundException e)
-        {
-            Ball ball = e.getBall();
-            if (!ball.inside(quarter))
-                return new AIMoveInfo(ball, new RotateInfo(quarter, RotateDirection.CounterClockwise));
-            else
-            {
-                int startx = quarter.isLeft() ? 0 : Constants.BOARD_SIZE / 2;
-                int starty = quarter.isTop() ? 0 : Constants.BOARD_SIZE / 2;
-                int x = ball.getX() - startx;
-                int y = ball.getY() - starty;
-                int xx = -y - 1 + Constants.BOARD_SIZE / 2;
-                int yy = x;
-                return new AIMoveInfo(board.getBall(xx + startx, yy + starty), new RotateInfo(quarter,
-                        RotateDirection.CounterClockwise));
-            }
-        }
-        finally
-        {
-            board.rotate(quarter, RotateDirection.Clockwise);
+            board.rotate(quarter, !clockwise);
         }
         return null;
     }
@@ -117,4 +82,17 @@ public class MoveScanner extends PositionScannerSinglePredicate
         }
     }
 
+    private Pair<Integer, Integer> rotateCoors(Ball ball, Quarter quarter, boolean clockwise)
+    {
+        int startx = quarter.isLeft() ? 0 : Constants.BOARD_SIZE / 2;
+        int starty = quarter.isTop() ? 0 : Constants.BOARD_SIZE / 2;
+        int x = ball.getX() - startx;
+        int y = ball.getY() - starty;
+        Pair<Integer, Integer> result;
+        if (clockwise)
+            result = Pair.create(-y - 1 + Constants.BOARD_SIZE / 2, x);
+        else
+            result = Pair.create(y, -x - 1 + Constants.BOARD_SIZE / 2);
+        return result;
+    }
 }

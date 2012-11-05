@@ -7,6 +7,8 @@ import ru.naumen.pentago.game.Constants;
 import ru.naumen.pentago.game.model.Board;
 
 /**
+ * Итератор, которые пробегает по вертикальным линиям доски
+ * 
  * @author ivodopyanov
  * @since 06.10.2012
  * 

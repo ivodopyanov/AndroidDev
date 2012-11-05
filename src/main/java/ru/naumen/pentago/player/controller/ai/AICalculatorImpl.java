@@ -6,8 +6,11 @@ package ru.naumen.pentago.player.controller.ai;
 import java.util.List;
 
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.game.controller.events.MoveCalculatedEvent;
+import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Player;
+import ru.naumen.pentago.game.model.RotateInfo;
+import ru.naumen.pentago.player.controller.ai.events.MoveCalculatedEvent;
+import ru.naumen.pentago.player.controller.ai.events.RotateCalculatedEvent;
 import android.os.AsyncTask;
 
 /**
@@ -27,14 +30,14 @@ public abstract class AICalculatorImpl implements AICalculator
     }
 
     @Override
-    public void execute(Player player)
+    public void calculateMove(Player player)
     {
         new AsyncTask<Player, Integer, MoveCalculatedEvent>()
         {
             @Override
             protected MoveCalculatedEvent doInBackground(Player... players)
             {
-                AIMoveInfo moveInfo = runCalculation(players[0]);
+                Ball moveInfo = runMoveCalculation(players[0]);
                 return new MoveCalculatedEvent(moveInfo, players[0]);
             }
 
@@ -47,5 +50,28 @@ public abstract class AICalculatorImpl implements AICalculator
         }.execute(player);
     }
 
-    abstract protected AIMoveInfo runCalculation(Player player);
+    @Override
+    public void calculateRotate(Player player)
+    {
+        new AsyncTask<Player, Integer, RotateCalculatedEvent>()
+        {
+
+            @Override
+            protected RotateCalculatedEvent doInBackground(Player... players)
+            {
+                RotateInfo rotateInfo = runRotateCalculation(players[0]);
+                return new RotateCalculatedEvent(rotateInfo, players[0]);
+            }
+
+            @Override
+            protected void onPostExecute(RotateCalculatedEvent event)
+            {
+                eventBus.fireEvent(event);
+            }
+        }.execute(player);
+    }
+
+    abstract protected Ball runMoveCalculation(Player player);
+
+    abstract protected RotateInfo runRotateCalculation(Player player);
 }

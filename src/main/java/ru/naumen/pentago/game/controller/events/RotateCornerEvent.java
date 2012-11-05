@@ -4,7 +4,6 @@
 package ru.naumen.pentago.game.controller.events;
 
 import ru.naumen.pentago.framework.eventbus.Event;
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 import ru.naumen.pentago.game.model.Quarter;
 
 /**
@@ -15,12 +14,12 @@ import ru.naumen.pentago.game.model.Quarter;
 public class RotateCornerEvent implements Event<RotateCornerHandler>
 {
     private final Quarter area;
-    private final RotateDirection direction;
+    private final boolean clockwise;
 
-    public RotateCornerEvent(Quarter area, RotateDirection direction)
+    public RotateCornerEvent(Quarter area, boolean clockwise)
     {
         this.area = area;
-        this.direction = direction;
+        this.clockwise = clockwise;
     }
 
     @Override
@@ -34,8 +33,8 @@ public class RotateCornerEvent implements Event<RotateCornerHandler>
         return area;
     }
 
-    public RotateDirection getDirection()
+    public boolean isClockwise()
     {
-        return direction;
+        return clockwise;
     }
 }

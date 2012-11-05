@@ -5,7 +5,7 @@ import java.util.List;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 public class WinStateScanner extends PositionScannerSinglePredicate
 {

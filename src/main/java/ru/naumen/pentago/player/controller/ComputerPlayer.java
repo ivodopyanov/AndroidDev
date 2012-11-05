@@ -6,15 +6,16 @@ package ru.naumen.pentago.player.controller;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
-import ru.naumen.pentago.game.controller.events.MoveCalculatedEvent;
-import ru.naumen.pentago.game.controller.events.MoveCalculatedHandler;
 import ru.naumen.pentago.game.controller.events.RequestBallMoveEvent;
 import ru.naumen.pentago.game.controller.events.RequestBoardRotateEvent;
 import ru.naumen.pentago.game.controller.events.RotateBoardEvent;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.player.controller.ai.AICalculator;
-import ru.naumen.pentago.player.controller.ai.AIMoveInfo;
+import ru.naumen.pentago.player.controller.ai.events.MoveCalculatedEvent;
+import ru.naumen.pentago.player.controller.ai.events.MoveCalculatedHandler;
+import ru.naumen.pentago.player.controller.ai.events.RotateCalculatedEvent;
+import ru.naumen.pentago.player.controller.ai.events.RotateCalculatedHandler;
 import android.util.Log;
 
 /**
@@ -22,16 +23,16 @@ import android.util.Log;
  * @since 21.09.2012
  * 
  */
-public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculatedHandler
+public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculatedHandler, RotateCalculatedHandler
 {
     private final AICalculator aiCalc;
-    private AIMoveInfo aiMoveInfo;
 
     public ComputerPlayer(Player player, EventBus eventBus, Board board, AICalculator aiCalc)
     {
         super(player, eventBus, board);
         this.aiCalc = aiCalc;
         eventBus.register(MoveCalculatedEvent.class, this);
+        eventBus.register(RotateCalculatedEvent.class, this);
     }
 
     @Override
@@ -40,8 +41,7 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
         if (!event.getPlayer().equals(player))
             return;
         Log.d(LogTag.COMPUTER, "onMoveCalculated");
-        aiMoveInfo = event.getMoveInfo();
-        eventBus.fireEvent(new MoveBallEvent(aiMoveInfo.getBall(), player));
+        eventBus.fireEvent(new MoveBallEvent(event.getBall(), player));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
         if (!event.getActivePlayerCode().equals(player.getCode()))
             return;
         Log.d(LogTag.COMPUTER, "onRequestBallMove");
-        aiCalc.execute(player);
+        aiCalc.calculateMove(player);
     }
 
     @Override
@@ -59,6 +59,16 @@ public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculat
         if (!event.getActivePlayerCode().equals(player.getCode()))
             return;
         Log.d(LogTag.COMPUTER, "onRequestBoardRotate");
-        eventBus.fireEvent(new RotateBoardEvent(aiMoveInfo.getRotateInfo(), player));
+        aiCalc.calculateRotate(player);
+
+    }
+
+    @Override
+    public void onRotateCalculated(RotateCalculatedEvent event)
+    {
+        if (!event.getPlayer().equals(player))
+            return;
+        Log.d(LogTag.COMPUTER, "onRotateCalculated");
+        eventBus.fireEvent(new RotateBoardEvent(event.getRotateInfo(), player));
     }
 }

@@ -12,7 +12,6 @@ import ru.naumen.pentago.framework.collections.Predicate;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.GameController.GamePhase;
-import ru.naumen.pentago.game.controller.GameController.RotateDirection;
 import ru.naumen.pentago.game.controller.events.FinishedRotateAnimationEvent;
 import ru.naumen.pentago.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
@@ -76,22 +75,24 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         private final ImageView animBallView;
         private final ImageView ballView;
         private final Player player;
+        private final Animation anim;
 
-        public BallMoveListener(Ball ball, ImageView animBallView, ImageView ballView, Player player)
+        public BallMoveListener(Ball ball, ImageView animBallView, ImageView ballView, Player player, Animation anim)
         {
             this.ball = ball;
             this.animBallView = animBallView;
             this.ballView = ballView;
             this.player = player;
+            this.anim = anim;
         }
 
         @Override
         public void onAnimationEnd(Animation animation)
         {
             Log.d(LogTag.CORNER, "Ball move animation ended");
-            animBallView.clearAnimation();
             ballView.setImageDrawable(getResources().getDrawable(player.getBallResource()));
             ball.setPlayer(game.getPlayers().indexOf(player));
+            anim.setAnimationListener(null);
             animBallView.clearAnimation();
             animBallView.setVisibility(View.INVISIBLE);
             eventBus.fireEvent(new RequestBoardRotateEvent(player.getCode()));
@@ -112,13 +113,13 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     private class RotateQuaterListener implements View.OnClickListener
     {
         private final Quarter area;
-        private final RotateDirection direction;
+        private final boolean clockwise;
         private final EventBus eventBus;
 
-        public RotateQuaterListener(Quarter area, RotateDirection direction, EventBus eventBus)
+        public RotateQuaterListener(Quarter area, boolean clockwise, EventBus eventBus)
         {
             this.area = area;
-            this.direction = direction;
+            this.clockwise = clockwise;
             this.eventBus = eventBus;
         }
 
@@ -127,7 +128,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         {
             if (GamePhase.RotateBoard.equals(gamePhase) && !rotationActive)
             {
-                eventBus.fireEvent(new RotateCornerEvent(area, direction));
+                eventBus.fireEvent(new RotateCornerEvent(area, clockwise));
             }
         }
     }
@@ -199,7 +200,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         {
             ImageView imageView = imageDesc.getImage();
             imageView.setContentDescription(getResources().getString(imageDesc.getDescId()));
-            imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.getDir(), eventBus));
+            imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.isClockwise(), eventBus));
         }
         for (int i = 0; i < BALL_IDS.length; i++)
         {
@@ -253,7 +254,8 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         AnimationSet animSet = new AnimationSet(true);
         animSet.addAnimation(anim);
         animSet.addAnimation(scaleAnim);
-        animSet.setAnimationListener(new BallMoveListener(event.getBall(), animBall, ballView, event.getPlayer()));
+        animSet.setAnimationListener(new BallMoveListener(event.getBall(), animBall, ballView, event.getPlayer(),
+                animSet));
         animBall.setVisibility(View.VISIBLE);
         animBall.bringToFront();
         animBall.startAnimation(animSet);
@@ -285,8 +287,8 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
             return;
         Log.d(LogTag.CORNER, "onRotateBoard");
         eventBus.fireEvent(new StartedRotateAnimationEvent());
-        Animation ballRotateAnimation = generateBallRotateAnimation(event.getRotateInfo().getDirection());
-        Animation quarterRotateAnimation = generateQuarterRotateAnimation(event.getRotateInfo().getDirection());
+        Animation ballRotateAnimation = generateBallRotateAnimation(event.getRotateInfo().isClockwise());
+        Animation quarterRotateAnimation = generateQuarterRotateAnimation(event.getRotateInfo().isClockwise());
         rotateInfoBuf = event.getRotateInfo();
         for (int ballId : BALL_IDS)
         {
@@ -345,15 +347,14 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         }
     }
 
-    private Animation generateBallRotateAnimation(RotateDirection direction)
+    private Animation generateBallRotateAnimation(boolean clockwise)
     {
         View ballView = findViewById(R.id.ball11);
         int w = ballView.getWidth() / 2;
         int h = ballView.getHeight() / 2;
         float xpivot = w;
         float ypivot = h;
-        RotateAnimation ballRotate = new RotateAnimation(0, direction.equals(RotateDirection.Clockwise) ? -90 : 90,
-                xpivot, ypivot);
+        RotateAnimation ballRotate = new RotateAnimation(0, clockwise ? -90 : 90, xpivot, ypivot);
         ballRotate.setStartOffset(1000);
         ballRotate.setDuration(1000);
         ballRotate.setFillEnabled(true);
@@ -361,7 +362,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         return ballRotate;
     }
 
-    private Animation generateQuarterRotateAnimation(RotateDirection direction)
+    private Animation generateQuarterRotateAnimation(boolean clockwise)
     {
         int w = getWidth() / 2;
         int h = getHeight() / 2;
@@ -370,8 +371,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         ScaleAnimation outside = new ScaleAnimation(1.2f, 0.8f, 1.2f, 0.8f, xpivot, ypivot);
         outside.setStartOffset(0);
         outside.setDuration(1000);
-        RotateAnimation rotate = new RotateAnimation(0, direction.equals(RotateDirection.Clockwise) ? 90 : -90, xpivot,
-                ypivot);
+        RotateAnimation rotate = new RotateAnimation(0, clockwise ? 90 : -90, xpivot, ypivot);
         rotate.setStartOffset(1000);
         rotate.setDuration(1000);
         ScaleAnimation inside = new ScaleAnimation(0.8f, 1.25f, 0.8f, 1.25f, xpivot, ypivot);

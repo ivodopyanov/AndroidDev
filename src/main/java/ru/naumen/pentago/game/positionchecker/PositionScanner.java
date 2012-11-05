@@ -9,9 +9,12 @@ import java.util.List;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 /**
+ * Класс перебирает линии на доске, используя набор итераторов, приводит их к
+ * строковому виду, и посылает на проверку в LineCheckPredicate
+ * 
  * @author ivodopyanov
  * @since 06.10.2012
  * 

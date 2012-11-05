@@ -32,7 +32,9 @@
     <string name="rotateClockwise">Rotate clockwise</string>
     <string name="searchBluetoothDevice">Search devices</string>
     <string name="selectBondedBluetoothDevice">Select bonded bluetooth device</string>
+    <string name="stopCalling">Stop calling</string>
     <string name="waitForCall">Wait for call</string>
+    <string name="waitingForCall">Waiting for call</string>
     <string name="winner">Winner</string>
     <string name="You">You</string>
 </resources>

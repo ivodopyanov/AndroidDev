@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.naumen.pentago.game.model.Board;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 /**
  * @author ivodopyanov

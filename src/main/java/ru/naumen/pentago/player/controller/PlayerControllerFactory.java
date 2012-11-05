@@ -11,7 +11,6 @@ import ru.naumen.pentago.game.Constants.AIStrategies;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Player.PlayerType;
-import ru.naumen.pentago.player.controller.ai.PositionEvaluationCalculator;
 import ru.naumen.pentago.player.controller.ai.StrategicCalculator;
 
 /**
@@ -23,14 +22,12 @@ public class PlayerControllerFactory implements Function<Player, PlayerControlle
 {
     private final EventBus eventBus;
     private final Board board;
-    private final PositionEvaluationCalculator posEvalCalc;
     private final StrategicCalculator strCalc;
 
     public PlayerControllerFactory(EventBus eventBus, Board board, List<Player> players)
     {
         this.eventBus = eventBus;
         this.board = board;
-        posEvalCalc = new PositionEvaluationCalculator(players, board, eventBus);
         strCalc = new StrategicCalculator(players, board, AIStrategies.ALL, eventBus);
 
     }

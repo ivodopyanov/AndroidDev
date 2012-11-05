@@ -32,7 +32,9 @@
     <string name="rotateClockwise">Повернуть по часовой</string>
     <string name="searchBluetoothDevice">Найти устройство</string>
     <string name="selectBondedBluetoothDevice">Выберите связанное Bluetooth устройство</string>
+    <string name="stopCalling">Прекратить вызов</string>
     <string name="waitForCall">Ждать вызова</string>
+    <string name="waitingForCall">Ожидается вызов</string>
     <string name="winner">Победитель</string>
     <string name="You">Вы</string>
 </resources>

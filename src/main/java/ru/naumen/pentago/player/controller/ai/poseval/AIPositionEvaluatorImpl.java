@@ -12,7 +12,7 @@ import ru.naumen.pentago.game.positionchecker.LineCheckPredicate;
 import ru.naumen.pentago.game.positionchecker.MoveFoundException;
 import ru.naumen.pentago.game.positionchecker.PositionScannerMultiPredicate;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIteratorFactory;
+import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 /**
  * @author ivodopyanov
