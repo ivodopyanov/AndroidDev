@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ru.naumen.pentago.R;
-import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Player.PlayerType;
 import ru.naumen.pentago.game.positionchecker.CheckPattern;
 import ru.naumen.pentago.game.positionchecker.CheckPatternSet;
@@ -98,12 +97,12 @@ public interface Constants
 
     int BOARD_SIZE = 6;
     //@formatter:off
-    List<Player> TWO_HUMAN_PLAYERS = Arrays.asList(
-            new Player(R.string.Player1, "Player1", R.drawable.blackball, PlayerType.human), 
-            new Player(R.string.Player2, "Player2", R.drawable.whiteball, PlayerType.human));
+    List<DefaultPlayerDescription> TWO_HUMAN_PLAYERS = Arrays.asList(
+            new DefaultPlayerDescription(R.string.Player1, "Player1", R.drawable.blackball, PlayerType.human), 
+            new DefaultPlayerDescription(R.string.Player2, "Player2", R.drawable.whiteball, PlayerType.human));
 
-    List<Player> HUMAN_COMPUTER_PLAYERS = Arrays.asList(
-            new Player(R.string.You,    "Player",   R.drawable.blackball, PlayerType.human), 
-            new Player(R.string.Computer,  "Computer", R.drawable.whiteball, PlayerType.computer));
+    List<DefaultPlayerDescription> HUMAN_COMPUTER_PLAYERS = Arrays.asList(
+            new DefaultPlayerDescription(R.string.You,    "Player",   R.drawable.blackball, PlayerType.human), 
+            new DefaultPlayerDescription(R.string.Computer,  "Computer", R.drawable.whiteball, PlayerType.computer));
     //@formatter:on
 }

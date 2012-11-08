@@ -74,7 +74,6 @@ public class BluetoothClientThread extends BluetoothThread
             return;
         }
         context.unregisterReceiver(devicesReceiver);
-        manageConnectedSocket(socket);
-        btThread.write(BluetoothConstants.INSTALLED.getBytes());
+        manageConnectedSocket(socket, true);
     }
 }

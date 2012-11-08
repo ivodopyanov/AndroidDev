@@ -70,7 +70,7 @@ public class BluetoothServerThread extends BluetoothThread
                 try
                 {
                     context.unregisterReceiver(devicesReceiver);
-                    manageConnectedSocket(socket);
+                    manageConnectedSocket(socket, false);
                     serverSocket.close();
                 }
                 catch (IOException e)

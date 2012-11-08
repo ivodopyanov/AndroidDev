@@ -10,5 +10,11 @@ package ru.naumen.pentago.bluetooth.threads;
  */
 public interface BluetoothConstants
 {
-    String INSTALLED = "installed";
+    int CONNECTED = 10;
+
+    String HANDLER = "handler";
+    int BLUETOOTH_ACTIVITY_RESULT = 5;
+    String BLUETOOTH_CLIENT = "client";
+    String BLUETOOTH_REMOTE_NAME = "remoteName";
+    String BLUETOOTH_MY_NAME = "myName";
 }

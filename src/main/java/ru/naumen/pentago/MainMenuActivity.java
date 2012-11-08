@@ -1,9 +1,17 @@
 package ru.naumen.pentago;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.naumen.pentago.bluetooth.GoToBluetoothGameListener;
+import ru.naumen.pentago.bluetooth.threads.BluetoothConstants;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.framework.eventbus.SimpleEventBus;
 import ru.naumen.pentago.game.Constants;
+import ru.naumen.pentago.game.GameActivity;
+import ru.naumen.pentago.game.model.Player;
+import ru.naumen.pentago.game.model.Player.PlayerType;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -58,6 +66,30 @@ public class MainMenuActivity extends Activity
                 return;
             }
             btGameListener.showDialog();
+        }
+        else if (requestCode == BluetoothConstants.BLUETOOTH_ACTIVITY_RESULT && resultCode == RESULT_OK)
+        {
+            Boolean client = data.getExtras().getBoolean(BluetoothConstants.BLUETOOTH_CLIENT);
+            String myName = data.getExtras().getString(BluetoothConstants.BLUETOOTH_MY_NAME);
+            String remoteName = data.getExtras().getString(BluetoothConstants.BLUETOOTH_REMOTE_NAME);
+            Player me = new Player(myName, "me", client ? R.drawable.blackball : R.drawable.whiteball,
+                    PlayerType.humanBluetoothLocal);
+            Player opponent = new Player(remoteName, "opp", client ? R.drawable.blackball : R.drawable.whiteball,
+                    PlayerType.humanBluetoothRemote);
+            List<Player> players = new ArrayList<Player>();
+            if (client)
+            {
+                players.add(opponent);
+                players.add(me);
+            }
+            else
+            {
+                players.add(me);
+                players.add(opponent);
+            }
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(Constants.PLAYERS_EXTRA, (Serializable)players);
+            startActivity(intent);
         }
     }
 }

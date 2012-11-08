@@ -21,12 +21,11 @@ import ru.naumen.pentago.game.model.RotateInfo;
  * @since 21.09.2012
  * 
  */
-public class HumanPlayerController extends PlayerControllerImpl implements InsertBallInCornerHandler,
-        RotateCornerHandler
+public class HumanController extends PlayerControllerImpl implements InsertBallInCornerHandler, RotateCornerHandler
 {
-    private boolean active = false;
+    protected boolean active = false;
 
-    public HumanPlayerController(Player player, EventBus eventBus, Board board)
+    public HumanController(Player player, EventBus eventBus, Board board)
     {
         super(player, eventBus, board);
         eventBus.register(InsertBallInCornerEvent.class, this);

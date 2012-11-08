@@ -23,11 +23,11 @@ import android.util.Log;
  * @since 21.09.2012
  * 
  */
-public class ComputerPlayer extends PlayerControllerImpl implements MoveCalculatedHandler, RotateCalculatedHandler
+public class ComputerController extends PlayerControllerImpl implements MoveCalculatedHandler, RotateCalculatedHandler
 {
     private final AICalculator aiCalc;
 
-    public ComputerPlayer(Player player, EventBus eventBus, Board board, AICalculator aiCalc)
+    public ComputerController(Player player, EventBus eventBus, Board board, AICalculator aiCalc)
     {
         super(player, eventBus, board);
         this.aiCalc = aiCalc;

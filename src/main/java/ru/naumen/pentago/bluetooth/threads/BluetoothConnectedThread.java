@@ -7,9 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import ru.naumen.pentago.bluetooth.BluetoothService;
 import ru.naumen.pentago.game.Constants;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 
 /**
  * @author ivodopyanov
@@ -22,8 +26,9 @@ public class BluetoothConnectedThread extends Thread
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
     private final Handler handler;
+    private volatile boolean finisher = false;
 
-    public BluetoothConnectedThread(BluetoothSocket socket, Handler handler)
+    public BluetoothConnectedThread(BluetoothSocket socket, Handler handler, Boolean client)
     {
         this.handler = handler;
         mmSocket = socket;
@@ -41,6 +46,17 @@ public class BluetoothConnectedThread extends Thread
 
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
+        BluetoothService.get().setThread(this);
+        Message message = handler.obtainMessage();
+        String remoteName = socket.getRemoteDevice().getName();
+        String myName = BluetoothAdapter.getDefaultAdapter().getName();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(BluetoothConstants.BLUETOOTH_CLIENT, client);
+        bundle.putString(BluetoothConstants.BLUETOOTH_MY_NAME, myName);
+        bundle.putString(BluetoothConstants.BLUETOOTH_REMOTE_NAME, remoteName);
+        message.what = BluetoothConstants.CONNECTED;
+        message.obj = bundle;
+        handler.dispatchMessage(message);
     }
 
     public void cancel()
@@ -54,13 +70,18 @@ public class BluetoothConnectedThread extends Thread
         }
     }
 
+    public void finish()
+    {
+        finisher = true;
+    }
+
     @Override
     public void run()
     {
         byte[] buffer = new byte[1024];
         int bytes;
 
-        while (true)
+        while (!finisher)
         {
             try
             {

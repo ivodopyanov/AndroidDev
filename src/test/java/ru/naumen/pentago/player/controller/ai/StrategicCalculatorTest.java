@@ -25,8 +25,8 @@ import ru.naumen.pentago.game.model.RotateInfo;
 public class StrategicCalculatorTest
 {
 
-    private final Player p0 = new Player(0, "p0", 0, null);
-    private final Player p1 = new Player(0, "p1", 0, null);
+    private final Player p0 = new Player("", "p0", 0, null);
+    private final Player p1 = new Player("", "p1", 0, null);
     private final List<Player> players = Arrays.asList(p0, p1);
     private final Board board = new Board();
     private final StrategicCalculator calc = new StrategicCalculator(players, board, null);

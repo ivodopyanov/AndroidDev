@@ -5,6 +5,7 @@ package ru.naumen.pentago.bluetooth;
 
 import ru.naumen.pentago.HideDialogClickListener;
 import ru.naumen.pentago.R;
+import ru.naumen.pentago.bluetooth.threads.BluetoothConstants;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants;
 import android.app.Activity;
@@ -53,6 +54,7 @@ public class GoToBluetoothGameListener implements OnClickListener
 
     public void showDialog()
     {
-        new BluetoothDialog(activity).show();
+        Intent bluetoothIntent = new Intent(activity, BluetoothActivity.class);
+        activity.startActivityForResult(bluetoothIntent, BluetoothConstants.BLUETOOTH_ACTIVITY_RESULT);
     }
 }

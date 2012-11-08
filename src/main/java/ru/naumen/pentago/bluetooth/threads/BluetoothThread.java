@@ -28,9 +28,9 @@ public class BluetoothThread extends Thread
         return btThread;
     }
 
-    protected void manageConnectedSocket(BluetoothSocket socket)
+    protected void manageConnectedSocket(BluetoothSocket socket, Boolean client)
     {
-        btThread = new BluetoothConnectedThread(socket, handler);
+        btThread = new BluetoothConnectedThread(socket, handler, client);
         btThread.start();
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ru.naumen.pentago.R;
+import ru.naumen.pentago.bluetooth.BluetoothService;
 import ru.naumen.pentago.framework.collections.Collections;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.framework.eventbus.SimpleEventBus;
@@ -22,21 +23,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class GameActivity extends Activity implements GameOverHandler
 {
-    private final class GoToMainMenuListener implements DialogInterface.OnClickListener, OnClickListener
+    private final class GoToMainMenuListener implements DialogInterface.OnClickListener
     {
         @Override
         public void onClick(DialogInterface dialog, int which)
-        {
-            goBack();
-        }
-
-        @Override
-        public void onClick(View v)
         {
             goBack();
         }
@@ -47,21 +42,16 @@ public class GameActivity extends Activity implements GameOverHandler
         }
     }
 
-    private class ResetClickListener implements OnClickListener
-    {
-        @Override
-        public void onClick(View v)
-        {
-            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-            intent.putExtra(Constants.PLAYERS_EXTRA, (Serializable)players);
-            finish();
-            startActivity(intent);
-        }
-    }
-
     private Game game;
     private List<Player> players;
     private final EventBus eventBus = new SimpleEventBus();
+
+    @Override
+    public void onBackPressed()
+    {
+        BluetoothService.get().stop();
+        super.onBackPressed();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -69,12 +59,14 @@ public class GameActivity extends Activity implements GameOverHandler
         super.onCreate(savedInstanceState);
         Log.d("gameActivity", "activity started");
         setContentView(R.layout.gameboard);
+        if (BluetoothService.get().getHandler() != null)
+        {
+            BluetoothService.get().getHandler().setEventBus(eventBus);
+        }
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
         game = initGame(savedInstanceState);
         eventBus.register(GameOverEvent.class, this);
-        findViewById(R.id.goback).setOnClickListener(new GoToMainMenuListener());
-        findViewById(R.id.newgame).setOnClickListener(new ResetClickListener());
 
         initBoard();
         BoardController boardController = (BoardController)findViewById(R.id.board);
@@ -84,14 +76,35 @@ public class GameActivity extends Activity implements GameOverHandler
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.layout.boardmenu, menu);
+        return true;
+    }
+
+    @Override
     public void onGameOver(GameOverEvent event)
     {
+        BluetoothService.get().stop();
         new AlertDialog.Builder(GameActivity.this)
                 .setTitle(R.string.endOfGame)
                 .setMessage(
-                        getResources().getString(R.string.winner) + ": "
-                                + getResources().getString(players.get(event.getWinner()).getTitleCode()))
+                        getResources().getString(R.string.winner) + ": " + players.get(event.getWinner()).getTitle())
                 .setPositiveButton("OK", new GoToMainMenuListener()).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == R.id.menu_newgame)
+        {
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+            intent.putExtra(Constants.PLAYERS_EXTRA, (Serializable)players);
+            finish();
+            startActivity(intent);
+            return true;
+        }
+        return true;
     }
 
     private void initBoard()
