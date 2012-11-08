@@ -7,7 +7,6 @@ import java.util.List;
 
 import ru.naumen.pentago.framework.collections.Function;
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.game.Constants.AIStrategies;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Player.PlayerType;
@@ -28,7 +27,7 @@ public class PlayerControllerFactory implements Function<Player, PlayerControlle
     {
         this.eventBus = eventBus;
         this.board = board;
-        strCalc = new StrategicCalculator(players, board, AIStrategies.ALL, eventBus);
+        strCalc = new StrategicCalculator(players, board, eventBus);
 
     }
 

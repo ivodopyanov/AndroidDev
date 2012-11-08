@@ -45,7 +45,7 @@ public class PositionScanner
         for (Ball ball : balls)
         {
             if (ball.getPlayer() == Ball.NO_PLAYER)
-                sb.append("O");
+                sb.append("X");
             else
                 sb.append(intToCharacter(ball.getPlayer()));
         }

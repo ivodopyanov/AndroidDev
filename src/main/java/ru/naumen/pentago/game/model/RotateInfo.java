@@ -45,4 +45,10 @@ public class RotateInfo
     {
         return clockwise;
     }
+
+    @Override
+    public String toString()
+    {
+        return quarter.toString() + (clockwise ? ", clockwise" : ", counter-clockwise");
+    }
 }

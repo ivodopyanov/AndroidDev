@@ -25,6 +25,9 @@ public class LineCheckPredicate
         this.patternSet = patternSet;
     }
 
+    /**
+     * Выбрасывает MoveFoundException, если строка подходит под описание позиции
+     */
     public void check(String line, List<Ball> balls, char playerSymbol, int player) throws MoveFoundException
     {
         for (CheckPattern pattern : patternSet.getPatterns())
@@ -33,6 +36,25 @@ public class LineCheckPredicate
             if (pos != -1)
                 throw new MoveFoundException(balls.get(pos + pattern.getDisp()), player, patternSet.getWeight());
         }
+    }
+
+    /**
+     * Возвращает вес строки в соответствии с паттерном
+     */
+    public double evaluate(String line, List<Ball> balls, char playerSymbol, int player)
+    {
+        double result = 0;
+        for (CheckPattern pattern : patternSet.getPatterns())
+        {
+            if (line.indexOf(pattern.getPattern().replace('?', playerSymbol)) != -1)
+                result += patternSet.getWeight();
+        }
+        return result;
+    }
+
+    public boolean isInverted()
+    {
+        return patternSet.getWeight() < 0;
     }
 
     @Override

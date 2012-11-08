@@ -13,57 +13,62 @@ import ru.naumen.pentago.game.positionchecker.iterators.factories.DiagonalLineIt
 import ru.naumen.pentago.game.positionchecker.iterators.factories.HorizontalLineIteratorFactory;
 import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 import ru.naumen.pentago.game.positionchecker.iterators.factories.VerticalLineIteratorFactory;
-import ru.naumen.pentago.player.controller.ai.AIStrategyDescriptor;
 
 public interface Constants
 {
-    public interface AIStrategies
-    {
-        //@formatter:off
-        AIStrategyDescriptor[] ONLY_POSITIVE=
-                new AIStrategyDescriptor[]{
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.PLAYER_CAN_WIN),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.THREE_IN_A_ROW),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.TWO_IN_A_ROW),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.SINGLE)
-                    };
-        AIStrategyDescriptor[] ALL=
-                new AIStrategyDescriptor[]{
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.PLAYER_CAN_WIN),
-                    new AIStrategyDescriptor(AIStrategy.INVERT, LineCheckPatterns.PLAYER_CAN_WIN),
-                    new AIStrategyDescriptor(AIStrategy.INVERT, LineCheckPatterns.THREE_IN_A_ROW),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.THREE_IN_A_ROW),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.TWO_IN_A_ROW),
-                    new AIStrategyDescriptor(AIStrategy.DIRECT, LineCheckPatterns.SINGLE)
-                    };
-        //@formatter:on
-    }
-
-    public interface AIStrategy
-    {
-        String DIRECT = "direct";
-        String INVERT = "invert";
-    }
-
     public interface LineCheckPatterns
     {
         //@formatter:off
-        CheckPatternSet PLAYER_WON = new CheckPatternSet(new CheckPattern[] { new CheckPattern("?????", 0) }, 1000.0);
-        CheckPatternSet PLAYER_CAN_WIN = new CheckPatternSet(new CheckPattern[] { 
-                new CheckPattern("O????", 0),
-                new CheckPattern("?O???", 1), 
-                new CheckPattern("??O??", 2), 
-                new CheckPattern("??O??", 3),
-                new CheckPattern("????O", 4) }, 160.0);
-        CheckPatternSet THREE_IN_A_ROW = new CheckPatternSet(new CheckPattern[] { 
-                new CheckPattern("O???", 0), 
-                new CheckPattern("???O", 3) }, 80.0);
-        CheckPatternSet TWO_IN_A_ROW = new CheckPatternSet(new CheckPattern[] { 
-                new CheckPattern("O??", 0), 
-                new CheckPattern("??O", 2) }, 40.0);
-        CheckPatternSet SINGLE = new CheckPatternSet(new CheckPattern[] { 
-                new CheckPattern("O?", 0), 
-                new CheckPattern("?O", 1) }, 20.0);
+        CheckPattern[] PLAYER_WON=new CheckPattern[]{new CheckPattern("?????", 0)};
+        CheckPattern[] CAN_WIN=new CheckPattern[] { 
+                new CheckPattern("X????", 0),
+                new CheckPattern("?X???", 1), 
+                new CheckPattern("??X??", 2), 
+                new CheckPattern("???X?", 3),
+                new CheckPattern("????X", 4)}; 
+        CheckPattern[] CAN_FOUR_IN_A_ROW = new CheckPattern[] { 
+                new CheckPattern("X???", 0),
+                new CheckPattern("?X??", 1),
+                new CheckPattern("??X?", 2),
+                new CheckPattern("???X", 3) };
+        CheckPattern[] CAN_THREE_IN_A_ROW = new CheckPattern[] { 
+                new CheckPattern("X??", 0),
+                new CheckPattern("?X?", 1),
+                new CheckPattern("??X", 2) };
+        CheckPattern[] CAN_TWO_IN_A_ROW = new CheckPattern[] { 
+                new CheckPattern("X?", 0), 
+                new CheckPattern("?X", 1) };
+        //@formatter:on
+    }
+
+    public interface LineCheckPatternSets
+    {
+        //@formatter:off
+        CheckPatternSet PLAYER_WON = new CheckPatternSet(LineCheckPatterns.PLAYER_WON, 10000.0);
+        CheckPatternSet OPPONENT_WON = new CheckPatternSet(LineCheckPatterns.PLAYER_WON, -10000.0);
+        CheckPatternSet PLAYER_CAN_WIN = new CheckPatternSet(LineCheckPatterns.CAN_WIN, 1000.0);
+        CheckPatternSet OPPONENT_CAN_WIN = new CheckPatternSet(LineCheckPatterns.CAN_WIN, -1000.0);
+        CheckPatternSet PLAYER_CAN_FOUR_IN_A_ROW = new CheckPatternSet(LineCheckPatterns.CAN_FOUR_IN_A_ROW, 200.0);
+        CheckPatternSet OPPONENT_CAN_FOUR_IN_A_ROW = new CheckPatternSet(LineCheckPatterns.CAN_FOUR_IN_A_ROW, -200.0);
+        CheckPatternSet PLAYER_CAN_THREE_IN_A_ROW = new CheckPatternSet(LineCheckPatterns.CAN_THREE_IN_A_ROW, 20.0);
+        CheckPatternSet OPPONENT_CAN_THREE_IN_A_ROW = new CheckPatternSet(LineCheckPatterns.CAN_THREE_IN_A_ROW, -20.0);
+        CheckPatternSet PLAYER_CAN_TWO_IN_A_ROW = new CheckPatternSet(LineCheckPatterns.CAN_TWO_IN_A_ROW, 1.0);
+        CheckPatternSet[] ROTATE=new CheckPatternSet[]{
+                    LineCheckPatternSets.PLAYER_WON,
+                    LineCheckPatternSets.OPPONENT_WON,
+                    LineCheckPatternSets.PLAYER_CAN_WIN, 
+                    LineCheckPatternSets.OPPONENT_CAN_WIN, 
+                    LineCheckPatternSets.OPPONENT_CAN_FOUR_IN_A_ROW,
+                    LineCheckPatternSets.PLAYER_CAN_FOUR_IN_A_ROW,
+                    LineCheckPatternSets.PLAYER_CAN_THREE_IN_A_ROW,
+                    LineCheckPatternSets.PLAYER_CAN_TWO_IN_A_ROW};
+        CheckPatternSet[] MOVE=new CheckPatternSet[]{
+                LineCheckPatternSets.PLAYER_CAN_WIN, 
+                LineCheckPatternSets.OPPONENT_CAN_WIN, 
+                LineCheckPatternSets.OPPONENT_CAN_FOUR_IN_A_ROW,
+                LineCheckPatternSets.PLAYER_CAN_FOUR_IN_A_ROW,
+                LineCheckPatternSets.PLAYER_CAN_THREE_IN_A_ROW,
+                LineCheckPatternSets.PLAYER_CAN_TWO_IN_A_ROW};
         //@formatter:on
     }
 
@@ -82,18 +87,6 @@ public interface Constants
         String CORNER = "corner";
         String GAME = "game";
         String COMPUTER = "computer";
-    }
-
-    public interface PositionEvaluationPatterns
-    {
-        //@formatter:off
-        CheckPatternSet[] ALL=new CheckPatternSet[]{
-                LineCheckPatterns.PLAYER_CAN_WIN,
-                LineCheckPatterns.THREE_IN_A_ROW,
-                LineCheckPatterns.TWO_IN_A_ROW,
-                LineCheckPatterns.SINGLE
-        };
-        //@formatter:on
     }
 
     String APPLICATION_TITLE = "Twisting Balls";

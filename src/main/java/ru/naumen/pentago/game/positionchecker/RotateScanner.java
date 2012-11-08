@@ -3,13 +3,9 @@
  */
 package ru.naumen.pentago.game.positionchecker;
 
-import java.util.List;
-
-import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Quarter;
 import ru.naumen.pentago.game.model.RotateInfo;
-import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
 import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
 
 /**
@@ -18,80 +14,45 @@ import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFa
  * @since 05.11.2012
  * 
  */
-public class RotateScanner extends PositionScannerSinglePredicate
+public class RotateScanner
 {
-    private final boolean greater;
+    private final PositionEvaluator evaluator;
+    private final Board board;
 
-    public RotateScanner(CheckPatternSet patternSet, LineIteratorFactory[] lineIteratorFactories, Board board,
-            boolean greater)
+    public RotateScanner(CheckPatternSet[] patternSets, LineIteratorFactory[] lineIteratorFactories, Board board)
     {
-        super(patternSet, lineIteratorFactories, board);
-        this.greater = greater;
+        this.evaluator = new PositionEvaluator(patternSets, lineIteratorFactories, board);
+        this.board = board;
     }
 
     public RotateInfo findRotate(int player)
     {
-        int originalPositionCount = calculatePositionsCount(player);
+        double bestPositionValue = evaluator.evaluate(player);
         RotateInfo bestOption = null;
-        int bestPositionCountAfterRotation = greater ? 0 : 999;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             Quarter quarter = Quarter.create(i);
-            int positionCount = checkWithRotation(quarter, player, true);
-            if (improves(bestPositionCountAfterRotation, positionCount, true))
+            double positionValue = checkWithRotation(quarter, player, true);
+            if (positionValue > bestPositionValue)
             {
-                bestPositionCountAfterRotation = positionCount;
-                if (improves(originalPositionCount, positionCount, false))
-                    bestOption = new RotateInfo(quarter, true);
+                bestPositionValue = positionValue;
+                bestOption = new RotateInfo(quarter, true);
             }
-            positionCount = checkWithRotation(quarter, player, false);
-            if (improves(bestPositionCountAfterRotation, positionCount, true))
+            positionValue = checkWithRotation(quarter, player, false);
+            if (positionValue > bestPositionValue)
             {
-                bestPositionCountAfterRotation = positionCount;
-                if (improves(originalPositionCount, positionCount, false))
-                    bestOption = new RotateInfo(quarter, false);
+                bestPositionValue = positionValue;
+                bestOption = new RotateInfo(quarter, false);
             }
         }
         return bestOption;
     }
 
-    private int calculatePositionsCount(int player)
-    {
-        int result = 0;
-        for (LineIterator lineIterator : lineIterators)
-        {
-            lineIterator.reset();
-            while (lineIterator.hasNext())
-            {
-                List<Ball> line = lineIterator.next();
-                try
-                {
-                    predicate.check(lineToString(line), line, intToCharacter(player), player);
-                }
-                catch (MoveFoundException e)
-                {
-                    result++;
-                }
-            }
-        }
-        return result;
-    }
-
-    private int checkWithRotation(Quarter quarter, int player, boolean clockwise)
+    private double checkWithRotation(Quarter quarter, int player, boolean clockwise)
     {
         board.rotate(quarter, clockwise);
-        int result = calculatePositionsCount(player);
+        double result = evaluator.evaluate(player);
         board.rotate(quarter, !clockwise);
         return result;
-    }
-
-    private boolean improves(int currentValue, int newValue, boolean equals)
-    {
-        if (equals && currentValue == newValue)
-            return true;
-        if (greater)
-            return newValue > currentValue;
-        else
-            return newValue < currentValue;
     }
 }

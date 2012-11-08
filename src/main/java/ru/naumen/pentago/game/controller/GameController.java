@@ -3,7 +3,7 @@ package ru.naumen.pentago.game.controller;
 import java.util.List;
 
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.game.Constants.LineCheckPatterns;
+import ru.naumen.pentago.game.Constants.LineCheckPatternSets;
 import ru.naumen.pentago.game.Constants.LineIteratorFactories;
 import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.events.FinishedBallAnimationEvent;
@@ -37,7 +37,7 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
         this.game = game;
         this.players = players;
         this.eventBus = eventBus;
-        this.winStateScanner = new WinStateScanner(LineCheckPatterns.PLAYER_WON, LineIteratorFactories.POSITION_CHECK,
+        this.winStateScanner = new WinStateScanner(LineCheckPatternSets.PLAYER_WON, LineIteratorFactories.POSITION_CHECK,
                 game.getBoard());
         eventBus.register(FinishedBallAnimationEvent.class, this);
         eventBus.register(FinishedRotateAnimationEvent.class, this);

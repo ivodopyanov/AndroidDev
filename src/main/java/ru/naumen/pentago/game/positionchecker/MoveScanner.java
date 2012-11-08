@@ -5,13 +5,13 @@ package ru.naumen.pentago.game.positionchecker;
 
 import java.util.List;
 
+import ru.naumen.pentago.framework.Pair;
 import ru.naumen.pentago.game.Constants;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Quarter;
 import ru.naumen.pentago.game.positionchecker.iterators.LineIterator;
 import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFactory;
-import android.util.Pair;
 
 /**
  * Класс вычисляет лучший ход на текущей доске для игрока player. Для этого он
@@ -31,7 +31,7 @@ public class MoveScanner extends PositionScannerSinglePredicate
 
     public Ball findMove(int player)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             Quarter quarter = Quarter.create(i);
             Ball result = checkWithRotation(quarter, player, true);
@@ -59,7 +59,7 @@ public class MoveScanner extends PositionScannerSinglePredicate
             else
             {
                 Pair<Integer, Integer> coors = rotateCoors(ball, quarter, !clockwise);
-                return board.getBall(coors.first, coors.second);
+                return board.getBall(coors.getFirst(), coors.getSecond());
             }
         }
         finally
@@ -90,9 +90,9 @@ public class MoveScanner extends PositionScannerSinglePredicate
         int y = ball.getY() - starty;
         Pair<Integer, Integer> result;
         if (clockwise)
-            result = Pair.create(-y - 1 + Constants.BOARD_SIZE / 2, x);
+            result = Pair.create(-y - 1 + Constants.BOARD_SIZE / 2 + startx, x + starty);
         else
-            result = Pair.create(y, -x - 1 + Constants.BOARD_SIZE / 2);
+            result = Pair.create(y + startx, -x - 1 + Constants.BOARD_SIZE / 2 + starty);
         return result;
     }
 }
