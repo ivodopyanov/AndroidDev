@@ -3,9 +3,13 @@
  */
 package ru.naumen.pentago.game.positionchecker;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ru.naumen.pentago.framework.Pair;
+import ru.naumen.pentago.framework.collections.Collections;
+import ru.naumen.pentago.framework.collections.Predicate;
 import ru.naumen.pentago.game.Constants;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
@@ -22,64 +26,97 @@ import ru.naumen.pentago.game.positionchecker.iterators.factories.LineIteratorFa
  * @since 06.10.2012
  * 
  */
-public class MoveScanner extends PositionScannerSinglePredicate
+public class MoveScanner extends PositionScannerMultiPredicate
 {
-    public MoveScanner(CheckPatternSet patternSet, LineIteratorFactory[] lineIteratorFactories, Board board)
+    private static final Predicate<Ball> FREE_BALL_FILTER = new Predicate<Ball>()
     {
-        super(patternSet, lineIteratorFactories, board);
-    }
-
-    public Ball findMove(int player)
-    {
-        for (int i = 0; i < 4; i++)
+        @Override
+        public boolean apply(Ball ball)
         {
-            Quarter quarter = Quarter.create(i);
-            Ball result = checkWithRotation(quarter, player, true);
-            if (result != null)
-                return result;
-            result = checkWithRotation(quarter, player, false);
-            if (result != null)
-                return result;
+            return ball.getPlayer() == Ball.NO_PLAYER;
         }
-        return null;
+    };
+
+    public MoveScanner(CheckPatternSet[] patternSets, LineIteratorFactory[] lineIteratorFactories, Board board)
+    {
+        super(patternSets, lineIteratorFactories, board);
     }
 
-    private Ball checkWithRotation(Quarter quarter, int player, boolean clockwise)
+    public List<Ball> findMove(int player)
     {
-        board.rotate(quarter, clockwise);
+        List<Ball> result = new LinkedList<Ball>();
+        for (LineCheckPredicate predicate : predicates)
+        {
+            int playerForPredicate = player;
+            if (predicate.isInverted())
+                playerForPredicate = 1 - player;
+            findInPredicate(predicate, playerForPredicate, result);
+        }
+        if (result.size() == 0)
+            result.add(getRandomBall());
+        return result;
+    }
+
+    private void checkLine(List<Ball> line, LineCheckPredicate predicate, Quarter quarter, int player,
+            boolean clockwise, List<Ball> result)
+    {
         try
         {
-            findMoveInRotated(player);
+            predicate.check(lineToString(line), line, intToCharacter(player), player);
         }
         catch (MoveFoundException e)
         {
             Ball ball = e.getBall();
-            if (!ball.inside(quarter))
-                return ball;
-            else
+            if (!result.contains(ball))
             {
-                Pair<Integer, Integer> coors = rotateCoors(ball, quarter, !clockwise);
-                return board.getBall(coors.getFirst(), coors.getSecond());
+                if (!ball.inside(quarter))
+                    result.add(ball);
+                else
+                {
+                    Pair<Integer, Integer> coors = rotateCoors(ball, quarter, !clockwise);
+                    result.add(board.getBall(coors.getFirst(), coors.getSecond()));
+                }
             }
         }
-        finally
-        {
-            board.rotate(quarter, !clockwise);
-        }
-        return null;
     }
 
-    private void findMoveInRotated(int player) throws MoveFoundException
+    private void findInLines(LineCheckPredicate predicate, Quarter quarter, int player, boolean clockwise,
+            List<Ball> result)
     {
+
         for (LineIterator lineIterator : lineIterators)
         {
             lineIterator.reset();
             while (lineIterator.hasNext())
             {
-                List<Ball> line = lineIterator.next();
-                predicate.check(lineToString(line), line, intToCharacter(player), player);
+                checkLine(lineIterator.next(), predicate, quarter, player, clockwise, result);
             }
         }
+    }
+
+    private void findInPredicate(LineCheckPredicate predicate, int player, List<Ball> result)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Quarter quarter = Quarter.create(i);
+            findInRotation(predicate, quarter, player, true, result);
+            findInRotation(predicate, quarter, player, false, result);
+        }
+    }
+
+    private void findInRotation(LineCheckPredicate predicate, Quarter quarter, int player, boolean clockwise,
+            List<Ball> result)
+    {
+        board.rotate(quarter, clockwise);
+        findInLines(predicate, quarter, player, clockwise, result);
+        board.rotate(quarter, !clockwise);
+    }
+
+    private Ball getRandomBall()
+    {
+        List<Ball> freeBalls = new ArrayList<Ball>(Collections.filter(board.getBalls(), FREE_BALL_FILTER));
+        int pos = (int)(Math.random() * (freeBalls.size() - 1));
+        return freeBalls.get(pos);
     }
 
     private Pair<Integer, Integer> rotateCoors(Ball ball, Quarter quarter, boolean clockwise)

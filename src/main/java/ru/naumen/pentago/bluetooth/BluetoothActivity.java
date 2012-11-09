@@ -111,6 +111,7 @@ public class BluetoothActivity extends Activity
     {
         btAdapter.cancelDiscovery();
         unregisterReceiver(devicesReceiver);
+        super.onBackPressed();
     }
 
     @Override

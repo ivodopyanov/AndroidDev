@@ -3,7 +3,6 @@
  */
 package ru.naumen.pentago.player.controller.ai;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import ru.naumen.pentago.framework.eventbus.EventBus;
@@ -14,12 +13,8 @@ import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Quarter;
 import ru.naumen.pentago.game.model.RotateInfo;
-import ru.naumen.pentago.game.positionchecker.CheckPatternSet;
+import ru.naumen.pentago.game.positionchecker.MoveScanner;
 import ru.naumen.pentago.game.positionchecker.RotateScanner;
-import ru.naumen.pentago.player.controller.ai.strategies.move.AIMoveStrategy;
-import ru.naumen.pentago.player.controller.ai.strategies.move.DirectAIMoveStrategyImpl;
-import ru.naumen.pentago.player.controller.ai.strategies.move.InvertedAIMoveStrategyImpl;
-import ru.naumen.pentago.player.controller.ai.strategies.move.RandomMoveStrategy;
 
 /**
  * @author ivodopyanov
@@ -28,21 +23,13 @@ import ru.naumen.pentago.player.controller.ai.strategies.move.RandomMoveStrategy
  */
 public class StrategicCalculator extends AICalculatorImpl
 {
-    private final List<AIMoveStrategy> moveStrategies;
     private final RotateScanner rotateScanner;
+    private final MoveScanner moveScanner;
 
     public StrategicCalculator(List<Player> players, Board board, EventBus eventBus)
     {
         super(players, eventBus);
-        moveStrategies = new LinkedList<AIMoveStrategy>();
-        for (CheckPatternSet patternSet : LineCheckPatternSets.MOVE)
-        {
-            if (patternSet.getWeight() > 0)
-                moveStrategies.add(new DirectAIMoveStrategyImpl(board, patternSet));
-            else
-                moveStrategies.add(new InvertedAIMoveStrategyImpl(board, patternSet));
-        }
-        moveStrategies.add(new RandomMoveStrategy(board));
+        moveScanner = new MoveScanner(LineCheckPatternSets.MOVE, LineIteratorFactories.POSITION_CHECK, board);
         rotateScanner = new RotateScanner(LineCheckPatternSets.ROTATE, LineIteratorFactories.POSITION_CHECK, board);
     }
 
@@ -50,23 +37,16 @@ public class StrategicCalculator extends AICalculatorImpl
     protected Ball runMoveCalculation(Player player)
     {
         int playerPos = players.indexOf(player);
-        for (AIMoveStrategy strategy : moveStrategies)
-        {
-            Ball result = strategy.apply(playerPos);
-            if (result != null)
-                return result;
-        }
-        return null;
+        List<Ball> moves = moveScanner.findMove(playerPos);
+        return moves.get(0);
     }
 
     @Override
     protected RotateInfo runRotateCalculation(Player player)
     {
         int playerPos = players.indexOf(player);
-        RotateInfo result = rotateScanner.findRotate(playerPos);
-        if (result != null)
-            return result;
-        return getRandomRotateInfo();
+        List<RotateInfo> rotates = rotateScanner.findRotate(playerPos);
+        return rotates.get(0);
     }
 
     private RotateInfo getRandomRotateInfo()
