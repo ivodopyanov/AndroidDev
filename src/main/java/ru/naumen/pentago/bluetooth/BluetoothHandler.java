@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * @author ivodopyanov
@@ -21,6 +22,7 @@ import android.os.Message;
  */
 public class BluetoothHandler extends Handler
 {
+    private static final String TAG = "BTHandler";
     private Dialog connectionDialog;
     private final Activity activity;
     private EventBus eventBus;
@@ -42,10 +44,11 @@ public class BluetoothHandler extends Handler
         {
         case BluetoothConstants.CONNECTED:
         {
+            Log.d(TAG, "connected");
             connectionDialog.dismiss();
             Intent intent = new Intent();
             intent.replaceExtras((Bundle)msg.obj);
-            activity.setResult(Activity.RESULT_OK);
+            activity.setResult(Activity.RESULT_OK, intent);
             activity.finish();
             break;
         }

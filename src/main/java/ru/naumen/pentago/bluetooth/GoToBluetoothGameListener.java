@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -22,6 +23,7 @@ import android.view.View.OnClickListener;
  */
 public class GoToBluetoothGameListener implements OnClickListener
 {
+    private static final String TAG = "goToBTListener";
 
     private final Activity activity;
     private final EventBus eventBus;
@@ -38,6 +40,7 @@ public class GoToBluetoothGameListener implements OnClickListener
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null)
         {
+            Log.d(TAG, "btAdapter==null");
             new AlertDialog.Builder(activity).setTitle(R.string.bluetoothConnection)
                     .setMessage(activity.getResources().getString(R.string.noBluetooth))
                     .setPositiveButton("OK", new HideDialogClickListener()).show();
@@ -45,15 +48,23 @@ public class GoToBluetoothGameListener implements OnClickListener
         }
         if (!btAdapter.isEnabled())
         {
+            Log.d(TAG, "start intent enable bt");
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             activity.startActivityForResult(enableBtIntent, Constants.REQUEST_BT_ENABLED);
             return;
         }
-        showDialog();
+        else
+        {
+            Log.d(TAG, "start intent discoverable bt");
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            activity.startActivityForResult(discoverableIntent, Constants.REQUEST_BT_DISCOVERABLE);
+        }
     }
 
     public void showDialog()
     {
+        Log.d(TAG, "show dialog");
         Intent bluetoothIntent = new Intent(activity, BluetoothActivity.class);
         activity.startActivityForResult(bluetoothIntent, BluetoothConstants.BLUETOOTH_ACTIVITY_RESULT);
     }

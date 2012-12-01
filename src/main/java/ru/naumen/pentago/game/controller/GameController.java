@@ -23,11 +23,10 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
 {
     public enum GamePhase
     {
-        PutBall, RotateBoard, Ended;
+        START, MOVE, ROTATE, GAME_OVER;
     }
 
     private final Game game;
-    private int activePlayer = 0;
     private final WinStateScanner winStateScanner;
     private final List<Player> players;
     private final EventBus eventBus;
@@ -37,8 +36,8 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
         this.game = game;
         this.players = players;
         this.eventBus = eventBus;
-        this.winStateScanner = new WinStateScanner(LineCheckPatternSets.PLAYER_WON, LineIteratorFactories.POSITION_CHECK,
-                game.getBoard());
+        this.winStateScanner = new WinStateScanner(LineCheckPatternSets.PLAYER_WON,
+                LineIteratorFactories.POSITION_CHECK, game.getBoard());
         eventBus.register(FinishedBallAnimationEvent.class, this);
         eventBus.register(FinishedRotateAnimationEvent.class, this);
     }
@@ -48,8 +47,9 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     {
         if (event.getBall().getPlayer() == Ball.NO_PLAYER)
         {
-            event.getBall().setPlayer(activePlayer);
-            eventBus.fireEvent(new RequestBoardRotateEvent(players.get(activePlayer).getCode()));
+            event.getBall().setPlayer(game.getActivePlayer());
+            game.setGamePhase(GamePhase.ROTATE);
+            performNextStep();
         }
     }
 
@@ -57,15 +57,46 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     public void onFinishedRotateAnimation(FinishedRotateAnimationEvent event)
     {
         Log.d(LogTag.GAME, "onFinishedRotateAnimation");
-        activePlayer = getNextPlayer(activePlayer);
+        game.setActivePlayer(getNextPlayer(game.getActivePlayer()));
         int winner = winStateScanner.hasAnyPlayerWon();
         if (winner != Ball.NO_PLAYER)
         {
-            eventBus.fireEvent(new GameOverEvent(winner));
+            game.setGamePhase(GamePhase.GAME_OVER);
+
         }
         else
         {
-            eventBus.fireEvent(new RequestBallMoveEvent(players.get(activePlayer).getCode()));
+            game.setGamePhase(GamePhase.MOVE);
+
+        }
+        performNextStep();
+    }
+
+    public void performNextStep()
+    {
+        switch (game.getGamePhase())
+        {
+        case START:
+        {
+            game.setGamePhase(GamePhase.MOVE);
+            performNextStep();
+            break;
+        }
+        case MOVE:
+        {
+            eventBus.fireEvent(new RequestBallMoveEvent(players.get(game.getActivePlayer()).getCode()));
+            break;
+        }
+        case ROTATE:
+        {
+            eventBus.fireEvent(new RequestBoardRotateEvent(players.get(game.getActivePlayer()).getCode()));
+            break;
+        }
+        case GAME_OVER:
+        {
+            eventBus.fireEvent(new GameOverEvent(game.getWinner()));
+            break;
+        }
         }
     }
 

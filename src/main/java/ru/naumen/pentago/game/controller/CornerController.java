@@ -12,6 +12,7 @@ import ru.naumen.pentago.framework.collections.Predicate;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LogTag;
 import ru.naumen.pentago.game.controller.GameController.GamePhase;
+import ru.naumen.pentago.game.controller.events.FinishedBallAnimationEvent;
 import ru.naumen.pentago.game.controller.events.FinishedRotateAnimationEvent;
 import ru.naumen.pentago.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
@@ -61,7 +62,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         @Override
         public void onClick(View arg0)
         {
-            if (!GamePhase.PutBall.equals(gamePhase))
+            if (game.getGamePhase() != GamePhase.MOVE)
                 return;
             if (ballMoveActive)
                 return;
@@ -91,11 +92,11 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         {
             Log.d(LogTag.CORNER, "Ball move animation ended");
             ballView.setImageDrawable(getResources().getDrawable(player.getBallResource()));
-            ball.setPlayer(game.getPlayers().indexOf(player));
+            //ball.setPlayer(game.getPlayers().indexOf(player));
             anim.setAnimationListener(null);
             animBallView.clearAnimation();
             animBallView.setVisibility(View.INVISIBLE);
-            eventBus.fireEvent(new RequestBoardRotateEvent(player.getCode()));
+            eventBus.fireEvent(new FinishedBallAnimationEvent(ball));
         }
 
         @Override
@@ -126,7 +127,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         @Override
         public void onClick(View v)
         {
-            if (GamePhase.RotateBoard.equals(gamePhase) && !rotationActive)
+            if (game.getGamePhase() == GamePhase.ROTATE && !rotationActive)
             {
                 eventBus.fireEvent(new RotateCornerEvent(area, clockwise));
             }
@@ -161,7 +162,6 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
 
     private CornerViewDescription desc;
 
-    private GamePhase gamePhase = GamePhase.PutBall;
     private EventBus eventBus;
     private List<Ball> balls;
     private Game game;
@@ -204,7 +204,9 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         }
         for (int i = 0; i < BALL_IDS.length; i++)
         {
-            findViewById(BALL_IDS[i]).setOnClickListener(new BallInsertionListener(balls.get(i)));
+            ImageView ball = (ImageView)findViewById(BALL_IDS[i]);
+            ball.setOnClickListener(new BallInsertionListener(balls.get(i)));
+            ball.setImageDrawable(getResources().getDrawable(getBallResource(balls.get(i))));
         }
         setArrowsVisibility(View.INVISIBLE);
     }
@@ -268,7 +270,6 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         Log.d(LogTag.CORNER, "onRequestBallMove");
         rotationActive = false;
         setArrowsVisibility(View.INVISIBLE);
-        gamePhase = GamePhase.PutBall;
     }
 
     @Override
@@ -277,7 +278,6 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         Log.d(LogTag.CORNER, "onRequestBoardRotate");
         ballMoveActive = false;
         setArrowsVisibility(View.VISIBLE);
-        gamePhase = GamePhase.RotateBoard;
     }
 
     @Override

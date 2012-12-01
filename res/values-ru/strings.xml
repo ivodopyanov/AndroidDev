@@ -16,6 +16,7 @@
     <string name="cancel">Отмена</string>
     <string name="Computer">Компьютер</string>
     <string name="endOfGame">Игра окончена!</string>
+    <string name="endOfGameBluetooth">Соединение Bluetooth разорвано!</string>
     <string name="exit">Выход</string>
     <string name="goback">Назад</string>
     <string name="howto">Как играть</string>

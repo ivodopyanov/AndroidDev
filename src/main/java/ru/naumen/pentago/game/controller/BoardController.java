@@ -5,7 +5,6 @@ package ru.naumen.pentago.game.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -14,7 +13,6 @@ import ru.naumen.pentago.R;
 import ru.naumen.pentago.framework.ChildLayoutDescriptor;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.model.Game;
-import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.Quarter;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -67,7 +65,7 @@ public class BoardController extends ViewGroup
         initLayout();
     }
 
-    public void init(Game game, List<Player> players, EventBus eventBus)
+    public void init(Game game, EventBus eventBus)
     {
         View corners = findViewById(R.id.corners);
         for (int i = 0; i < 4; i++)

@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * @author ivodopyanov
@@ -19,6 +20,7 @@ import android.os.Handler;
  */
 public class BluetoothClientThread extends BluetoothThread
 {
+    private static final String TAG = "BTClientThread";
     private final BluetoothSocket socket;
     private final BluetoothDevice device;
     private final Context context;
@@ -73,6 +75,7 @@ public class BluetoothClientThread extends BluetoothThread
             }
             return;
         }
+        Log.d(TAG, "connected");
         context.unregisterReceiver(devicesReceiver);
         manageConnectedSocket(socket, true);
     }

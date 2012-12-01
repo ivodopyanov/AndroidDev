@@ -5,11 +5,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.naumen.pentago.game.controller.GameController.GamePhase;
+
 public class Game implements Serializable
 {
     private static final long serialVersionUID = 7769642206955663086L;
     private Board board;
     private List<Player> players = new ArrayList<Player>();
+    private int activePlayer = 0;
+    private GamePhase gamePhase = GamePhase.START;
+    private int winner = -1;
 
     public Game()
     {
@@ -22,9 +27,19 @@ public class Game implements Serializable
         this.players = players;
     }
 
+    public int getActivePlayer()
+    {
+        return activePlayer;
+    }
+
     public Board getBoard()
     {
         return board;
+    }
+
+    public GamePhase getGamePhase()
+    {
+        return gamePhase;
     }
 
     public List<Player> getPlayers()
@@ -32,14 +47,34 @@ public class Game implements Serializable
         return players;
     }
 
+    public int getWinner()
+    {
+        return winner;
+    }
+
+    public void setActivePlayer(int activePlayer)
+    {
+        this.activePlayer = activePlayer;
+    }
+
     public void setBoard(Board board)
     {
         this.board = board;
     }
 
+    public void setGamePhase(GamePhase gamePhase)
+    {
+        this.gamePhase = gamePhase;
+    }
+
     public void setPlayers(List<Player> players)
     {
         this.players = players;
+    }
+
+    public void setWinner(int winner)
+    {
+        this.winner = winner;
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException

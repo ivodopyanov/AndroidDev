@@ -16,6 +16,7 @@
     <string name="cancel">Cancel</string>
     <string name="Computer">Computer</string>
     <string name="endOfGame">Game over!</string>
+    <string name="endOfGameBluetooth">Bluetooth connection is lost!</string>
     <string name="exit">Exit</string>
     <string name="goback">Back</string>
     <string name="howto">How to play</string>

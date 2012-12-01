@@ -7,6 +7,7 @@ import ru.naumen.pentago.bluetooth.events.BluetoothMessageEvent;
 import ru.naumen.pentago.bluetooth.events.BluetoothMessageHandler;
 import ru.naumen.pentago.framework.Pair;
 import ru.naumen.pentago.framework.eventbus.EventBus;
+import ru.naumen.pentago.game.controller.events.GameOverEvent;
 import ru.naumen.pentago.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.pentago.game.controller.events.MoveBallEvent;
 import ru.naumen.pentago.game.controller.events.RequestBallMoveEvent;
@@ -18,6 +19,7 @@ import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.game.model.RotateInfo;
 import ru.naumen.pentago.player.controller.bluetooth.BluetoothControllerConstants;
 import ru.naumen.pentago.player.controller.bluetooth.BluetoothConverterFacade;
+import android.bluetooth.BluetoothDevice;
 
 /**
  * @author ivodopyanov
@@ -35,6 +37,12 @@ public class HumanBluetoothRemoteController extends PlayerControllerImpl impleme
     @Override
     public void onBluetoothMessage(BluetoothMessageEvent event)
     {
+        if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(event.getData())
+                || BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(event.getData()))
+        {
+            eventBus.fireEvent(new GameOverEvent(-1));
+            return;
+        }
         Pair<String, Object> data = BluetoothConverterFacade.convertFromString(event.getData());
         if (BluetoothControllerConstants.INSERTED_BALL.equals(data.getFirst()))
         {

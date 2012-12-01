@@ -20,8 +20,8 @@ public class BluetoothConverterFacade
     static
     {
         converters = new HashMap<String, BluetoothConverter>();
-        converters.put(BluetoothControllerConstants.INSERTED_BALL, new BluetoothConverterRotatedImpl());
-        converters.put(BluetoothControllerConstants.ROTATED_BOARD, new BluetoothConverterInsertedBallImpl());
+        converters.put(BluetoothControllerConstants.INSERTED_BALL, new BluetoothConverterInsertedBallImpl());
+        converters.put(BluetoothControllerConstants.ROTATED_BOARD, new BluetoothConverterRotatedImpl());
     }
 
     public static Pair<String, Object> convertFromString(String message)

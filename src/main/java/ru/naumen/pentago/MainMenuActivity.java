@@ -17,10 +17,11 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainMenuActivity extends Activity
 {
-
+    private static final String TAG = "MainMenu";
     private static boolean firstTime = true;
 
     private InitialAnimation initialAnimation;
@@ -56,8 +57,14 @@ public class MainMenuActivity extends Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == Constants.REQUEST_BT_ENABLED && resultCode == RESULT_OK)
+        if (requestCode == Constants.REQUEST_BT_DISCOVERABLE && resultCode != RESULT_CANCELED)
         {
+            Log.d(TAG, "Set discoverable");
+            btGameListener.showDialog();
+        }
+        else if (requestCode == Constants.REQUEST_BT_ENABLED && resultCode == RESULT_OK)
+        {
+            Log.d(TAG, "set enabled");
             if (!BluetoothAdapter.getDefaultAdapter().isEnabled())
             {
                 new AlertDialog.Builder(this).setTitle(R.string.bluetoothConnection)
@@ -65,10 +72,13 @@ public class MainMenuActivity extends Activity
                         .setPositiveButton("OK", new HideDialogClickListener()).show();
                 return;
             }
-            btGameListener.showDialog();
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivityForResult(discoverableIntent, Constants.REQUEST_BT_DISCOVERABLE);
         }
         else if (requestCode == BluetoothConstants.BLUETOOTH_ACTIVITY_RESULT && resultCode == RESULT_OK)
         {
+            Log.d(TAG, "connected");
             Boolean client = data.getExtras().getBoolean(BluetoothConstants.BLUETOOTH_CLIENT);
             String myName = data.getExtras().getString(BluetoothConstants.BLUETOOTH_MY_NAME);
             String remoteName = data.getExtras().getString(BluetoothConstants.BLUETOOTH_REMOTE_NAME);

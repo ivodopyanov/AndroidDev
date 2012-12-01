@@ -14,6 +14,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * @author ivodopyanov
@@ -22,6 +23,7 @@ import android.os.Message;
  */
 public class BluetoothConnectedThread extends Thread
 {
+    private static final String TAG = "BTConnectedThread";
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
@@ -54,6 +56,7 @@ public class BluetoothConnectedThread extends Thread
         bundle.putBoolean(BluetoothConstants.BLUETOOTH_CLIENT, client);
         bundle.putString(BluetoothConstants.BLUETOOTH_MY_NAME, myName);
         bundle.putString(BluetoothConstants.BLUETOOTH_REMOTE_NAME, remoteName);
+        Log.d(TAG, "created connected thread; client=" + client + ", myName=" + myName + ", remoteName=" + remoteName);
         message.what = BluetoothConstants.CONNECTED;
         message.obj = bundle;
         handler.dispatchMessage(message);

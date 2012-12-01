@@ -92,8 +92,10 @@ public interface Constants
     String BOARD_EXTRA = "board";
     String PLAYERS_EXTRA = "players";
     int REQUEST_BT_ENABLED = 1;
+    int REQUEST_BT_DISCOVERABLE = 2;
     UUID uuid = UUID.nameUUIDFromBytes(APPLICATION_TITLE.getBytes());
     int MESSAGE_READ = 2;
+    int GAME_OVER_BLUETOOTH_DISCONNECTED = -1;
 
     int BOARD_SIZE = 6;
     //@formatter:off

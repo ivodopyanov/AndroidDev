@@ -12,7 +12,6 @@ import ru.naumen.pentago.game.controller.BoardController;
 import ru.naumen.pentago.game.controller.GameController;
 import ru.naumen.pentago.game.controller.events.GameOverEvent;
 import ru.naumen.pentago.game.controller.events.GameOverHandler;
-import ru.naumen.pentago.game.controller.events.RequestBallMoveEvent;
 import ru.naumen.pentago.game.model.Game;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.player.controller.PlayerController;
@@ -43,7 +42,6 @@ public class GameActivity extends Activity implements GameOverHandler
     }
 
     private Game game;
-    private List<Player> players;
     private final EventBus eventBus = new SimpleEventBus();
 
     @Override
@@ -64,15 +62,17 @@ public class GameActivity extends Activity implements GameOverHandler
             BluetoothService.get().getHandler().setEventBus(eventBus);
         }
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
+
         game = initGame(savedInstanceState);
         eventBus.register(GameOverEvent.class, this);
 
-        initBoard();
+        GameController gameController = new GameController(game, game.getPlayers(), eventBus);
+        List<PlayerController> playerControllers = Collections.transform(game.getPlayers(),
+                new PlayerControllerFactory(eventBus, game.getBoard(), game.getPlayers()));
         BoardController boardController = (BoardController)findViewById(R.id.board);
-        boardController.init(game, players, eventBus);
+        boardController.init(game, eventBus);
         initPlayersInfo();
-        eventBus.fireEvent(new RequestBallMoveEvent(players.get(0).getCode()));
+        gameController.performNextStep();
     }
 
     @Override
@@ -86,11 +86,21 @@ public class GameActivity extends Activity implements GameOverHandler
     public void onGameOver(GameOverEvent event)
     {
         BluetoothService.get().stop();
-        new AlertDialog.Builder(GameActivity.this)
-                .setTitle(R.string.endOfGame)
-                .setMessage(
-                        getResources().getString(R.string.winner) + ": " + players.get(event.getWinner()).getTitle())
-                .setPositiveButton("OK", new GoToMainMenuListener()).show();
+        if (event.getWinner() == Constants.GAME_OVER_BLUETOOTH_DISCONNECTED)
+        {
+            new AlertDialog.Builder(GameActivity.this).setTitle(R.string.endOfGame)
+                    .setMessage(getResources().getString(R.string.endOfGameBluetooth))
+                    .setPositiveButton("OK", new GoToMainMenuListener()).show();
+        }
+        else
+        {
+            new AlertDialog.Builder(GameActivity.this)
+                    .setTitle(R.string.endOfGame)
+                    .setMessage(
+                            getResources().getString(R.string.winner) + ": "
+                                    + game.getPlayers().get(event.getWinner()).getTitle())
+                    .setPositiveButton("OK", new GoToMainMenuListener()).show();
+        }
     }
 
     @Override
@@ -99,7 +109,7 @@ public class GameActivity extends Activity implements GameOverHandler
         if (item.getItemId() == R.id.menu_newgame)
         {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-            intent.putExtra(Constants.PLAYERS_EXTRA, (Serializable)players);
+            intent.putExtra(Constants.PLAYERS_EXTRA, (Serializable)game.getPlayers());
             finish();
             startActivity(intent);
             return true;
@@ -107,11 +117,11 @@ public class GameActivity extends Activity implements GameOverHandler
         return true;
     }
 
-    private void initBoard()
+    @Override
+    public void onSaveInstanceState(Bundle outState)
     {
-        GameController gameController = new GameController(game, players, eventBus);
-        List<PlayerController> playerControllers = Collections.transform(players, new PlayerControllerFactory(eventBus,
-                game.getBoard(), players));
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(Constants.BOARD_EXTRA, game);
     }
 
     private Game initGame(Bundle savedInstanceState)
@@ -127,6 +137,7 @@ public class GameActivity extends Activity implements GameOverHandler
         }
         else
         {
+            List<Player> players = (List<Player>)getIntent().getExtras().get(Constants.PLAYERS_EXTRA);
             return new Game(players);
         }
     }
@@ -134,8 +145,8 @@ public class GameActivity extends Activity implements GameOverHandler
     private void initPlayersInfo()
     {
         PlayerInfo playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player1));
-        playerInfo.init(players.get(0), eventBus);
+        playerInfo.init(game.getPlayers().get(0), eventBus);
         playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player2));
-        playerInfo.init(players.get(1), eventBus);
+        playerInfo.init(game.getPlayers().get(1), eventBus);
     }
 }

@@ -19,6 +19,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,11 +33,13 @@ import android.widget.TextView;
  */
 public class BluetoothActivity extends Activity
 {
+    private static final String TAG = "btActivity";
     private final View.OnClickListener WAIT_FOR_CALL_LISTENER = new View.OnClickListener()
     {
         @Override
         public void onClick(View v)
         {
+            Log.d(TAG, "waiting for call");
             serverThread.start();
             handler.setConnectionDialog(new AlertDialog.Builder(BluetoothActivity.this)
                     .setTitle(R.string.waitingForCall).setNegativeButton(R.string.cancel, new Dialog.OnClickListener()
@@ -64,6 +67,7 @@ public class BluetoothActivity extends Activity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
+            Log.d(TAG, "calling");
             final BluetoothClientThread clientThread = new BluetoothClientThread(devices.get(position), handler,
                     BluetoothActivity.this, devicesReceiver);
             clientThread.start();
@@ -93,6 +97,7 @@ public class BluetoothActivity extends Activity
         @Override
         public void onClick(View v)
         {
+            Log.d(TAG, "searching devices");
             btAdapter.startDiscovery();
         }
     };
@@ -126,8 +131,11 @@ public class BluetoothActivity extends Activity
         this.devices = new LinkedList<BluetoothDevice>(pairedDevices);
         Collections.sort(devices, btdComparator);
         this.deviceAdapter = new BluetoothDeviceAdapter(devices, this);
-        this.devicesReceiver = new BluetoothDevicesReceiver(deviceAdapter);
+        //TODO: передача EventBus
+        this.devicesReceiver = new BluetoothDevicesReceiver(deviceAdapter, null);
         registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED));
+        registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
         serverThread = new BluetoothServerThread(handler, this, devicesReceiver);
 
         ListView list = (ListView)findViewById(R.id.devicesList);
