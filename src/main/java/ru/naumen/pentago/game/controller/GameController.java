@@ -47,7 +47,8 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     {
         if (event.getBall().getPlayer() == Ball.NO_PLAYER)
         {
-            event.getBall().setPlayer(game.getActivePlayer());
+            //Т.к. ball из event может придти к нам через bluetooth
+            game.getBoard().getBall(event.getBall().getX(), event.getBall().getY()).setPlayer(game.getActivePlayer());
             game.setGamePhase(GamePhase.ROTATE);
             performNextStep();
         }

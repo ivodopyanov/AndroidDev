@@ -57,30 +57,26 @@ public class BluetoothServerThread extends BluetoothThread
     public void run()
     {
         BluetoothSocket socket = null;
-        while (true)
+        try
+        {
+            socket = serverSocket.accept();
+        }
+        catch (IOException e)
+        {
+            return;
+        }
+        if (socket != null)
         {
             try
             {
-                socket = serverSocket.accept();
+                Log.d(TAG, "connected");
+                context.unregisterReceiver(devicesReceiver);
+                manageConnectedSocket(socket, false);
+                serverSocket.close();
             }
             catch (IOException e)
             {
-                break;
-            }
-            if (socket != null)
-            {
-                try
-                {
-                    Log.d(TAG, "connected");
-                    context.unregisterReceiver(devicesReceiver);
-                    manageConnectedSocket(socket, false);
-                    serverSocket.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                break;
+                e.printStackTrace();
             }
         }
     }

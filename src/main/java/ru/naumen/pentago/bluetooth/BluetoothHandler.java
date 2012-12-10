@@ -55,7 +55,7 @@ public class BluetoothHandler extends Handler
         case Constants.MESSAGE_READ:
         {
             byte[] bytes = (byte[])msg.obj;
-            String data = new String(bytes);
+            String data = new String(bytes, 0, msg.arg1);
             if (eventBus != null)
                 eventBus.fireEvent(new BluetoothMessageEvent(data));
         }

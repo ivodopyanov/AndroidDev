@@ -3,7 +3,6 @@
  */
 package ru.naumen.pentago.bluetooth;
 
-import ru.naumen.pentago.bluetooth.events.BluetoothMessageEvent;
 import ru.naumen.pentago.framework.eventbus.EventBus;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -37,7 +36,8 @@ public class BluetoothDevicesReceiver extends BroadcastReceiver
         else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(intent.getAction())
                 || BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction()))
         {
-            eventBus.fireEvent(new BluetoothMessageEvent(intent.getAction()));
+
+            //eventBus.fireEvent(new BluetoothMessageEvent(intent.getAction()));
         }
     }
 }

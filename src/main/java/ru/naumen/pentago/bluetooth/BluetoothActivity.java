@@ -98,6 +98,8 @@ public class BluetoothActivity extends Activity
         public void onClick(View v)
         {
             Log.d(TAG, "searching devices");
+            devices.clear();
+            deviceAdapter.notifyDataSetChanged();
             btAdapter.startDiscovery();
         }
     };

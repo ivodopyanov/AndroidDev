@@ -84,7 +84,7 @@ public class MainMenuActivity extends Activity
             String remoteName = data.getExtras().getString(BluetoothConstants.BLUETOOTH_REMOTE_NAME);
             Player me = new Player(myName, "me", client ? R.drawable.blackball : R.drawable.whiteball,
                     PlayerType.humanBluetoothLocal);
-            Player opponent = new Player(remoteName, "opp", client ? R.drawable.blackball : R.drawable.whiteball,
+            Player opponent = new Player(remoteName, "opp", client ? R.drawable.whiteball : R.drawable.blackball,
                     PlayerType.humanBluetoothRemote);
             List<Player> players = new ArrayList<Player>();
             if (client)
