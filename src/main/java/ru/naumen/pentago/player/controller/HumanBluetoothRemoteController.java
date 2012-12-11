@@ -28,10 +28,10 @@ import android.bluetooth.BluetoothDevice;
  */
 public class HumanBluetoothRemoteController extends PlayerControllerImpl implements BluetoothMessageHandler
 {
-    public HumanBluetoothRemoteController(Player player, EventBus eventBus, Board board)
+    public HumanBluetoothRemoteController(Player player, Board board)
     {
-        super(player, eventBus, board);
-        eventBus.register(BluetoothMessageEvent.class, this);
+        super(player, board);
+        EventBus.INSTANCE.register(BluetoothMessageEvent.class, this);
     }
 
     @Override
@@ -40,20 +40,20 @@ public class HumanBluetoothRemoteController extends PlayerControllerImpl impleme
         if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(event.getData())
                 || BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(event.getData()))
         {
-            eventBus.fireEvent(new GameOverEvent(-1));
+            EventBus.INSTANCE.fireEvent(new GameOverEvent(-1));
             return;
         }
         Pair<String, Object> data = BluetoothConverterFacade.convertFromString(event.getData());
         if (BluetoothControllerConstants.INSERTED_BALL.equals(data.getFirst()))
         {
             InsertBallInCornerEvent remoteEvent = (InsertBallInCornerEvent)data.getSecond();
-            eventBus.fireEvent(new MoveBallEvent(remoteEvent.getBall(), player));
+            EventBus.INSTANCE.fireEvent(new MoveBallEvent(remoteEvent.getBall(), player));
         }
         else if (BluetoothControllerConstants.ROTATED_BOARD.equals(data.getFirst()))
         {
             RotateCornerEvent remoteEvent = (RotateCornerEvent)data.getSecond();
-            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(remoteEvent.getArea(), remoteEvent.isClockwise()),
-                    player));
+            EventBus.INSTANCE.fireEvent(new RotateBoardEvent(new RotateInfo(remoteEvent.getArea(), remoteEvent
+                    .isClockwise()), player));
         }
     }
 

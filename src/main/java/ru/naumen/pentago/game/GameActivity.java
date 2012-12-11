@@ -7,7 +7,6 @@ import ru.naumen.pentago.R;
 import ru.naumen.pentago.bluetooth.BluetoothService;
 import ru.naumen.pentago.framework.collections.Collections;
 import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.framework.eventbus.SimpleEventBus;
 import ru.naumen.pentago.game.controller.BoardController;
 import ru.naumen.pentago.game.controller.GameController;
 import ru.naumen.pentago.game.controller.events.GameOverEvent;
@@ -42,7 +41,6 @@ public class GameActivity extends Activity implements GameOverHandler
     }
 
     private Game game;
-    private final EventBus eventBus = new SimpleEventBus();
 
     @Override
     public void onBackPressed()
@@ -57,20 +55,16 @@ public class GameActivity extends Activity implements GameOverHandler
         super.onCreate(savedInstanceState);
         Log.d("gameActivity", "activity started");
         setContentView(R.layout.gameboard);
-        if (BluetoothService.get().getHandler() != null)
-        {
-            BluetoothService.get().getHandler().setEventBus(eventBus);
-        }
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         game = initGame(savedInstanceState);
-        eventBus.register(GameOverEvent.class, this);
+        EventBus.INSTANCE.register(GameOverEvent.class, this);
 
-        GameController gameController = new GameController(game, game.getPlayers(), eventBus);
+        GameController gameController = new GameController(game, game.getPlayers());
         List<PlayerController> playerControllers = Collections.transform(game.getPlayers(),
-                new PlayerControllerFactory(eventBus, game.getBoard(), game.getPlayers()));
+                new PlayerControllerFactory(game.getBoard(), game.getPlayers()));
         BoardController boardController = (BoardController)findViewById(R.id.board);
-        boardController.init(game, eventBus);
+        boardController.init(game);
         initPlayersInfo();
         gameController.performNextStep();
     }
@@ -145,8 +139,8 @@ public class GameActivity extends Activity implements GameOverHandler
     private void initPlayersInfo()
     {
         PlayerInfo playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player1));
-        playerInfo.init(game.getPlayers().get(0), eventBus);
+        playerInfo.init(game.getPlayers().get(0));
         playerInfo = new PlayerInfo(getApplicationContext(), findViewById(R.id.player2));
-        playerInfo.init(game.getPlayers().get(1), eventBus);
+        playerInfo.init(game.getPlayers().get(1));
     }
 }

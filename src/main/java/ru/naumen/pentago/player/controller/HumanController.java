@@ -25,11 +25,11 @@ public class HumanController extends PlayerControllerImpl implements InsertBallI
 {
     protected boolean active = false;
 
-    public HumanController(Player player, EventBus eventBus, Board board)
+    public HumanController(Player player, Board board)
     {
-        super(player, eventBus, board);
-        eventBus.register(InsertBallInCornerEvent.class, this);
-        eventBus.register(RotateCornerEvent.class, this);
+        super(player, board);
+        EventBus.INSTANCE.register(InsertBallInCornerEvent.class, this);
+        EventBus.INSTANCE.register(RotateCornerEvent.class, this);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class HumanController extends PlayerControllerImpl implements InsertBallI
     {
         if (active)
         {
-            eventBus.fireEvent(new MoveBallEvent(event.getBall(), player));
+            EventBus.INSTANCE.fireEvent(new MoveBallEvent(event.getBall(), player));
         }
     }
 
@@ -58,7 +58,8 @@ public class HumanController extends PlayerControllerImpl implements InsertBallI
     {
         if (active)
         {
-            eventBus.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.isClockwise()), player));
+            EventBus.INSTANCE.fireEvent(new RotateBoardEvent(new RotateInfo(event.getArea(), event.isClockwise()),
+                    player));
         }
     }
 }

@@ -96,6 +96,7 @@ public interface Constants
     UUID uuid = UUID.nameUUIDFromBytes(APPLICATION_TITLE.getBytes());
     int MESSAGE_READ = 2;
     int GAME_OVER_BLUETOOTH_DISCONNECTED = -1;
+    String EVENT_BUS = "eventBus";
 
     int BOARD_SIZE = 6;
     //@formatter:off

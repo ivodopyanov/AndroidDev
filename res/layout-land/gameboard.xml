@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/gameboard">
     
-    
-
     <ru.naumen.pentago.game.controller.BoardController
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp" />
 
     <include
         android:id="@+id/player1"
@@ -33,4 +32,13 @@
         layout="@layout/playerinfo" >
 
     </include>
+    
+    <com.google.ads.AdView
+     android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_publisher_id"
+            ads:loadAdOnCreate="true"
+            android:layout_centerHorizontal="true" />
 </RelativeLayout>

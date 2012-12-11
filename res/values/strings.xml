@@ -2,6 +2,7 @@
 <resources>
     <color name="gameboard">#612a2a</color>
     <color name="main">#843463</color>
+    <color name="black">#000000</color>
     
     <string name="admob_publisher_id">a15072cb5e81eef</string>
     <string name="againstComputer">VS Computer</string>

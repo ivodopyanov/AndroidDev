@@ -29,17 +29,15 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
     private final Game game;
     private final WinStateScanner winStateScanner;
     private final List<Player> players;
-    private final EventBus eventBus;
 
-    public GameController(Game game, List<Player> players, EventBus eventBus)
+    public GameController(Game game, List<Player> players)
     {
         this.game = game;
         this.players = players;
-        this.eventBus = eventBus;
         this.winStateScanner = new WinStateScanner(LineCheckPatternSets.PLAYER_WON,
                 LineIteratorFactories.POSITION_CHECK, game.getBoard());
-        eventBus.register(FinishedBallAnimationEvent.class, this);
-        eventBus.register(FinishedRotateAnimationEvent.class, this);
+        EventBus.INSTANCE.register(FinishedBallAnimationEvent.class, this);
+        EventBus.INSTANCE.register(FinishedRotateAnimationEvent.class, this);
     }
 
     @Override
@@ -85,17 +83,17 @@ public class GameController implements FinishedBallAnimationHandler, FinishedRot
         }
         case MOVE:
         {
-            eventBus.fireEvent(new RequestBallMoveEvent(players.get(game.getActivePlayer()).getCode()));
+            EventBus.INSTANCE.fireEvent(new RequestBallMoveEvent(players.get(game.getActivePlayer()).getCode()));
             break;
         }
         case ROTATE:
         {
-            eventBus.fireEvent(new RequestBoardRotateEvent(players.get(game.getActivePlayer()).getCode()));
+            EventBus.INSTANCE.fireEvent(new RequestBoardRotateEvent(players.get(game.getActivePlayer()).getCode()));
             break;
         }
         case GAME_OVER:
         {
-            eventBus.fireEvent(new GameOverEvent(game.getWinner()));
+            EventBus.INSTANCE.fireEvent(new GameOverEvent(game.getWinner()));
             break;
         }
         }

@@ -11,7 +11,6 @@ import java.util.Set;
 
 import ru.naumen.pentago.R;
 import ru.naumen.pentago.framework.ChildLayoutDescriptor;
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.model.Game;
 import ru.naumen.pentago.game.model.Quarter;
 import android.content.Context;
@@ -65,7 +64,7 @@ public class BoardController extends ViewGroup
         initLayout();
     }
 
-    public void init(Game game, EventBus eventBus)
+    public void init(Game game)
     {
         View corners = findViewById(R.id.corners);
         for (int i = 0; i < 4; i++)
@@ -87,7 +86,7 @@ public class BoardController extends ViewGroup
             Quarter area = Quarter.create(left, top);
 
             CornerController cornerView = (CornerController)corners.findViewById(CORNERS[i]);
-            cornerView.init(new CornerViewDescription(area, images, ANGLES[i]), game, eventBus);
+            cornerView.init(new CornerViewDescription(area, images, ANGLES[i]), game);
         }
     }
 

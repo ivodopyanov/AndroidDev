@@ -17,15 +17,13 @@ import ru.naumen.pentago.game.model.Player;
 public abstract class PlayerControllerImpl implements PlayerController
 {
     protected final Player player;
-    protected final EventBus eventBus;
     protected final Board board;
 
-    public PlayerControllerImpl(Player player, EventBus eventBus, Board board)
+    public PlayerControllerImpl(Player player, Board board)
     {
         this.player = player;
-        this.eventBus = eventBus;
         this.board = board;
-        eventBus.register(RequestBoardRotateEvent.class, this);
-        eventBus.register(RequestBallMoveEvent.class, this);
+        EventBus.INSTANCE.register(RequestBoardRotateEvent.class, this);
+        EventBus.INSTANCE.register(RequestBallMoveEvent.class, this);
     }
 }

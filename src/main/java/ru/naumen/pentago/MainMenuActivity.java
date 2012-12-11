@@ -6,8 +6,6 @@ import java.util.List;
 
 import ru.naumen.pentago.bluetooth.GoToBluetoothGameListener;
 import ru.naumen.pentago.bluetooth.threads.BluetoothConstants;
-import ru.naumen.pentago.framework.eventbus.EventBus;
-import ru.naumen.pentago.framework.eventbus.SimpleEventBus;
 import ru.naumen.pentago.game.Constants;
 import ru.naumen.pentago.game.GameActivity;
 import ru.naumen.pentago.game.model.Player;
@@ -26,7 +24,6 @@ public class MainMenuActivity extends Activity
 
     private InitialAnimation initialAnimation;
     private GoToBluetoothGameListener btGameListener;
-    private final EventBus eventBus = new SimpleEventBus();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -38,8 +35,7 @@ public class MainMenuActivity extends Activity
         findViewById(R.id.textVSHuman).setOnClickListener(new GoToLocalGameListener(this, Constants.TWO_HUMAN_PLAYERS));
         findViewById(R.id.textVSComp).setOnClickListener(
                 new GoToLocalGameListener(this, Constants.HUMAN_COMPUTER_PLAYERS));
-        findViewById(R.id.textBluetooth).setOnClickListener(
-                btGameListener = new GoToBluetoothGameListener(this, eventBus));
+        findViewById(R.id.textBluetooth).setOnClickListener(btGameListener = new GoToBluetoothGameListener(this));
         findViewById(R.id.textHowTo).setOnClickListener(new GoToHowToListener(this));
     }
 

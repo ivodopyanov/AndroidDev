@@ -21,12 +21,10 @@ import android.os.AsyncTask;
 public abstract class AICalculatorImpl implements AICalculator
 {
     protected final List<Player> players;
-    protected final EventBus eventBus;
 
-    protected AICalculatorImpl(List<Player> players, EventBus eventBus)
+    protected AICalculatorImpl(List<Player> players)
     {
         this.players = players;
-        this.eventBus = eventBus;
     }
 
     @Override
@@ -44,7 +42,7 @@ public abstract class AICalculatorImpl implements AICalculator
             @Override
             protected void onPostExecute(MoveCalculatedEvent event)
             {
-                eventBus.fireEvent(event);
+                EventBus.INSTANCE.fireEvent(event);
             }
 
         }.execute(player);
@@ -66,7 +64,7 @@ public abstract class AICalculatorImpl implements AICalculator
             @Override
             protected void onPostExecute(RotateCalculatedEvent event)
             {
-                eventBus.fireEvent(event);
+                EventBus.INSTANCE.fireEvent(event);
             }
         }.execute(player);
     }

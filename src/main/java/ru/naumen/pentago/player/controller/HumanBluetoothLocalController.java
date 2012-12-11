@@ -4,7 +4,6 @@
 package ru.naumen.pentago.player.controller;
 
 import ru.naumen.pentago.bluetooth.BluetoothService;
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.controller.events.InsertBallInCornerEvent;
 import ru.naumen.pentago.game.controller.events.RotateCornerEvent;
 import ru.naumen.pentago.game.model.Board;
@@ -19,9 +18,9 @@ import ru.naumen.pentago.player.controller.bluetooth.BluetoothConverterFacade;
  */
 public class HumanBluetoothLocalController extends HumanController
 {
-    public HumanBluetoothLocalController(Player player, EventBus eventBus, Board board)
+    public HumanBluetoothLocalController(Player player, Board board)
     {
-        super(player, eventBus, board);
+        super(player, board);
     }
 
     @Override

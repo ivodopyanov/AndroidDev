@@ -29,7 +29,7 @@ public class StrategicCalculatorTest
     private final Player p1 = new Player("", "p1", 0, null);
     private final List<Player> players = Arrays.asList(p0, p1);
     private final Board board = new Board();
-    private final StrategicCalculator calc = new StrategicCalculator(players, board, null);
+    private final StrategicCalculator calc = new StrategicCalculator(players, board);
 
     @Before
     public void setUp() throws Exception

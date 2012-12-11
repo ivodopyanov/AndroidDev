@@ -6,7 +6,6 @@ package ru.naumen.pentago.bluetooth;
 import ru.naumen.pentago.HideDialogClickListener;
 import ru.naumen.pentago.R;
 import ru.naumen.pentago.bluetooth.threads.BluetoothConstants;
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,12 +25,10 @@ public class GoToBluetoothGameListener implements OnClickListener
     private static final String TAG = "goToBTListener";
 
     private final Activity activity;
-    private final EventBus eventBus;
 
-    public GoToBluetoothGameListener(Activity activity, EventBus eventBus)
+    public GoToBluetoothGameListener(Activity activity)
     {
         this.activity = activity;
-        this.eventBus = eventBus;
     }
 
     @Override

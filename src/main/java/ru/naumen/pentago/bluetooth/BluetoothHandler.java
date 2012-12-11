@@ -25,16 +25,10 @@ public class BluetoothHandler extends Handler
     private static final String TAG = "BTHandler";
     private Dialog connectionDialog;
     private final Activity activity;
-    private EventBus eventBus;
 
     public BluetoothHandler(Activity activity)
     {
         this.activity = activity;
-    }
-
-    public EventBus getEventBus()
-    {
-        return eventBus;
     }
 
     @Override
@@ -56,8 +50,7 @@ public class BluetoothHandler extends Handler
         {
             byte[] bytes = (byte[])msg.obj;
             String data = new String(bytes, 0, msg.arg1);
-            if (eventBus != null)
-                eventBus.fireEvent(new BluetoothMessageEvent(data));
+            EventBus.INSTANCE.fireEvent(new BluetoothMessageEvent(data));
         }
         }
     }
@@ -65,10 +58,5 @@ public class BluetoothHandler extends Handler
     public void setConnectionDialog(Dialog connectionDialog)
     {
         this.connectionDialog = connectionDialog;
-    }
-
-    public void setEventBus(EventBus eventBus)
-    {
-        this.eventBus = eventBus;
     }
 }

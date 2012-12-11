@@ -5,7 +5,6 @@ package ru.naumen.pentago.player.controller.ai;
 
 import java.util.List;
 
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.Constants.LineCheckPatternSets;
 import ru.naumen.pentago.game.Constants.LineIteratorFactories;
 import ru.naumen.pentago.game.model.Ball;
@@ -26,9 +25,9 @@ public class StrategicCalculator extends AICalculatorImpl
     private final RotateScanner rotateScanner;
     private final MoveScanner moveScanner;
 
-    public StrategicCalculator(List<Player> players, Board board, EventBus eventBus)
+    public StrategicCalculator(List<Player> players, Board board)
     {
-        super(players, eventBus);
+        super(players);
         moveScanner = new MoveScanner(LineCheckPatternSets.MOVE, LineIteratorFactories.POSITION_CHECK, board);
         rotateScanner = new RotateScanner(LineCheckPatternSets.ROTATE, LineIteratorFactories.POSITION_CHECK, board);
     }

@@ -66,7 +66,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
                 return;
             if (ballMoveActive)
                 return;
-            eventBus.fireEvent(new InsertBallInCornerEvent(ball));
+            EventBus.INSTANCE.fireEvent(new InsertBallInCornerEvent(ball));
         }
     }
 
@@ -96,7 +96,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
             anim.setAnimationListener(null);
             animBallView.clearAnimation();
             animBallView.setVisibility(View.INVISIBLE);
-            eventBus.fireEvent(new FinishedBallAnimationEvent(ball));
+            EventBus.INSTANCE.fireEvent(new FinishedBallAnimationEvent(ball));
         }
 
         @Override
@@ -115,13 +115,11 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
     {
         private final Quarter area;
         private final boolean clockwise;
-        private final EventBus eventBus;
 
-        public RotateQuaterListener(Quarter area, boolean clockwise, EventBus eventBus)
+        public RotateQuaterListener(Quarter area, boolean clockwise)
         {
             this.area = area;
             this.clockwise = clockwise;
-            this.eventBus = eventBus;
         }
 
         @Override
@@ -129,7 +127,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         {
             if (game.getGamePhase() == GamePhase.ROTATE && !rotationActive)
             {
-                eventBus.fireEvent(new RotateCornerEvent(area, clockwise));
+                EventBus.INSTANCE.fireEvent(new RotateCornerEvent(area, clockwise));
             }
         }
     }
@@ -162,7 +160,6 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
 
     private CornerViewDescription desc;
 
-    private EventBus eventBus;
     private List<Ball> balls;
     private Game game;
     private static final int[] BALL_IDS = new int[] { R.id.ball11, R.id.ball12, R.id.ball13, R.id.ball21, R.id.ball22,
@@ -183,24 +180,23 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         initLayout();
     }
 
-    public void init(CornerViewDescription desc, Game game, EventBus eventBus)
+    public void init(CornerViewDescription desc, Game game)
     {
         this.desc = desc;
-        this.eventBus = eventBus;
         this.game = game;
         balls = Collections.filter(game.getBoard().getBalls(), BALL_FILTER);
-        eventBus.register(RequestBallMoveEvent.class, this);
-        eventBus.register(RequestBoardRotateEvent.class, this);
-        eventBus.register(MoveBallEvent.class, this);
-        eventBus.register(RotateBoardEvent.class, this);
-        eventBus.register(StartedRotateAnimationEvent.class, this);
-        eventBus.register(StartedBallAnimationEvent.class, this);
+        EventBus.INSTANCE.register(RequestBallMoveEvent.class, this);
+        EventBus.INSTANCE.register(RequestBoardRotateEvent.class, this);
+        EventBus.INSTANCE.register(MoveBallEvent.class, this);
+        EventBus.INSTANCE.register(RotateBoardEvent.class, this);
+        EventBus.INSTANCE.register(StartedRotateAnimationEvent.class, this);
+        EventBus.INSTANCE.register(StartedBallAnimationEvent.class, this);
 
         for (RotateImageDescription imageDesc : desc.getImages())
         {
             ImageView imageView = imageDesc.getImage();
             imageView.setContentDescription(getResources().getString(imageDesc.getDescId()));
-            imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.isClockwise(), eventBus));
+            imageView.setOnClickListener(new RotateQuaterListener(desc.getArea(), imageDesc.isClockwise()));
         }
         for (int i = 0; i < BALL_IDS.length; i++)
         {
@@ -222,7 +218,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         }
         game.getBoard().rotate(rotateInfoBuf);
         updateBalls();
-        eventBus.fireEvent(new FinishedRotateAnimationEvent(rotateInfoBuf));
+        EventBus.INSTANCE.fireEvent(new FinishedRotateAnimationEvent(rotateInfoBuf));
     }
 
     @Override
@@ -233,7 +229,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         if (event.getBall().getPlayer() != Ball.NO_PLAYER)
             return;
         Log.d(LogTag.CORNER, "onMoveBall");
-        eventBus.fireEvent(new StartedBallAnimationEvent());
+        EventBus.INSTANCE.fireEvent(new StartedBallAnimationEvent());
         ImageView animBall = (ImageView)findViewById(R.id.animBall);
         animBall.setImageDrawable(getResources().getDrawable(event.getPlayer().getBallResource()));
         int ballPos = balls.indexOf(event.getBall());
@@ -286,7 +282,7 @@ public class CornerController extends ViewGroup implements RequestBoardRotateHan
         if (!event.getRotateInfo().getQuarter().equals(desc.getArea()))
             return;
         Log.d(LogTag.CORNER, "onRotateBoard");
-        eventBus.fireEvent(new StartedRotateAnimationEvent());
+        EventBus.INSTANCE.fireEvent(new StartedRotateAnimationEvent());
         Animation ballRotateAnimation = generateBallRotateAnimation(event.getRotateInfo().isClockwise());
         Animation quarterRotateAnimation = generateQuarterRotateAnimation(event.getRotateInfo().isClockwise());
         rotateInfoBuf = event.getRotateInfo();

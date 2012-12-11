@@ -19,6 +19,7 @@ public class BluetoothDeviceView extends TextView
     {
         super(context);
         setText(device.getName());
+        setPadding(5, 5, 5, 5);
         setTextAppearance(context, R.attr.textAppearanceLarge);
     }
 

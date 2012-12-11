@@ -5,11 +5,14 @@ package ru.naumen.pentago.bluetooth;
 
 import java.util.List;
 
+import ru.naumen.pentago.R;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 /**
  * @author ivodopyanov
@@ -60,6 +63,8 @@ public class BluetoothDeviceAdapter extends BaseAdapter
             oldView.setDevice(devices.get(position));
             return oldView;
         }
-        return new BluetoothDeviceView(context, devices.get(position));
+        View result = LayoutInflater.from(context).inflate(R.layout.device, null);
+        ((TextView)result.findViewById(R.id.textView1)).setText(devices.get(position).getName());
+        return result;
     }
 }

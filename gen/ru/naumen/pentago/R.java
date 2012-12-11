@@ -35,6 +35,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int source=0x7f010002;
     }
     public static final class color {
+        public static final int black=0x7f060002;
         public static final int gameboard=0x7f060000;
         public static final int main=0x7f060001;
     }
@@ -63,12 +64,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int menu_element=0x7f020004;
         public static final int rotate=0x7f020005;
         public static final int smallsquare=0x7f020006;
-        public static final int whiteball=0x7f020007;
-        public static final int yellowcircle=0x7f020008;
+        public static final int smartphone=0x7f020007;
+        public static final int whiteball=0x7f020008;
+        public static final int yellowcircle=0x7f020009;
     }
     public static final class id {
+        public static final int adView=0x7f08001f;
         public static final int animBall=0x7f080016;
-        public static final int ball=0x7f080029;
+        public static final int ball=0x7f08002b;
         public static final int ball11=0x7f08000d;
         public static final int ball12=0x7f08000e;
         public static final int ball13=0x7f08000f;
@@ -78,48 +81,50 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ball31=0x7f080013;
         public static final int ball32=0x7f080014;
         public static final int ball33=0x7f080015;
-        public static final int board=0x7f08001c;
-        public static final int boardpanel=0x7f08001b;
-        public static final int bottomleft=0x7f080019;
-        public static final int bottomright=0x7f08001a;
+        public static final int board=0x7f08001e;
+        public static final int boardpanel=0x7f08001d;
+        public static final int bottomleft=0x7f08001b;
+        public static final int bottomright=0x7f08001c;
         public static final int corners=0x7f08000c;
         public static final int devicesList=0x7f080000;
-        public static final int glow=0x7f080028;
+        public static final int glow=0x7f08002a;
+        public static final int imageView1=0x7f080017;
         public static final int lbc=0x7f080009;
         public static final int lbcc=0x7f080006;
         public static final int ltc=0x7f080004;
         public static final int ltcc=0x7f080008;
-        public static final int main=0x7f08001f;
+        public static final int main=0x7f080022;
         public static final int menu_newgame=0x7f080003;
-        public static final int player1=0x7f08001d;
-        public static final int player2=0x7f08001e;
+        public static final int player1=0x7f080020;
+        public static final int player2=0x7f080021;
         public static final int rbc=0x7f080007;
         public static final int rbcc=0x7f08000b;
         public static final int rtc=0x7f08000a;
         public static final int rtcc=0x7f080005;
-        public static final int textBluetooth=0x7f080025;
-        public static final int textHowTo=0x7f080026;
+        public static final int textBluetooth=0x7f080027;
+        public static final int textHowTo=0x7f080028;
         public static final int textRefresh=0x7f080001;
-        public static final int textVSComp=0x7f080023;
-        public static final int textVSHuman=0x7f080024;
-        public static final int textView1=0x7f080020;
-        public static final int textView2=0x7f080021;
-        public static final int textView3=0x7f080022;
+        public static final int textVSComp=0x7f080025;
+        public static final int textVSHuman=0x7f080026;
+        public static final int textView1=0x7f080018;
+        public static final int textView2=0x7f080023;
+        public static final int textView3=0x7f080024;
         public static final int textWaitForCall=0x7f080002;
-        public static final int title=0x7f080027;
-        public static final int topleft=0x7f080017;
-        public static final int topright=0x7f080018;
+        public static final int title=0x7f080029;
+        public static final int topleft=0x7f080019;
+        public static final int topright=0x7f08001a;
     }
     public static final class layout {
         public static final int bluetooth=0x7f030000;
         public static final int boardmenu=0x7f030001;
         public static final int boardwitharrows=0x7f030002;
         public static final int corner=0x7f030003;
-        public static final int foursquare=0x7f030004;
-        public static final int gameboard=0x7f030005;
-        public static final int howto=0x7f030006;
-        public static final int main=0x7f030007;
-        public static final int playerinfo=0x7f030008;
+        public static final int device=0x7f030004;
+        public static final int foursquare=0x7f030005;
+        public static final int gameboard=0x7f030006;
+        public static final int howto=0x7f030007;
+        public static final int main=0x7f030008;
+        public static final int playerinfo=0x7f030009;
     }
     public static final class string {
         public static final int Computer=0x7f07000b;

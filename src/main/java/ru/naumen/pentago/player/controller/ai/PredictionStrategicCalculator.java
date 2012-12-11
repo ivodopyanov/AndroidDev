@@ -5,7 +5,6 @@ package ru.naumen.pentago.player.controller.ai;
 
 import java.util.List;
 
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.model.Ball;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
@@ -20,10 +19,10 @@ public class PredictionStrategicCalculator extends AICalculatorImpl
 {
     private final StrategicCalculator strategicCalculator;
 
-    public PredictionStrategicCalculator(List<Player> players, Board board, EventBus eventBus)
+    public PredictionStrategicCalculator(List<Player> players, Board board)
     {
-        super(players, eventBus);
-        this.strategicCalculator = new StrategicCalculator(players, board, eventBus);
+        super(players);
+        this.strategicCalculator = new StrategicCalculator(players, board);
     }
 
     @Override

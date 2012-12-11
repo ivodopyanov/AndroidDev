@@ -27,12 +27,12 @@ public class ComputerController extends PlayerControllerImpl implements MoveCalc
 {
     private final AICalculator aiCalc;
 
-    public ComputerController(Player player, EventBus eventBus, Board board, AICalculator aiCalc)
+    public ComputerController(Player player, Board board, AICalculator aiCalc)
     {
-        super(player, eventBus, board);
+        super(player, board);
         this.aiCalc = aiCalc;
-        eventBus.register(MoveCalculatedEvent.class, this);
-        eventBus.register(RotateCalculatedEvent.class, this);
+        EventBus.INSTANCE.register(MoveCalculatedEvent.class, this);
+        EventBus.INSTANCE.register(RotateCalculatedEvent.class, this);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ComputerController extends PlayerControllerImpl implements MoveCalc
         if (!event.getPlayer().equals(player))
             return;
         Log.d(LogTag.COMPUTER, "onMoveCalculated");
-        eventBus.fireEvent(new MoveBallEvent(event.getBall(), player));
+        EventBus.INSTANCE.fireEvent(new MoveBallEvent(event.getBall(), player));
     }
 
     @Override
@@ -69,6 +69,6 @@ public class ComputerController extends PlayerControllerImpl implements MoveCalc
         if (!event.getPlayer().equals(player))
             return;
         Log.d(LogTag.COMPUTER, "onRotateCalculated");
-        eventBus.fireEvent(new RotateBoardEvent(event.getRotateInfo(), player));
+        EventBus.INSTANCE.fireEvent(new RotateBoardEvent(event.getRotateInfo(), player));
     }
 }

@@ -6,7 +6,6 @@ package ru.naumen.pentago.player.controller;
 import java.util.List;
 
 import ru.naumen.pentago.framework.collections.Function;
-import ru.naumen.pentago.framework.eventbus.EventBus;
 import ru.naumen.pentago.game.model.Board;
 import ru.naumen.pentago.game.model.Player;
 import ru.naumen.pentago.player.controller.ai.StrategicCalculator;
@@ -18,15 +17,13 @@ import ru.naumen.pentago.player.controller.ai.StrategicCalculator;
  */
 public class PlayerControllerFactory implements Function<Player, PlayerController>
 {
-    private final EventBus eventBus;
     private final Board board;
     private final StrategicCalculator strCalc;
 
-    public PlayerControllerFactory(EventBus eventBus, Board board, List<Player> players)
+    public PlayerControllerFactory(Board board, List<Player> players)
     {
-        this.eventBus = eventBus;
         this.board = board;
-        strCalc = new StrategicCalculator(players, board, eventBus);
+        strCalc = new StrategicCalculator(players, board);
     }
 
     @Override
@@ -35,13 +32,13 @@ public class PlayerControllerFactory implements Function<Player, PlayerControlle
         switch (input.getType())
         {
         case human:
-            return new HumanController(input, eventBus, board);
+            return new HumanController(input, board);
         case computer:
-            return new ComputerController(input, eventBus, board, strCalc);
+            return new ComputerController(input, board, strCalc);
         case humanBluetoothLocal:
-            return new HumanBluetoothLocalController(input, eventBus, board);
+            return new HumanBluetoothLocalController(input, board);
         case humanBluetoothRemote:
-            return new HumanBluetoothRemoteController(input, eventBus, board);
+            return new HumanBluetoothRemoteController(input, board);
         }
         return null;
     }

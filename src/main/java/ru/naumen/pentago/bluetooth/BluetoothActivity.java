@@ -40,6 +40,8 @@ public class BluetoothActivity extends Activity
         public void onClick(View v)
         {
             Log.d(TAG, "waiting for call");
+            final BluetoothServerThread serverThread = new BluetoothServerThread(handler, BluetoothActivity.this,
+                    devicesReceiver);
             serverThread.start();
             handler.setConnectionDialog(new AlertDialog.Builder(BluetoothActivity.this)
                     .setTitle(R.string.waitingForCall).setNegativeButton(R.string.cancel, new Dialog.OnClickListener()
@@ -111,7 +113,6 @@ public class BluetoothActivity extends Activity
     private BluetoothDeviceAdapter deviceAdapter;
     private BluetoothDevicesReceiver devicesReceiver;
     private final BluetoothHandler handler = new BluetoothHandler(this);
-    private BluetoothServerThread serverThread;
 
     @Override
     public void onBackPressed()
@@ -133,12 +134,10 @@ public class BluetoothActivity extends Activity
         this.devices = new LinkedList<BluetoothDevice>(pairedDevices);
         Collections.sort(devices, btdComparator);
         this.deviceAdapter = new BluetoothDeviceAdapter(devices, this);
-        //TODO: передача EventBus
-        this.devicesReceiver = new BluetoothDevicesReceiver(deviceAdapter, null);
+        this.devicesReceiver = new BluetoothDevicesReceiver(deviceAdapter);
         registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED));
         registerReceiver(devicesReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
-        serverThread = new BluetoothServerThread(handler, this, devicesReceiver);
 
         ListView list = (ListView)findViewById(R.id.devicesList);
         list.setAdapter(deviceAdapter);

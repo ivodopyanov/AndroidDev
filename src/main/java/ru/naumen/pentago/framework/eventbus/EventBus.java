@@ -10,6 +10,8 @@ package ru.naumen.pentago.framework.eventbus;
  */
 public interface EventBus
 {
+    public static final EventBus INSTANCE = new SimpleEventBus();
+
     <H extends Handler> void fireEvent(Event<H> event);
 
     <H extends Handler> HandlerRegistration register(Class<? extends Event<H>> eventClass, H handler);

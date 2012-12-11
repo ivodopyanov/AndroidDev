@@ -30,10 +30,10 @@ public class PlayerInfo implements RequestBallMoveHandler
         this.context = context;
     }
 
-    public void init(Player player, EventBus eventBus)
+    public void init(Player player)
     {
         this.player = player;
-        eventBus.register(RequestBallMoveEvent.class, this);
+        EventBus.INSTANCE.register(RequestBallMoveEvent.class, this);
         TextView title = (TextView)layout.findViewById(R.id.title);
         title.setText(player.getTitle());
         ImageView ball = (ImageView)layout.findViewById(R.id.ball);
