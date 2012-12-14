@@ -128,9 +128,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class string {
         public static final int Computer=0x7f07000b;
-        public static final int Player1=0x7f070016;
-        public static final int Player2=0x7f070017;
-        public static final int You=0x7f070022;
+        public static final int Player1=0x7f070019;
+        public static final int Player2=0x7f07001a;
+        public static final int You=0x7f070025;
         public static final int admob_publisher_id=0x7f070000;
         public static final int againstComputer=0x7f070001;
         public static final int againstHuman=0x7f070002;
@@ -142,26 +142,29 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int bluetoothEnableError=0x7f070008;
         public static final int bluetoothIsOff=0x7f070009;
         public static final int cancel=0x7f07000a;
-        public static final int endOfGame=0x7f07000c;
-        public static final int endOfGameBluetooth=0x7f07000d;
-        public static final int exit=0x7f07000e;
-        public static final int goback=0x7f07000f;
-        public static final int howto=0x7f070010;
-        public static final int howto1=0x7f070011;
-        public static final int howto2=0x7f070012;
-        public static final int howto3=0x7f070013;
-        public static final int newgame=0x7f070014;
-        public static final int noBluetooth=0x7f070015;
-        public static final int playerTitle=0x7f070018;
-        public static final int refreshDevices=0x7f070019;
-        public static final int rotateClockwise=0x7f07001b;
-        public static final int rotateCounterClockwise=0x7f07001a;
-        public static final int searchBluetoothDevice=0x7f07001c;
-        public static final int selectBondedBluetoothDevice=0x7f07001d;
-        public static final int stopCalling=0x7f07001e;
-        public static final int waitForCall=0x7f07001f;
-        public static final int waitingForCall=0x7f070020;
-        public static final int winner=0x7f070021;
+        public static final int dont_allow=0x7f07000c;
+        public static final int endOfGame=0x7f07000d;
+        public static final int endOfGameBluetooth=0x7f07000e;
+        public static final int exit=0x7f07000f;
+        public static final int goback=0x7f070010;
+        public static final int howto=0x7f070011;
+        public static final int howto1=0x7f070012;
+        public static final int howto2=0x7f070013;
+        public static final int howto3=0x7f070014;
+        public static final int license=0x7f070015;
+        public static final int licenseRetry=0x7f070016;
+        public static final int newgame=0x7f070017;
+        public static final int noBluetooth=0x7f070018;
+        public static final int playerTitle=0x7f07001b;
+        public static final int refreshDevices=0x7f07001c;
+        public static final int rotateClockwise=0x7f07001e;
+        public static final int rotateCounterClockwise=0x7f07001d;
+        public static final int searchBluetoothDevice=0x7f07001f;
+        public static final int selectBondedBluetoothDevice=0x7f070020;
+        public static final int stopCalling=0x7f070021;
+        public static final int waitForCall=0x7f070022;
+        public static final int waitingForCall=0x7f070023;
+        public static final int winner=0x7f070024;
     }
     public static final class styleable {
         /** Attributes that can be used with a NauImageView.

@@ -15,6 +15,7 @@
     <string name="bluetoothIsOff">Bluetooth выключен</string>
     <string name="cancel">Отмена</string>
     <string name="Computer">Компьютер</string>
+    <string name="dont_allow">Вы не прошли проверку лицензии!</string>
     <string name="endOfGame">Игра окончена!</string>
     <string name="endOfGameBluetooth">Соединение Bluetooth разорвано!</string>
     <string name="exit">Выход</string>
@@ -23,6 +24,8 @@
     <string name="howto1">Разместите шарик в одной из лунок</string>
     <string name="howto2">Поверните одну из четвертей по или против часовой стрелки</string>
     <string name="howto3">Побеждает тот, кто первый выставит пять шариков в ряд по горизонтали, вертикали или диагонали</string>
+    <string name="license">Проверка лицензии</string>
+    <string name="licenseRetry">Произошла ошибка. Попробовать еще раз?</string>
     <string name="newgame">Новая игра</string>
     <string name="noBluetooth">Bluetooth недоступен</string>
     <string name="Player1">Первый игрок</string>

@@ -16,6 +16,7 @@
     <string name="bluetoothIsOff">Bluetooth is not enabled</string>
     <string name="cancel">Cancel</string>
     <string name="Computer">Computer</string>
+    <string name="dont_allow">You are not allowed to use this program!</string>
     <string name="endOfGame">Game over!</string>
     <string name="endOfGameBluetooth">Bluetooth connection is lost!</string>
     <string name="exit">Exit</string>
@@ -24,6 +25,8 @@
     <string name="howto1">Place ball in an empty place</string>
     <string name="howto2">Rotate one of quarters</string>
     <string name="howto3">Whoever puts up five balls in a row wins</string>
+    <string name="license">Licensing</string>
+    <string name="licenseRetry">Some error while checking license. Retry?</string>
     <string name="newgame">New game</string>
     <string name="noBluetooth">Bluetooth is not available</string>
     <string name="Player1">First player</string>
