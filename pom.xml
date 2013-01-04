@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.naumen</groupId>
-    <artifactId>core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>koans</artifactId>
+    <version>1.0.0</version>
     <packaging>apk</packaging>
-    <name>core</name>
+    <name>101zen</name>
 
     <properties>
         <platform.version> 2.2.1
@@ -20,6 +20,13 @@
             <version>${platform.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+  			<groupId>com.google.admob</groupId>
+  			<artifactId>admob</artifactId>
+  			<version>6.1.0</version>
+  			<scope>system</scope>
+  			<systemPath>${basedir}/libs/admob.jar</systemPath>
+		</dependency>
     </dependencies>
 
     <build>
@@ -34,7 +41,7 @@
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
                     <sdk>
-                        <platform>8</platform>
+                        <platform>13</platform>
                     </sdk>
                                         <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>

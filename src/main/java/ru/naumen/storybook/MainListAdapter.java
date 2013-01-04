@@ -48,6 +48,8 @@ public class MainListAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        return null;
+        StoryView result = new StoryView(context);
+        result.init(objects.get(position));
+        return result;
     }
 }
