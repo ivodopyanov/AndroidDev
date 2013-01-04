@@ -25,7 +25,7 @@
   			<artifactId>admob</artifactId>
   			<version>6.1.0</version>
   			<scope>system</scope>
-  			<systemPath>${basedir}/libs/admob.jar</systemPath>
+  			<systemPath>${basedir}/libs/GoogleAdMobAdsSdk-6.2.1.jar</systemPath>
 		</dependency>
     </dependencies>
 

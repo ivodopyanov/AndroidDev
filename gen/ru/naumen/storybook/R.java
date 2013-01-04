@@ -35,8 +35,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int source=0x7f010002;
     }
     public static final class drawable {
-        public static final int zen_circle=0x7f020000;
-        public static final int zen_palate=0x7f020001;
+        public static final int ic_menu_back=0x7f020000;
+        public static final int ic_menu_forward=0x7f020001;
+        public static final int zen_circle=0x7f020002;
+        public static final int zen_palate=0x7f020003;
     }
     public static final class id {
         public static final int adView=0x7f060004;
